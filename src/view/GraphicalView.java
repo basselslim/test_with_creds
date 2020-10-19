@@ -21,7 +21,7 @@ public class GraphicalView implements Observer {
 
     int screenX = 1100;
     int screenY = 550;
-    double zoomVal = 0.5;
+    double zoomVal = 0.4;
 
     public static List<Circle> circles = new ArrayList<Circle>();
 
@@ -35,12 +35,6 @@ public class GraphicalView implements Observer {
 
     public void zoom() {
         zoomVal+= 1.0;
-        for (int i = 0; i<lines.size();i++) {
-            lines.remove(i);
-        }
-        for (int i = 0; i<circles.size();i++) {
-            circles.remove(i);
-        }
     }
 
     public void drawMap(Map map,Canvas canvas,Pane overlay) {

@@ -55,7 +55,6 @@ public class Window extends Application {
 
     public void Zoom(ActionEvent event) {
         Gview.zoom();
-        overlay.getChildren().removeAll();
         //canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());;
         //Gview.drawMap(map,canvas,overlay);
 
