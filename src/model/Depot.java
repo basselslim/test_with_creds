@@ -8,7 +8,11 @@ public class Depot {
     protected Time departureTime;
 
     public Depot() {
+    }
 
+    public Depot(long id,Time departureTime) {
+        this.id = id;
+        this.departureTime=departureTime;
     }
 
     public Depot(long id,Time departureTime) {

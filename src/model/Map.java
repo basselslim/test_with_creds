@@ -10,7 +10,10 @@ public class Map extends Observable {
      *
      */
     protected List<Request> listRequests;
-    protected HashMap<Long, Intersection> listIntersections;
+
+    protected HashMap<Long,Intersection> listIntersections;
+    protected Depot depot;
+
 
     /**
      * Default constructor
@@ -20,8 +23,18 @@ public class Map extends Observable {
 
     }
 
-    public Map(List<Intersection> listIntersection) {
-        this.listIntersections = listIntersections;
+
+    public Map(HashMap<Long,Intersection> listIntersection) {
+        this.listIntersections = listIntersection;
+    }
+
+    public HashMap<Long,Intersection> getListIntersection() {
+        return listIntersections;
+    }
+
+    public void setListIntersection(HashMap<Long,Intersection> listIntersection) {
+        this.listIntersections = listIntersection;
+
     }
 
     public void display(){
@@ -44,14 +57,23 @@ public class Map extends Observable {
         this.listRequests = listRequests;
     }
 
-    public HashMap<Long, Intersection> getListIntersections() {
+
+    public HashMap<Long,Intersection> getListIntersections() {
         return listIntersections;
     }
 
-    public void setListIntersections(HashMap<Long, Intersection> listIntersections) {
+    public void setListIntersections(HashMap<Long,Intersection>listIntersections) {
+
         this.listIntersections = listIntersections;
     }
 
+    public Depot getDepot() {
+        return depot;
+    }
+
+    public void setDepot(Depot depot) {
+        this.depot = depot;
+    }
 
 
     @Override

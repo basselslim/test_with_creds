@@ -1,21 +1,18 @@
 package controler;
 
-import model.Intersection;
-import model.Map;
-
-import java.io.File;
-import java.io.IOException;
+import model.*;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import model.Segment;
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-
-
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -125,7 +122,7 @@ public class XMLLoader {
                         long id = Long.parseLong(att.item(0).getNodeValue());
                         double latitude = Double.parseDouble(att.item(1).getNodeValue());
                         double longitude = Double.parseDouble(att.item(2).getNodeValue());
-                        Intersection intersection = new Intersection(id, latitude, longitude,listSegment);
+                        //Intersection intersection = new Intersection(id, latitude, longitude,listSegment);
                     }
 
                     if(nodeName == "segment")
@@ -134,8 +131,10 @@ public class XMLLoader {
                         double length = Double.parseDouble(att.item(1).getNodeValue());
                         String name = att.item(2).getNodeValue();
                         long origin = Long.parseLong(att.item(3).getNodeValue());
-                        Segment segment = new Segment(length, name, destination);
-                        listSegment.add(segment);
+
+                        //Segment segment = new Segment(length, name, destination);
+                        //listSegment.add(segment);
+
                     }
                 }
             }

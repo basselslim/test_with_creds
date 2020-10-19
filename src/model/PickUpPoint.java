@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Time;
 import java.util.*;
 
 /**
@@ -9,7 +10,7 @@ public class PickUpPoint extends Intersection {
     /**
      *
      */
-    protected int pickUpDuration;
+    protected Time pickUpDuration;
 
     /**
      * Default constructor
@@ -17,26 +18,28 @@ public class PickUpPoint extends Intersection {
     public PickUpPoint() {
     }
 
-    public PickUpPoint(Intersection intersection, int pickUpDuration) {
+    public PickUpPoint(Intersection intersection, Time pickUpDuration) {
         this.longitude = intersection.getLongitude();
         this.latitude = intersection.getLatitude();
         this.id = intersection.getId();
         this.pickUpDuration = pickUpDuration;
     }
 
-    public PickUpPoint(double longitude, double latitude, long id, int pickUpDuration) {
-        super(id, longitude, latitude);
+
+    public PickUpPoint( long id, double longitude, double latitude, Time pickUpDuration) {
+        super(id, latitude, longitude);
+
         this.pickUpDuration = pickUpDuration;
     }
 
     /**
      * Getters - Setters
      */
-    public int getPickUpDuration() {
+    public Time getPickUpDuration() {
         return pickUpDuration;
     }
 
-    public void setPickUpDuration(int pickUpDuration) {
+    public void setPickUpDuration(Time pickUpDuration) {
         this.pickUpDuration = pickUpDuration;
     }
 }
