@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import model.Intersection;
 import model.Map;
 
 import java.util.*;
@@ -16,10 +17,6 @@ import java.util.*;
  * 
  */
 public class GraphicalView implements Observer {
-
-
-
-
 
     public static List<Circle> circles = new ArrayList<Circle>();
 
@@ -99,6 +96,8 @@ public class GraphicalView implements Observer {
     }
 
     public void drawMap(Map map,Canvas canvas,Pane overlay) {
+
+        
         System.out.println("Dessin de la map");
     }
 

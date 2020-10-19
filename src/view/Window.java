@@ -57,7 +57,7 @@ public class Window extends Application {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML("../fichiersXML2020/smallMap.xml", map);
-        map.display();
+        //map.display();
         Gview.drawMap(map,canvas,overlay);
         Gview.drawLines(canvas, overlay);
         Gview.drawShapes(canvas);
