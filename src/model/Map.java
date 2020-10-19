@@ -16,7 +16,6 @@ public class Map extends Observable {
      * Default constructor
      */
     protected List<Intersection> listIntersection;
-    protected List<Segment> listSegment;
 
     public Map(){
 
@@ -35,13 +34,7 @@ public class Map extends Observable {
         this.listIntersection = listIntersection;
     }
 
-    public List<Segment> getListSegment() {
-        return listSegment;
-    }
 
-    public void setListSegment(List<Segment> listSegment) {
-        this.listSegment = listSegment;
-    }
 
     public void display(){
         int nbIntersection = listIntersection.size();
