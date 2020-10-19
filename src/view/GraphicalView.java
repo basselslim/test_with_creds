@@ -10,6 +10,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import model.Intersection;
 import model.Map;
+import model.Segment;
 
 import java.util.*;
 
@@ -70,8 +71,6 @@ public class GraphicalView implements Observer {
         circles.add(circle4);
         circles.add(circle5);
 
-
-
         MouseGestures mg = new MouseGestures();
         mg.makeMovable(overlay, circles, lines);
 
@@ -97,7 +96,40 @@ public class GraphicalView implements Observer {
 
     public void drawMap(Map map,Canvas canvas,Pane overlay) {
 
-        
+
+        for (HashMap.Entry mapentry : map.getListIntersections().entrySet()) {
+            Intersection intersection = (Intersection) mapentry.getValue();
+            Circle circle = new Circle(5);
+            circle.setStroke(Color.BLACK);
+            circle.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
+            circle.relocate((intersection.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * intersection.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
+            circles.add(circle);
+
+            for ( Segment segment : intersection.getListSegments()) {
+                Intersection destination = map.getListIntersections().get(segment.getDestination());
+                Line line = new Line(circle.getLayoutX(), circle.getLayoutY(), (destination.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * destination.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
+                lines.add(line);
+            }
+
+        }
+        MouseGestures mg = new MouseGestures();
+        mg.makeMovable(overlay, circles, lines);
+
+        for (Line line:lines) {
+            line.setStrokeWidth(3);
+            overlay.getChildren().add(line);
+        }
+
+        for (Circle circle:circles) {
+            mg.makeClickable(circle);
+            overlay.getChildren().add(circle);
+        }
+
+
+
+
+
+
         System.out.println("Dessin de la map");
     }
 

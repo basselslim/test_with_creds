@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Intersection;
 import model.Map;
 
 import java.io.IOException;
@@ -52,15 +53,15 @@ public class Window extends Application {
 
     }
 
-
     public void LoadMap(ActionEvent event) {
-
+        map = new Map();
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML("../fichiersXML2020/smallMap.xml", map);
-        //map.display();
+        map.display();
+        Intersection intersection = map.getListIntersections().get(25303831);
+        System.out.println(intersection);
         Gview.drawMap(map,canvas,overlay);
-        Gview.drawLines(canvas, overlay);
+        //Gview.drawLines(canvas, overlay);
         Gview.drawShapes(canvas);
     }
 }
-

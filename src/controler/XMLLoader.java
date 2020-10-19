@@ -28,7 +28,7 @@ public class XMLLoader {
     public void parseMapXML(String pathNameXMLFile, Map map){
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        HashMap<Long, Intersection> mapIntersection = new HashMap<Long, Intersection>();
+
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -54,8 +54,10 @@ public class XMLLoader {
                         long id = Long.parseLong(att.item(0).getNodeValue());
                         double latitude = Double.parseDouble(att.item(1).getNodeValue());
                         double longitude = Double.parseDouble(att.item(2).getNodeValue());
-                        Intersection intersection = new Intersection(id, latitude, longitude,listSegmentsV1);
+                        Intersection intersection = new Intersection(id, latitude, longitude, listSegmentsV1);
                         map.getListIntersections().put(id, intersection);
+
+
                     }
                 }
             }
@@ -77,7 +79,7 @@ public class XMLLoader {
                         long origin = Long.parseLong(att.item(3).getNodeValue());
                         Segment segment = new Segment(length, name, destination);
 
-                        Intersection intersection = mapIntersection.get(origin);
+                        Intersection intersection = map.getListIntersections().get(origin);
                         intersection.getListSegments().add(segment);
                         map.getListIntersections().replace(origin, intersection);
                     }
