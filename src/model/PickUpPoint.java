@@ -25,7 +25,7 @@ public class PickUpPoint extends Intersection {
     }
 
     public PickUpPoint(double longitude, double latitude, long id, int pickUpDuration) {
-        super(longitude, latitude, id);
+        super(id, longitude, latitude);
         this.pickUpDuration = pickUpDuration;
     }
 

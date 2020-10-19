@@ -21,6 +21,13 @@ public class Intersection {
     public Intersection() {
     }
 
+    public Intersection(long id, double latitude, double longitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.id = id;
+        this.listSegments = listSegments;
+    }
+
     public Intersection(long id, double latitude, double longitude, List<Segment> listSegments) {
         this.longitude = longitude;
         this.latitude = latitude;
