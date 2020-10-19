@@ -14,4 +14,5 @@ public class Depot {
         this.id = id;
         this.departureTime=departureTime;
     }
+    
 }
