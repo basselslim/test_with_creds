@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Time;
 import java.util.*;
 
 /**
@@ -9,7 +10,7 @@ public class DeliveryPoint extends Intersection {
     /**
      *
      */
-    public int deliveryDuration;
+    public Time deliveryDuration;
 
     /**
      * Default constructor
@@ -17,14 +18,14 @@ public class DeliveryPoint extends Intersection {
     public DeliveryPoint() {
     }
 
-    public DeliveryPoint(Intersection intersection, int deliveryDuration) {
+    public DeliveryPoint(Intersection intersection, Time deliveryDuration) {
         this.longitude = intersection.getLongitude();
         this.latitude = intersection.getLatitude();
         this.id = intersection.getId();
         this.deliveryDuration = deliveryDuration;
     }
 
-    public DeliveryPoint(long longitude, long latitude, long id, int deliveryDuration) {
+    public DeliveryPoint(long longitude, long latitude, long id, Time deliveryDuration) {
         super(longitude, latitude, id);
         this.deliveryDuration = deliveryDuration;
     }
@@ -32,11 +33,11 @@ public class DeliveryPoint extends Intersection {
     /**
      * Getters - Setters
      */
-    public int getDeliveryDuration() {
+    public Time getDeliveryDuration() {
         return deliveryDuration;
     }
 
-    public void setDeliveryDuration(int deliveryDuration) {
+    public void setDeliveryDuration(Time deliveryDuration) {
         this.deliveryDuration = deliveryDuration;
     }
 }

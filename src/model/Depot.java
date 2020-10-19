@@ -9,4 +9,9 @@ public class Depot {
 
     public Depot() {
     }
+
+    public Depot(long id,Time departureTime) {
+        this.id = id;
+        this.departureTime=departureTime;
+    }
 }
