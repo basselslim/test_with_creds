@@ -9,9 +9,10 @@ public class Intersection {
     /**
      *
      */
-    protected double longitude;
-    protected double latitude;
+
     protected long id;
+    protected double latitude;
+    protected double longitude;
     protected List<Segment> listSegments;
 
     /**
@@ -20,21 +21,22 @@ public class Intersection {
     public Intersection() {
     }
 
-    public Intersection(double longitude, double latitude, long id) {
+    public Intersection(long id, double latitude, double longitude, List<Segment> listSegments) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.id = id;
+        this.listSegments = listSegments;
     }
 
     /**
      * Getters - Setters
      */
-    public double getLongitude() {
-        return longitude;
+    public long getId() {
+        return id;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public double getLatitude() {
@@ -45,8 +47,12 @@ public class Intersection {
         this.latitude = latitude;
     }
 
-    public long getId() {
-        return id;
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public List<Segment> getListSegments() {
@@ -56,6 +62,9 @@ public class Intersection {
     public void setListSegments(List<Segment> listSegments) {
         this.listSegments = listSegments;
     }
+
+
+
 
     @Override
     public String toString() {

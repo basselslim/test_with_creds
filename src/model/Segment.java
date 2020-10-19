@@ -9,9 +9,9 @@ public class Segment {
     /**
      *
      */
-    protected int length;
+    protected double length;
     protected String streetName;
-    protected Intersection ends;
+    protected long destination;
 
     /**
      * Default constructor
@@ -19,20 +19,20 @@ public class Segment {
     public Segment() {
     }
 
-    public Segment(int length, String streetName, Intersection ends) {
+    public Segment(double length, String streetName, long destination) {
         this.length = length;
         this.streetName = streetName;
-        this.ends = ends;
+        this.destination = destination;
     }
 
     /**
      * Getters - Setters
      */
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
@@ -44,11 +44,11 @@ public class Segment {
         this.streetName = streetName;
     }
 
-    public Intersection getEnds() {
-        return ends;
+    public long getDestination() {
+        return destination;
     }
 
-    public void setEnds(Intersection ends) {
-        this.ends = ends;
+    public void setDestination(long destination) {
+        this.destination = destination;
     }
 }
