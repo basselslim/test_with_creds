@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.WindowControl">
+   <children>
+      <Label text="Load map" />
+      <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="56.0" prefWidth="190.0" text="Load Map" translateX="50.0" translateY="50.0" GridPane.rowIndex="1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Canvas fx:id="canvas" height="600.0" scaleX="1.0" scaleY="1.0" translateX="200.0" translateY="100.0" width="600.0" />
+   </children>
+</VBox>
