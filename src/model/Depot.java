@@ -8,5 +8,6 @@ public class Depot {
     protected Time departureTime;
 
     public Depot() {
+
     }
 }
