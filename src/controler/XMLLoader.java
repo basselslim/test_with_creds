@@ -97,7 +97,6 @@ public class XMLLoader {
     public void parseRequestXML(String pathNameXMLFile, Map map){
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        HashMap<Long, Intersection> mapIntersection = new HashMap<Long, Intersection>();
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -112,30 +111,32 @@ public class XMLLoader {
             for(int i = 0; i < nbNode; i++){
                 Node n = nodes.item(i);
                 String nodeName = n.getNodeName();
-                ArrayList<Segment> listSegment = new ArrayList<Segment>();
 
                 if(n.getAttributes() != null && n.getAttributes().getLength() > 0){
 
                     NamedNodeMap att = n.getAttributes();
                     int nbAtt = att.getLength();
 
-                    if(nodeName == "intersection")
+                    if(nodeName == "request")
                     {
-                        long id = Long.parseLong(att.item(0).getNodeValue());
-                        double latitude = Double.parseDouble(att.item(1).getNodeValue());
-                        double longitude = Double.parseDouble(att.item(2).getNodeValue());
-                        //Intersection intersection = new Intersection(id, latitude, longitude,listSegment);
+                        long pickUpAdress = Long.parseLong(att.item(0).getNodeValue());
+                        long deliveryAdress = Long.parseLong(att.item(1).getNodeValue());
+                        int deliveryDuration = Integer.parseInt(att.item(2).getNodeValue());
+                        int pickUpDuration = Integer.parseInt(att.item(3).getNodeValue());
+                        Intersection pickupIntersection = map.getListIntersections().get(pickUpAdress);
+                        Intersection deliveryIntersection = map.getListIntersections().get(deliveryAdress);
+                        PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(),pickupIntersection.getLongitude(),pickupIntersection.getLatitude(),pickUpDuration);
+                        DeliveryPoint deliveryPoint = new DeliveryPoint(deliveryIntersection.getId(),deliveryIntersection.getLongitude(),deliveryIntersection.getLatitude(),deliveryDuration);
+                        Request request = new Request(pickUpPoint,deliveryPoint);
+                        map.getListRequests().add(request);
                     }
 
-                    if(nodeName == "segment")
+                    if(nodeName == "depot")
                     {
-                        long destination = Long.parseLong(att.item(0).getNodeValue());
-                        double length = Double.parseDouble(att.item(1).getNodeValue());
-                        String name = att.item(2).getNodeValue();
-                        long origin = Long.parseLong(att.item(3).getNodeValue());
-
-                        //Segment segment = new Segment(length, name, destination);
-                        //listSegment.add(segment);
+                        long adress = Long.parseLong(att.item(0).getNodeValue());
+                        String departureTime = att.item(1).getNodeValue();
+                        Depot depot = new Depot(adress,departureTime);
+                        map.setDepot(depot);
 
                     }
                 }

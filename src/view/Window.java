@@ -56,10 +56,9 @@ public class Window extends Application {
     public void LoadMap(ActionEvent event) {
         map = new Map();
         XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML("../fichiersXML2020/smallMap.xml", map);
+        xmlloader.parseMapXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/largeMap.xml", map);
+        xmlloader.parseRequestXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/requestsLarge7.xml", map);
         map.display();
-        Intersection intersection = map.getListIntersections().get(25303831);
-        System.out.println(intersection);
         Gview.drawMap(map,canvas,overlay);
         //Gview.drawLines(canvas, overlay);
         Gview.drawShapes(canvas);

@@ -10,7 +10,7 @@ public class PickUpPoint extends Intersection {
     /**
      *
      */
-    protected Time pickUpDuration;
+    protected int pickUpDuration;
 
     /**
      * Default constructor
@@ -18,7 +18,7 @@ public class PickUpPoint extends Intersection {
     public PickUpPoint() {
     }
 
-    public PickUpPoint(Intersection intersection, Time pickUpDuration) {
+    public PickUpPoint(Intersection intersection, int pickUpDuration) {
         this.longitude = intersection.getLongitude();
         this.latitude = intersection.getLatitude();
         this.id = intersection.getId();
@@ -26,7 +26,7 @@ public class PickUpPoint extends Intersection {
     }
 
 
-    public PickUpPoint( long id, double longitude, double latitude, Time pickUpDuration) {
+    public PickUpPoint( long id, double latitude,double longitude,  int pickUpDuration) {
         super(id, latitude, longitude);
 
         this.pickUpDuration = pickUpDuration;
@@ -35,11 +35,11 @@ public class PickUpPoint extends Intersection {
     /**
      * Getters - Setters
      */
-    public Time getPickUpDuration() {
+    public int getPickUpDuration() {
         return pickUpDuration;
     }
 
-    public void setPickUpDuration(Time pickUpDuration) {
+    public void setPickUpDuration(int pickUpDuration) {
         this.pickUpDuration = pickUpDuration;
     }
 }
