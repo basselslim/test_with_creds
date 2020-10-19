@@ -1,6 +1,7 @@
 package view;
 
 import controler.Controller;
+import controler.XMLLoader;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ public class Window extends Application {
         initUI(MainFrame);
         map = new Map();
         controller = new Controller(map);
+
     }
 
     private void initUI(Stage stage) throws IOException {
@@ -53,6 +55,9 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
 
+        XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseMapXML("../fichiersXML2020/smallMap.xml", map);
+        map.display();
         Gview.drawMap(map,canvas,overlay);
         Gview.drawLines(canvas, overlay);
         Gview.drawShapes(canvas);
