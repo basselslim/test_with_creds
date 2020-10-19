@@ -10,43 +10,32 @@ public class Map extends Observable {
      *
      */
     protected List<Request> listRequests;
-    protected List<Intersection> listIntersections;
+    protected HashMap<Long, Intersection> listIntersections;
 
     /**
      * Default constructor
      */
-    protected List<Intersection> listIntersection;
 
     public Map(){
 
     }
 
     public Map(List<Intersection> listIntersection) {
-        this.listIntersection = listIntersection;
+        this.listIntersections = listIntersections;
     }
-
-    public List<Intersection> getListIntersection() {
-        return listIntersection;
-    }
-
-    public void setListIntersection(List<Intersection> listIntersection) {
-        this.listIntersection = listIntersection;
-    }
-
-
 
     public void display(){
-        int nbIntersection = listIntersection.size();
+        int nbIntersection = listIntersections.size();
         for(int i = 0; i < nbIntersection; i++)
         {
-            System.out.println(this.listIntersection.get(i));
+            System.out.println(this.listIntersections.get(i));
         }
     }
-
 
     /**
      * Getters - Setters
      */
+
     public List<Request> getListRequests() {
         return listRequests;
     }
@@ -55,13 +44,14 @@ public class Map extends Observable {
         this.listRequests = listRequests;
     }
 
-    public List<Intersection> getListIntersections() {
+    public HashMap<Long, Intersection> getListIntersections() {
         return listIntersections;
     }
 
-    public void setListIntersections(List<Intersection> listIntersections) {
+    public void setListIntersections(HashMap<Long, Intersection> listIntersections) {
         this.listIntersections = listIntersections;
     }
+
 
 
     @Override
