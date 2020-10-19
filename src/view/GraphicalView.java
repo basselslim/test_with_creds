@@ -99,15 +99,17 @@ public class GraphicalView implements Observer {
 
         for (HashMap.Entry mapentry : map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
+            double originX = (intersection.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286;
+            double originY = ((-1 * intersection.getLatitude()) + 90) * (600 / 180)*12000 - 1592520;
             Circle circle = new Circle(5);
             circle.setStroke(Color.BLACK);
             circle.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-            circle.relocate((intersection.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * intersection.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
+            circle.relocate(originX, originY);
             circles.add(circle);
 
             for ( Segment segment : intersection.getListSegments()) {
                 Intersection destination = map.getListIntersections().get(segment.getDestination());
-                Line line = new Line(circle.getLayoutX(), circle.getLayoutY(), (destination.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * destination.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
+                Line line = new Line(originX, originY, (destination.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * destination.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
                 lines.add(line);
             }
 
