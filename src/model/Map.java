@@ -21,9 +21,8 @@ public class Map extends Observable {
 
     }
 
-    public Map(List<Intersection> listIntersection, List<Segment> listSegment) {
+    public Map(List<Intersection> listIntersection) {
         this.listIntersection = listIntersection;
-        this.listSegment = listSegment;
     }
 
     public List<Intersection> getListIntersection() {
@@ -38,14 +37,9 @@ public class Map extends Observable {
 
     public void display(){
         int nbIntersection = listIntersection.size();
-        int nbSegment = listSegment.size();
         for(int i = 0; i < nbIntersection; i++)
         {
             System.out.println(this.listIntersection.get(i));
-        }
-        for(int i = 0; i < nbSegment; i++)
-        {
-            System.out.println(this.listSegment.get(i));
         }
     }
 
