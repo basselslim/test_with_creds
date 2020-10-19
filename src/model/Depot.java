@@ -7,7 +7,7 @@ public class Depot {
     protected long id;
     protected Time departureTime;
 
-    public Depot() {
+    public Depot(long id,Time departureTime) {
 
     }
 }
