@@ -35,7 +35,7 @@ public class Window extends Application {
     }
 
     private void initUI(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 
         var scene = new Scene(root, 1650, 1050, Color.WHITE);
 
