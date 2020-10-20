@@ -85,6 +85,7 @@ public class Window extends Application {
         File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
         System.out.println(requestsFile.getAbsolutePath());
         XMLLoader xmlloader = new XMLLoader();
+        Tview.updateRequestList(map);
     }
 
 }
