@@ -21,16 +21,22 @@ public class Map extends Observable {
 
     public Map(){
         listIntersections = new HashMap<Long,Intersection>();
+        listRequests = new ArrayList<>();
+        depot= new Depot();
     }
 
 
     public Map(HashMap<Long,Intersection> listIntersection) {
         this.listIntersections = listIntersection;
+        listRequests = new ArrayList<>();
+        depot= new Depot();
     }
 
 
     public void setListIntersection(HashMap<Long,Intersection> listIntersection) {
         this.listIntersections = listIntersection;
+        listRequests = new ArrayList<>();
+        depot= new Depot();
 
     }
 
@@ -50,6 +56,12 @@ public class Map extends Observable {
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             System.out.println(mapentry.getValue());
         }
+
+        for ( int i=0; i<listRequests.size(); i++ ) {
+            System.out.println(listRequests.get(i));
+        }
+
+        System.out.println(this.depot);
     }
 
     /**

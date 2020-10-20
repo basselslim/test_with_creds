@@ -74,6 +74,7 @@ public class Window extends Application {
         map.display();
         Intersection intersection = map.getListIntersections().get(25303831);
         System.out.println(intersection);
+
         Gview.drawMap(map,canvas,overlay);
         //Gview.drawShapes(canvas);
     }
@@ -85,6 +86,7 @@ public class Window extends Application {
         File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
         System.out.println(requestsFile.getAbsolutePath());
         XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         Tview.updateRequestList(map);
     }
 
