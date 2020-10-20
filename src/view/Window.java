@@ -57,7 +57,7 @@ public class Window extends Application {
         map = new Map();
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/largeMap.xml", map);
-        xmlloader.parseRequestXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/requestsLarge7.xml", map);
+        xmlloader.parseRequestXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/requestsMedium3.xml", map);
         map.display();
         Gview.drawMap(map,canvas,overlay);
         //Gview.drawLines(canvas, overlay);

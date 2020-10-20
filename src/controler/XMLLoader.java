@@ -113,16 +113,19 @@ public class XMLLoader {
                 String nodeName = n.getNodeName();
 
                 if(n.getAttributes() != null && n.getAttributes().getLength() > 0){
-
                     NamedNodeMap att = n.getAttributes();
                     int nbAtt = att.getLength();
 
                     if(nodeName == "request")
                     {
-                        long pickUpAdress = Long.parseLong(att.item(0).getNodeValue());
-                        long deliveryAdress = Long.parseLong(att.item(1).getNodeValue());
-                        int deliveryDuration = Integer.parseInt(att.item(2).getNodeValue());
+                        long pickUpAdress = Long.parseLong(att.item(2).getNodeValue());
+                        System.out.println("PickUp Adress "+pickUpAdress);
+                        long deliveryAdress = Long.parseLong(att.item(0).getNodeValue());
+                        System.out.println("Delivery Adress "+deliveryAdress);
                         int pickUpDuration = Integer.parseInt(att.item(3).getNodeValue());
+                        System.out.println("PU duration "+pickUpDuration);
+                        int deliveryDuration = Integer.parseInt(att.item(1).getNodeValue());
+                        System.out.println("delivery duration "+deliveryDuration);
                         Intersection pickupIntersection = map.getListIntersections().get(pickUpAdress);
                         Intersection deliveryIntersection = map.getListIntersections().get(deliveryAdress);
                         PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(),pickupIntersection.getLongitude(),pickupIntersection.getLatitude(),pickUpDuration);
@@ -134,7 +137,9 @@ public class XMLLoader {
                     if(nodeName == "depot")
                     {
                         long adress = Long.parseLong(att.item(0).getNodeValue());
+                        System.out.println("Depot Adress "+adress);
                         String departureTime = att.item(1).getNodeValue();
+                        System.out.println("Depot departure "+departureTime);
                         Depot depot = new Depot(adress,departureTime);
                         map.setDepot(depot);
 
