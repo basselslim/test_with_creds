@@ -6,15 +6,18 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Intersection;
 import model.Map;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Window extends Application {
@@ -67,17 +70,36 @@ public class Window extends Application {
 
 
 
-        XMLLoader XMLloader = new XMLLoader();
-        XMLloader.parseMapXML("../fichiersXML2020/LargeMap.xml",map);
+
+        FileChooser mapFileChooser = new FileChooser();
+        mapFileChooser.setTitle("Load Map");
+        mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+        File mapFile = mapFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+        
+        XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
+
+
+
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML("../fichiersXML2020/requestsMedium5.xml", map);
+
         Gview = new GraphicalView(map,canvas,overlay,"../fichiersXML2020/LargeMap.xml");
         //Gview.LoadMap();
+
         Gview.drawMap();
         Gview.drawRequests();
 
 
-
-
     }
+
+    public void LoadRequests(ActionEvent event) {
+        FileChooser requestsFileChooser = new FileChooser();
+        requestsFileChooser.setTitle("Load Requests");
+        requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+        File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+        System.out.println(requestsFile.getAbsolutePath());
+        XMLLoader xmlloader = new XMLLoader();
+    }
+
 }

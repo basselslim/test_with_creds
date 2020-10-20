@@ -12,12 +12,18 @@
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Window">
     <HBox prefHeight="100.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
       <children>
-            <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="56.0" prefWidth="190.0" text="Load Map" translateX="20.0" translateY="30.0">
-                <font>
-                    <Font size="18.0" />
-                </font>
-            </Button>
-      </children></HBox>
+        <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="56.0" prefWidth="190.0" text="Load Map" translateX="20.0" translateY="30.0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+        <Button fx:id="btn_load_requests" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="56.0" prefWidth="290.0" text="Load Requests" translateX="800.0" translateY="30.0">
+          <font>
+              <Font size="18.0" />
+          </font>
+        </Button>
+      </children>
+    </HBox>
    <SplitPane dividerPositions="0.7390776699029126">
      <items>
        <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -32,6 +38,7 @@
             </children>
          </AnchorPane>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+
      </items>
    </SplitPane>
    <HBox prefHeight="100.0" prefWidth="200.0">
@@ -46,5 +53,6 @@
                <Font size="19.0" />
             </font>
          </Button>
-      </children></HBox>
+      </children>
+   </HBox>
 </VBox>
