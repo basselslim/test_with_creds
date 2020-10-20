@@ -1,8 +1,6 @@
 package controler;
-import model.Intersection;
+import model.*;
 import model.Map;
-import model.Path;
-import model.Request;
 
 import java.util.*;
 
@@ -19,7 +17,7 @@ public class Algorithme {
         this.timeZero = System.currentTimeMillis();
 
         HashMap<Long, List<Path>> mapSmallestPaths = this.computeSmallestPaths();
-        LinkedList<Path> optimalTour = this.computeOptimalTour(mapSmallestPaths);
+        // LinkedList<Path> optimalTour = this.computeOptimalTour(mapSmallestPaths);
     }
 
     /*
@@ -27,30 +25,49 @@ public class Algorithme {
      */
     public HashMap<Long, List<Path>> computeSmallestPaths() {
         System.out.println("Computing the smallest paths...");
+        ComputeSmallestPath algorithm = new ComputeSmallestPath(this.map);
         HashMap<Long, List<Path>> mapSmallestPaths = new HashMap<>();
 
-        Queue<Intersection> openSet = new PriorityQueue<>();
-        while (System.currentTimeMillis() - this.timeZero < this.TIMEOUT) {
-            /*
-             * Algo
-             */
-        }
+        // while (System.currentTimeMillis() - this.timeZero < this.TIMEOUT) {
+            List<Intersection> listPoints = new ArrayList<>();
+            for (Request r: this.listRequests) {
+                if (!listPoints.contains(r.getDeliveryPoint())) {
+                    listPoints.add(r.getDeliveryPoint());
+                }
+                if (!listPoints.contains(r.getPickUpPoint())) {
+                    listPoints.add(r.getPickUpPoint());
+                }
+            }
+
+            for (Intersection p1: listPoints) {
+                System.out.println("Test boucle p1: " + p1);
+                List<Path> listPaths = new ArrayList<>();
+                for (Intersection p2: listPoints) {
+                    System.out.println("Test boucle p2: " + p2);
+                    if (p1.getId() != p2.getId()) {
+                        List<Intersection> listIntersections = algorithm.computeSmallestPath(p1, p2);
+
+                        List<Segment> listSegments = new ArrayList<>();
+                        Intersection step = p1;
+
+                        for (Intersection i: listIntersections) {
+                            if (i.getId() != step.getId()) {
+                                for (Segment s: step.getListSegments()) {
+                                    if (s.getDestination() == i.getId()) {
+                                        listSegments.add(s);
+                                    }
+                                }
+                            }
+                            step = i;
+                        }
+                        listPaths.add(new Path(listSegments));
+                    }
+                }
+                mapSmallestPaths.put(p1.getId(), listPaths);
+            }
+        // }
         System.out.println("Smallest paths computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
         return mapSmallestPaths;
-    }
-
-    public double computeCost(Intersection from, Intersection to) {
-        double R = 6372.8; // Earth's Radius, in kilometers
-
-        double dLat = Math.toRadians(to.getLatitude() - from.getLatitude());
-        double dLon = Math.toRadians(to.getLongitude() - from.getLongitude());
-        double lat1 = Math.toRadians(from.getLatitude());
-        double lat2 = Math.toRadians(to.getLatitude());
-
-        double a = Math.pow(Math.sin(dLat / 2),2)
-                + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return R * c;
     }
 
     /*

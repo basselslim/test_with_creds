@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class Intersection {
+public class Intersection implements Comparable<Intersection>{
     /**
      *
      */
@@ -15,11 +15,15 @@ public class Intersection {
     protected double longitude;
     protected List<Segment> listSegments;
 
+    protected Intersection current;
+    protected Intersection previous;
+    protected double routeScore;
+    protected double estimatedScore;
+
     /**
      * Default constructor
      */
     public Intersection() {
-
     }
 
     public Intersection(long id, double latitude, double longitude) {
@@ -34,6 +38,20 @@ public class Intersection {
         this.latitude = latitude;
         this.id = id;
         this.listSegments = listSegments;
+    }
+
+    public Intersection(Intersection current) {
+        this.current = current;
+        this.previous = null;
+        this.routeScore = Double.POSITIVE_INFINITY;
+        this.estimatedScore = Double.POSITIVE_INFINITY;
+    }
+
+    public Intersection(Intersection current, Intersection previous, double routeScore, double estimatedScore) {
+        this.current = current;
+        this.previous = previous;
+        this.routeScore = routeScore;
+        this.estimatedScore = estimatedScore;
     }
 
     /**
@@ -71,8 +89,48 @@ public class Intersection {
         this.listSegments = listSegments;
     }
 
+    public Intersection getCurrent() {
+        return current;
+    }
 
+    public void setCurrent(Intersection current) {
+        this.current = current;
+    }
 
+    public Intersection getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Intersection previous) {
+        this.previous = previous;
+    }
+
+    public double getRouteScore() {
+        return routeScore;
+    }
+
+    public void setRouteScore(double routeScore) {
+        this.routeScore = routeScore;
+    }
+
+    public double getEstimatedScore() {
+        return estimatedScore;
+    }
+
+    public void setEstimatedScore(double estimatedScore) {
+        this.estimatedScore = estimatedScore;
+    }
+
+    @Override
+    public int compareTo(Intersection other) {
+        if (this.estimatedScore > other.estimatedScore) {
+            return 1;
+        } else if (this.estimatedScore < other.estimatedScore) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     public String toString() {
