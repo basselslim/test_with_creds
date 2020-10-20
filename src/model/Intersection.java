@@ -19,13 +19,14 @@ public class Intersection {
      * Default constructor
      */
     public Intersection() {
+
     }
 
     public Intersection(long id, double latitude, double longitude) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.id = id;
-        this.listSegments = listSegments;
+        this.listSegments = new ArrayList<Segment>();
     }
 
     public Intersection(long id, double latitude, double longitude, List<Segment> listSegments) {

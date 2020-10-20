@@ -1,6 +1,7 @@
 package view;
 
 import controler.Controller;
+import controler.XMLLoader;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Intersection;
 import model.Map;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class Window extends Application {
         initUI(MainFrame);
         map = new Map();
         controller = new Controller(map);
+
     }
 
     private void initUI(Stage stage) throws IOException {
@@ -50,12 +53,14 @@ public class Window extends Application {
 
     }
 
-
     public void LoadMap(ActionEvent event) {
-
+        map = new Map();
+        XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseMapXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/smallMap.xml", map);
+        xmlloader.parseRequestXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/requestsSmall1.xml", map);
+        //map.display();
         Gview.drawMap(map,canvas,overlay);
-        Gview.drawLines(canvas, overlay);
+        //Gview.drawLines(canvas, overlay);
         Gview.drawShapes(canvas);
     }
 }
-
