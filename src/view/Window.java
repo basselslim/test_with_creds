@@ -60,17 +60,16 @@ public class Window extends Application {
         Gview.zoom();
         Gview.reloadMap();
         //canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());;
-        //Gview.drawMap(map,canvas,overlay);
+
 
     }
 
     public void LoadMap(ActionEvent event) {
+
         map = new Map();
+        Gview = new GraphicalView(map,canvas,overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
 
-
-
-
-
+        //Chargement map
         FileChooser mapFileChooser = new FileChooser();
         mapFileChooser.setTitle("Load Map");
         mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
@@ -79,17 +78,8 @@ public class Window extends Application {
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
 
-
-
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseRequestXML("../fichiersXML2020/requestsMedium5.xml", map);
-
-        Gview = new GraphicalView(map,canvas,overlay,"../fichiersXML2020/LargeMap.xml");
-        //Gview.LoadMap();
-
+        //Dessin map
         Gview.drawMap();
-        Gview.drawRequests();
-
 
     }
 
@@ -98,8 +88,11 @@ public class Window extends Application {
         requestsFileChooser.setTitle("Load Requests");
         requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
-        System.out.println(requestsFile.getAbsolutePath());
+
         XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        System.out.println(map.getListRequests().get(0).getDeliveryPoint());
+        Gview.drawRequests();
     }
 
 }

@@ -25,16 +25,14 @@ public class GraphicalView implements Observer {
     Map m_map;
     Pane m_overlay;
     Canvas m_canvas;
-    String m_mapFile;
     int screenX = 1200;
     int screenY = 600;
     double zoomVal = 0.4;
 
-    public GraphicalView(Map map,Canvas canvas,Pane overlay, String mapFile) {
+    public GraphicalView(Map map,Canvas canvas,Pane overlay) {
         m_map = map;
         m_canvas = canvas;
         m_overlay = overlay;
-        m_mapFile = mapFile;
         m_canvas.setWidth(screenX);
         m_canvas.setHeight(screenY);
         m_overlay.setPrefWidth(screenX);
@@ -53,7 +51,8 @@ public class GraphicalView implements Observer {
 
     public void zoom() {
         zoomVal+= 1.0;
-
+        m_overlay.getChildren().clear();
+        drawMap();
     }
 
 
@@ -126,8 +125,8 @@ public class GraphicalView implements Observer {
     }
 
     public void drawRequests() {
-        m_map.getListRequests().get(0).getDeliveryPoint().getId();
-
+        m_overlay.getChildren().clear();
+        drawMap();
     }
 
     public void reloadMap(){
