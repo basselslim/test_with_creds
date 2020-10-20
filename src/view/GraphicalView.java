@@ -19,9 +19,9 @@ import java.util.*;
  */
 public class GraphicalView implements Observer {
 
-    int screenX = 1100;
-    int screenY = 550;
-    double zoomVal = 0.4;
+    int screenX = 1200;
+    int screenY = 600;
+    double zoomVal = 1.0;
 
     public static List<Circle> circles = new ArrayList<Circle>();
 

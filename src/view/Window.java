@@ -75,7 +75,7 @@ public class Window extends Application {
         Intersection intersection = map.getListIntersections().get(25303831);
         System.out.println(intersection);
         Gview.drawMap(map,canvas,overlay);
-        Gview.drawShapes(canvas);
+        //Gview.drawShapes(canvas);
     }
 
     public void LoadRequests(ActionEvent event) {
