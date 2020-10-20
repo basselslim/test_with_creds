@@ -51,9 +51,9 @@ public class XMLLoader {
                     if(nodeName == "intersection")
                     {
                         ArrayList<Segment> listSegmentsV1 = new ArrayList<Segment>();
-                        long id = Long.parseLong(att.item(0).getNodeValue());
-                        double latitude = Double.parseDouble(att.item(1).getNodeValue());
-                        double longitude = Double.parseDouble(att.item(2).getNodeValue());
+                        long id = Long.parseLong(att.getNamedItem("id").getNodeValue());
+                        double latitude = Double.parseDouble(att.getNamedItem("latitude").getNodeValue());
+                        double longitude = Double.parseDouble(att.getNamedItem("longitude").getNodeValue());
                         Intersection intersection = new Intersection(id, latitude, longitude, listSegmentsV1);
                         map.getListIntersections().put(id, intersection);
 
@@ -73,10 +73,10 @@ public class XMLLoader {
                     if(nodeName == "segment")
                     {
                         ArrayList<Segment> listSegments = new ArrayList<Segment>();
-                        long destination = Long.parseLong(att.item(0).getNodeValue());
-                        double length = Double.parseDouble(att.item(1).getNodeValue());
-                        String name = att.item(2).getNodeValue();
-                        long origin = Long.parseLong(att.item(3).getNodeValue());
+                        long destination = Long.parseLong(att.getNamedItem("destination").getNodeValue());
+                        double length = Double.parseDouble(att.getNamedItem("length").getNodeValue());
+                        String name = att.getNamedItem("name").getNodeValue();
+                        long origin = Long.parseLong(att.getNamedItem("origin").getNodeValue());
                         Segment segment = new Segment(length, name, destination);
 
                         Intersection intersection = map.getListIntersections().get(origin);
@@ -118,13 +118,13 @@ public class XMLLoader {
 
                     if(nodeName == "request")
                     {
-                        long pickUpAdress = Long.parseLong(att.item(2).getNodeValue());
+                        long pickUpAdress = Long.parseLong(att.getNamedItem("pickupAddress").getNodeValue());
                         System.out.println("PickUp Adress "+pickUpAdress);
-                        long deliveryAdress = Long.parseLong(att.item(0).getNodeValue());
+                        long deliveryAdress = Long.parseLong(att.getNamedItem("deliveryAddress").getNodeValue());
                         System.out.println("Delivery Adress "+deliveryAdress);
-                        int pickUpDuration = Integer.parseInt(att.item(3).getNodeValue());
+                        int pickUpDuration = Integer.parseInt(att.getNamedItem("pickupDuration").getNodeValue());
                         System.out.println("PU duration "+pickUpDuration);
-                        int deliveryDuration = Integer.parseInt(att.item(1).getNodeValue());
+                        int deliveryDuration = Integer.parseInt(att.getNamedItem("deliveryDuration").getNodeValue());
                         System.out.println("delivery duration "+deliveryDuration);
                         Intersection pickupIntersection = map.getListIntersections().get(pickUpAdress);
                         Intersection deliveryIntersection = map.getListIntersections().get(deliveryAdress);
@@ -136,9 +136,9 @@ public class XMLLoader {
 
                     if(nodeName == "depot")
                     {
-                        long adress = Long.parseLong(att.item(0).getNodeValue());
+                        long adress = Long.parseLong(att.getNamedItem("address").getNodeValue());
                         System.out.println("Depot Adress "+adress);
-                        String departureTime = att.item(1).getNodeValue();
+                        String departureTime = att.getNamedItem("departureTime").getNodeValue();
                         System.out.println("Depot departure "+departureTime);
                         Depot depot = new Depot(adress,departureTime);
                         map.setDepot(depot);
