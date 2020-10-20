@@ -63,9 +63,21 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
         map = new Map();
-        Gview = new GraphicalView(map,canvas,overlay,"../fichiersXML2020/mediumMap.xml");
-        Gview.LoadMap();
+
+
+
+
+        XMLLoader XMLloader = new XMLLoader();
+        XMLloader.parseMapXML("../fichiersXML2020/LargeMap.xml",map);
+        XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseRequestXML("../fichiersXML2020/requestsMedium5.xml", map);
+        Gview = new GraphicalView(map,canvas,overlay,"../fichiersXML2020/LargeMap.xml");
+        //Gview.LoadMap();
         Gview.drawMap();
-        //Gview.drawShapes(canvas);
+        Gview.drawRequests();
+
+
+
+
     }
 }

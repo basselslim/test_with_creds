@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.source.tree.IntersectionTypeTree;
 import controler.XMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import model.Intersection;
 import model.Map;
+import model.Request;
 import model.Segment;
 
 import java.util.*;
@@ -26,7 +28,7 @@ public class GraphicalView implements Observer {
     String m_mapFile;
     int screenX = 1200;
     int screenY = 600;
-    double zoomVal = 1.0;
+    double zoomVal = 0.4;
 
     public GraphicalView(Map map,Canvas canvas,Pane overlay, String mapFile) {
         m_map = map;
@@ -54,10 +56,7 @@ public class GraphicalView implements Observer {
 
     }
 
-    public void LoadMap(){
-        XMLLoader XMLloader = new XMLLoader();
-        XMLloader.parseMapXML(m_mapFile,m_map);
-    }
+
 
     public void drawMap() {
 
@@ -65,32 +64,58 @@ public class GraphicalView implements Observer {
         double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
         double ordonneeX = 554.57*coeffX;
         double ordonneeY = 132.71*coeffY;
+        double pointSize = 5.0*zoomVal;
+        double ReqpointSize = 15.0*zoomVal;
 
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            double originX = (intersection.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
-            double originY = ((-1 * intersection.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
-            double pointSize = 5.0;
+            double originX = (intersection.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
+            double originY = ((-1 * intersection.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
+
             Circle circle = new Circle(pointSize);
             circle.setStroke(Color.BLACK);
             circle.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-            circle.relocate(originX-pointSize, originY-pointSize);
+            circle.relocate(originX - pointSize, originY - pointSize);
             circles.add(circle);
 
-            for ( Segment segment : intersection.getListSegments()) {
+            for (Segment segment : intersection.getListSegments()) {
                 Intersection destination = m_map.getListIntersections().get(segment.getDestination());
-                double destinationX = (destination.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
-                double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
+                double destinationX = (destination.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
+                double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
                 Line line = new Line(originX, originY, destinationX, destinationY);
                 lines.add(line);
             }
-
         }
+            System.out.println("TAILLE LISTE = "+m_map.getListRequests().size());
+            for (Request request:m_map.getListRequests()) {
+
+                Intersection pickup = request.getPickUpPoint();
+                Intersection delivery = request.getDeliveryPoint();
+
+                double pickupX = (pickup.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
+                double pickupY = ((-1 * pickup.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
+                double deliveryX = (delivery.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
+                double deliveryY = ((-1 * delivery.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
+
+                Circle pickupCircle = new Circle(ReqpointSize);
+                pickupCircle.setStroke(Color.BLACK);
+                pickupCircle.setFill(Color.BLUE.deriveColor(1, 1, 1, 0.9));
+                pickupCircle.relocate(pickupX-ReqpointSize, pickupY-ReqpointSize);
+                circles.add(pickupCircle);
+
+                Circle deliveryCircle = new Circle(ReqpointSize);
+                deliveryCircle.setStroke(Color.BLACK);
+                deliveryCircle.setFill(Color.GREEN.deriveColor(1, 1, 1, 0.9));
+                deliveryCircle.relocate(deliveryX-ReqpointSize, deliveryY-ReqpointSize);
+                circles.add(deliveryCircle);
+            }
+
+
         MouseGestures mg = new MouseGestures();
         mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {
-            line.setStrokeWidth(4);
+            line.setStrokeWidth(4*zoomVal);
             m_overlay.getChildren().add(line);
         }
 
@@ -98,6 +123,11 @@ public class GraphicalView implements Observer {
             mg.makeClickable(circle);
             m_overlay.getChildren().add(circle);
         }
+    }
+
+    public void drawRequests() {
+        m_map.getListRequests().get(0).getDeliveryPoint().getId();
+
     }
 
     public void reloadMap(){
@@ -114,7 +144,7 @@ public class GraphicalView implements Observer {
 
         }
         m_map = new Map();
-        LoadMap();
+
         drawMap();
     }
 
