@@ -1,5 +1,7 @@
 package view;
 
+import com.sun.source.tree.IntersectionTypeTree;
+import controler.XMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -10,6 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import model.Intersection;
 import model.Map;
+import model.Request;
 import model.Segment;
 
 import java.util.*;
@@ -19,118 +22,129 @@ import java.util.*;
  */
 public class GraphicalView implements Observer {
 
+    Map m_map;
+    Pane m_overlay;
+    Canvas m_canvas;
+    int screenX = 1200;
+    int screenY = 600;
+    double zoomVal = 0.4;
+
+    public GraphicalView(Map map,Canvas canvas,Pane overlay) {
+        m_map = map;
+        m_canvas = canvas;
+        m_overlay = overlay;
+        m_canvas.setWidth(screenX);
+        m_canvas.setHeight(screenY);
+        m_overlay.setPrefWidth(screenX);
+        m_overlay.setPrefHeight(screenY);
+    }
+
     public static List<Circle> circles = new ArrayList<Circle>();
 
     public static List<Line> lines = new ArrayList<Line>();
 
-    public void drawLines(Canvas canvas, Pane overlay){
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        Circle circle1 = new Circle(10);
-        circle1.setStroke(Color.BLACK);
-        circle1.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-        circle1.relocate(100, 100);
-
-        Circle circle2 = new Circle(10);
-        circle2.setStroke(Color.BLACK);
-        circle2.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-        circle2.relocate(200, 200);
-
-        Circle circle3 = new Circle(10);
-        circle3.setStroke(Color.BLACK);
-        circle3.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-        circle3.relocate(350, 250);
-
-        Circle circle4 = new Circle(10);
-        circle4.setStroke(Color.BLACK);
-        circle4.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-        circle4.relocate(100, 450);
-
-        Circle circle5 = new Circle(10);
-        circle5.setStroke(Color.BLACK);
-        circle5.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-        circle5.relocate(450, 150);
-
-        Line line1 = new Line(circle1.getLayoutX(), circle1.getLayoutY(), circle2.getLayoutX(), circle2.getLayoutY());
-        Line line2 = new Line(circle2.getLayoutX(), circle2.getLayoutY(), circle3.getLayoutX(), circle3.getLayoutY());
-        Line line3 = new Line(circle3.getLayoutX(), circle3.getLayoutY(), circle4.getLayoutX(), circle4.getLayoutY());
-        Line line4 = new Line(circle2.getLayoutX(), circle2.getLayoutY(), circle4.getLayoutX(), circle4.getLayoutY());
-        Line line5 = new Line(circle3.getLayoutX(), circle3.getLayoutY(), circle5.getLayoutX(), circle5.getLayoutY());
-        Line line6 = new Line(circle1.getLayoutX(), circle1.getLayoutY(), circle5.getLayoutX(), circle5.getLayoutY());
-
-        lines.add(line1);
-        lines.add(line2);
-        lines.add(line3);
-        lines.add(line4);
-        lines.add(line5);
-        lines.add(line6);
-
-        circles.add(circle1);
-        circles.add(circle2);
-        circles.add(circle3);
-        circles.add(circle4);
-        circles.add(circle5);
-
-        MouseGestures mg = new MouseGestures();
-        mg.makeMovable(overlay, circles, lines);
-
-        for (Line line:lines) {
-            line.setStrokeWidth(5);
-            overlay.getChildren().add(line);
-        }
-
-        for (Circle circle:circles) {
-            mg.makeClickable(circle);
-            overlay.getChildren().add(circle);
-        }
-
-
-
-    }
-
     public void drawShapes(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
-        gc.strokeRoundRect(0, 0, 1200, 600, 20, 20);
+        gc.strokeRoundRect(0, 0, screenX, screenY, 20, 20);
     }
 
-    public void drawMap(Map map,Canvas canvas,Pane overlay) {
+    public void zoom() {
+        zoomVal+= 1.0;
+        m_overlay.getChildren().clear();
+        drawMap();
+    }
 
 
-        for (HashMap.Entry mapentry : map.getListIntersections().entrySet()) {
+
+    public void drawMap() {
+
+        double coeffX = (double)screenX/(554.64-554.57)*zoomVal;
+        double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
+        double ordonneeX = 554.57*coeffX;
+        double ordonneeY = 132.71*coeffY;
+        double pointSize = 5.0*zoomVal;
+        double ReqpointSize = 15.0*zoomVal;
+
+        for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            Circle circle = new Circle(5);
+            double originX = (intersection.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
+            double originY = ((-1 * intersection.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
+
+            Circle circle = new Circle(pointSize);
             circle.setStroke(Color.BLACK);
             circle.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
-            circle.relocate((intersection.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * intersection.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
+            circle.relocate(originX - pointSize, originY - pointSize);
             circles.add(circle);
 
-            for ( Segment segment : intersection.getListSegments()) {
-                Intersection destination = map.getListIntersections().get(segment.getDestination());
-                Line line = new Line(circle.getLayoutX(), circle.getLayoutY(), (destination.getLongitude() + 180) * (1200 / 360)*17142.8714 - 9506814.286, ((-1 * destination.getLatitude()) + 90) * (600 / 180)*12000 - 1592520);
+            for (Segment segment : intersection.getListSegments()) {
+                Intersection destination = m_map.getListIntersections().get(segment.getDestination());
+                double destinationX = (destination.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
+                double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
+                Line line = new Line(originX, originY, destinationX, destinationY);
                 lines.add(line);
             }
-
         }
+            System.out.println("TAILLE LISTE = "+m_map.getListRequests().size());
+            for (Request request:m_map.getListRequests()) {
+
+                Intersection pickup = request.getPickUpPoint();
+                Intersection delivery = request.getDeliveryPoint();
+
+                double pickupX = (pickup.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
+                double pickupY = ((-1 * pickup.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
+                double deliveryX = (delivery.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
+                double deliveryY = ((-1 * delivery.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
+
+                Circle pickupCircle = new Circle(ReqpointSize);
+                pickupCircle.setStroke(Color.BLACK);
+                pickupCircle.setFill(Color.BLUE.deriveColor(1, 1, 1, 0.9));
+                pickupCircle.relocate(pickupX-ReqpointSize, pickupY-ReqpointSize);
+                circles.add(pickupCircle);
+
+                Circle deliveryCircle = new Circle(ReqpointSize);
+                deliveryCircle.setStroke(Color.BLACK);
+                deliveryCircle.setFill(Color.GREEN.deriveColor(1, 1, 1, 0.9));
+                deliveryCircle.relocate(deliveryX-ReqpointSize, deliveryY-ReqpointSize);
+                circles.add(deliveryCircle);
+            }
+
+
         MouseGestures mg = new MouseGestures();
-        mg.makeMovable(overlay, circles, lines);
+        mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {
-            line.setStrokeWidth(3);
-            overlay.getChildren().add(line);
+            line.setStrokeWidth(4*zoomVal);
+            m_overlay.getChildren().add(line);
         }
 
         for (Circle circle:circles) {
             mg.makeClickable(circle);
-            overlay.getChildren().add(circle);
+            m_overlay.getChildren().add(circle);
         }
+    }
 
+    public void drawRequests() {
+        m_overlay.getChildren().clear();
+        drawMap();
+    }
 
+    public void reloadMap(){
+       //m_overlay.getChildren().clear();
+        m_overlay = new Pane();
 
+        //m_canvas.getGraphicsContext2D().clearRect(0, 0, m_canvas.getWidth(), m_canvas.getHeight());
 
+        for (Line line:lines) {
+            m_overlay.getChildren().remove(line);
+        }
+        for (Circle circle:circles) {
+            m_overlay.getChildren().remove(circle);
 
+        }
+        m_map = new Map();
 
-        System.out.println("Dessin de la map");
+        drawMap();
     }
 
     @Override

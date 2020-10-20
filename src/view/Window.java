@@ -6,20 +6,23 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Intersection;
 import model.Map;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Window extends Application {
 
-    GraphicalView Gview = new GraphicalView();
+    GraphicalView Gview;
     TextualView Tview = new TextualView();
     Map map;
     Controller controller;
@@ -53,14 +56,43 @@ public class Window extends Application {
 
     }
 
-    public void LoadMap(ActionEvent event) {
-        map = new Map();
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/smallMap.xml", map);
-        xmlloader.parseRequestXML("/Users/lucastissier/IdeaProjects/PLD_AGILE/fichiersXML2020/requestsSmall1.xml", map);
-        //map.display();
-        Gview.drawMap(map,canvas,overlay);
-        //Gview.drawLines(canvas, overlay);
-        Gview.drawShapes(canvas);
+    public void Zoom(ActionEvent event) {
+        Gview.zoom();
+        Gview.reloadMap();
+        //canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());;
+
+
     }
+
+    public void LoadMap(ActionEvent event) {
+
+        map = new Map();
+        Gview = new GraphicalView(map,canvas,overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+
+        //Chargement map
+        FileChooser mapFileChooser = new FileChooser();
+        mapFileChooser.setTitle("Load Map");
+        mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+        File mapFile = mapFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+        
+        XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
+
+        //Dessin map
+        Gview.drawMap();
+
+    }
+
+    public void LoadRequests(ActionEvent event) {
+        FileChooser requestsFileChooser = new FileChooser();
+        requestsFileChooser.setTitle("Load Requests");
+        requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+        File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+
+        XMLLoader xmlloader = new XMLLoader();
+        xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        System.out.println(map.getListRequests().get(0).getDeliveryPoint());
+        Gview.drawRequests();
+    }
+
 }
