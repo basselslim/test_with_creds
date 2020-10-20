@@ -10,7 +10,7 @@ public class DeliveryPoint extends Intersection {
     /**
      *
      */
-    public Time deliveryDuration;
+    public int deliveryDuration;
 
     /**
      * Default constructor
@@ -18,26 +18,26 @@ public class DeliveryPoint extends Intersection {
     public DeliveryPoint() {
     }
 
-    public DeliveryPoint(Intersection intersection, Time deliveryDuration) {
+    public DeliveryPoint(Intersection intersection, int deliveryDuration) {
         this.longitude = intersection.getLongitude();
         this.latitude = intersection.getLatitude();
         this.id = intersection.getId();
         this.deliveryDuration = deliveryDuration;
     }
 
-    public DeliveryPoint(long longitude, long latitude, long id, Time deliveryDuration) {
-        super(longitude, latitude, id);
+    public DeliveryPoint(long id, double latitude,double longitude,  int deliveryDuration) {
+        super(id, latitude, longitude);
         this.deliveryDuration = deliveryDuration;
     }
 
     /**
      * Getters - Setters
      */
-    public Time getDeliveryDuration() {
+    public int getDeliveryDuration() {
         return deliveryDuration;
     }
 
-    public void setDeliveryDuration(Time deliveryDuration) {
+    public void setDeliveryDuration(int deliveryDuration) {
         this.deliveryDuration = deliveryDuration;
     }
 }
