@@ -63,11 +63,11 @@ public class Window extends Application {
     public void LoadMap(ActionEvent event) {
         map = new Map();
         XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML("../fichiersXML2020/largeMap.xml", map);
+        xmlloader.parseMapXML("../fichiersXML2020/mediumMap.xml", map);
         map.display();
         Intersection intersection = map.getListIntersections().get(25303831);
         System.out.println(intersection);
         Gview.drawMap(map,canvas,overlay);
-        Gview.drawShapes(canvas);
+        //Gview.drawShapes(canvas);
     }
 }
