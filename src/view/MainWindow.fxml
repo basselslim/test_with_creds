@@ -18,6 +18,11 @@
                     <Font size="18.0" />
                 </font>
             </Button>
+            <Button fx:id="btn_load_requests" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="56.0" prefWidth="290.0" text="Load Requests" translateX="800.0" translateY="30.0" GridPane.rowIndex="2">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Button>
           <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" translateX="50.0" translateY="70.0">
              <children>
                 <Canvas fx:id="canvas" height="600.0" width="1200.0" />

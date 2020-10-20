@@ -6,15 +6,18 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Intersection;
 import model.Map;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Window extends Application {
@@ -62,12 +65,26 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
         map = new Map();
+        FileChooser mapFileChooser = new FileChooser();
+        mapFileChooser.setTitle("Load Map");
+        mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+        File mapFile = mapFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
         XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML("../fichiersXML2020/largeMap.xml", map);
+        xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
         map.display();
         Intersection intersection = map.getListIntersections().get(25303831);
         System.out.println(intersection);
         Gview.drawMap(map,canvas,overlay);
         Gview.drawShapes(canvas);
     }
+
+    public void LoadRequests(ActionEvent event) {
+        FileChooser requestsFileChooser = new FileChooser();
+        requestsFileChooser.setTitle("Load Requests");
+        requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+        File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+        System.out.println(requestsFile.getAbsolutePath());
+        XMLLoader xmlloader = new XMLLoader();
+    }
+
 }
