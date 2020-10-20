@@ -1,5 +1,6 @@
 package view;
 
+import controler.Algorithme;
 import controler.Controller;
 import controler.XMLLoader;
 import javafx.application.Application;
@@ -93,6 +94,8 @@ public class Window extends Application {
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         System.out.println(map.getListRequests().get(0).getDeliveryPoint());
         Gview.drawRequests();
+
+        Algorithme algo = new Algorithme(map);
     }
 
 }

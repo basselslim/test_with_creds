@@ -16,20 +16,21 @@ public class ComputeSmallestPath {
     public List<Intersection> computeSmallestPath(Intersection from, Intersection to) {
         List<Intersection> computedPath;
         Queue<Intersection> openSet = new PriorityQueue<>();
-        Intersection start = new Intersection(from, null, 0d, computeCost(from, to));
+        Intersection start = new Intersection(from, null, 0, computeCost(from, to));
         openSet.add(start);
 
         HashMap<Long, Intersection> closedMap = new HashMap<>();
-
         while (!openSet.isEmpty()) {
             Intersection next = openSet.poll();
-            if (next.getCurrent().equals(to)) {
+            if (next.equals(to)) {
                 computedPath = new ArrayList<>();
                 Intersection current = next;
                 do {
-                    computedPath.add(0, current.getCurrent());
-                    current = closedMap.get(current.getPrevious());
-                } while (current != null);
+                    computedPath.add(0, current);
+                    if (current.getPrevious() != null) {
+                        current = closedMap.get(current.getPrevious().getId());
+                    }
+                } while (current != null && current.getPrevious() != null);
                 return computedPath;
             }
             List<Segment> listNeighbours = next.getListSegments();
@@ -37,11 +38,10 @@ public class ComputeSmallestPath {
                 long idNextNode = s.getDestination();
                 Intersection neighbour = this.map.getListIntersections().get(idNextNode);
 
-                double newScore = next.getRouteScore() + computeCost(next.getCurrent(), next);
-                if (!(closedMap.containsKey(neighbour.getId()) || (openSet.contains(neighbour) &&  neighbour.getRouteScore() < newScore))) {
-                    neighbour.setPrevious(next.getCurrent());
-                    neighbour.setRouteScore(newScore);
-                    neighbour.setEstimatedScore(newScore + computeCost(next, to));
+                if (!(closedMap.containsKey(neighbour.getId()) || (openSet.contains(neighbour) &&  neighbour.getRouteScore() < next.getRouteScore() + 1))) {
+                    neighbour.setPrevious(next);
+                    neighbour.setRouteScore(next.getRouteScore() + 1);
+                    neighbour.setEstimatedScore(neighbour.getRouteScore() + computeCost(neighbour, to));
                     openSet.add(neighbour);
                 }
             }

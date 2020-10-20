@@ -15,7 +15,7 @@ public class Intersection implements Comparable<Intersection>{
     protected double longitude;
     protected List<Segment> listSegments;
 
-    protected Intersection current;
+    // protected Intersection current;
     protected Intersection previous;
     protected double routeScore;
     protected double estimatedScore;
@@ -41,17 +41,27 @@ public class Intersection implements Comparable<Intersection>{
     }
 
     public Intersection(Intersection current) {
-        this.current = current;
+        // this.current = current;
         this.previous = null;
         this.routeScore = Double.POSITIVE_INFINITY;
         this.estimatedScore = Double.POSITIVE_INFINITY;
+
+        this.longitude = current.longitude;
+        this.latitude = current.latitude;
+        this.id = current.id;
+        this.listSegments = current.listSegments;
     }
 
     public Intersection(Intersection current, Intersection previous, double routeScore, double estimatedScore) {
-        this.current = current;
+        // this.current = current;
         this.previous = previous;
         this.routeScore = routeScore;
         this.estimatedScore = estimatedScore;
+
+        this.longitude = current.longitude;
+        this.latitude = current.latitude;
+        this.id = current.id;
+        this.listSegments = current.listSegments;
     }
 
     /**
@@ -88,14 +98,14 @@ public class Intersection implements Comparable<Intersection>{
     public void setListSegments(List<Segment> listSegments) {
         this.listSegments = listSegments;
     }
-
+/*
     public Intersection getCurrent() {
         return current;
     }
 
     public void setCurrent(Intersection current) {
         this.current = current;
-    }
+    } */
 
     public Intersection getPrevious() {
         return previous;
@@ -135,10 +145,12 @@ public class Intersection implements Comparable<Intersection>{
     @Override
     public String toString() {
         return "Intersection{" +
-                "longitude=" + longitude +
+                "id=" + id +
                 ", latitude=" + latitude +
-                ", id=" + id +
+                ", longitude=" + longitude +
                 ", listSegments=" + listSegments +
+                ", routeScore=" + routeScore +
+                ", estimatedScore=" + estimatedScore +
                 '}';
     }
 }

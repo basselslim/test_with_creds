@@ -11,9 +11,9 @@ public class Algorithme {
     protected final long timeZero;
     protected final long TIMEOUT = 20000;
 
-    public Algorithme(Map map, List<Request> listRequests) {
+    public Algorithme(Map map) {
         this.map = map;
-        this.listRequests = listRequests;
+        this.listRequests = map.getListRequests();
         this.timeZero = System.currentTimeMillis();
 
         HashMap<Long, List<Path>> mapSmallestPaths = this.computeSmallestPaths();
@@ -31,19 +31,13 @@ public class Algorithme {
         // while (System.currentTimeMillis() - this.timeZero < this.TIMEOUT) {
             List<Intersection> listPoints = new ArrayList<>();
             for (Request r: this.listRequests) {
-                if (!listPoints.contains(r.getDeliveryPoint())) {
-                    listPoints.add(r.getDeliveryPoint());
-                }
-                if (!listPoints.contains(r.getPickUpPoint())) {
-                    listPoints.add(r.getPickUpPoint());
-                }
+                listPoints.add(map.getListIntersections().get(r.getDeliveryPoint().getId()));
+                listPoints.add(map.getListIntersections().get(r.getPickUpPoint().getId()));
             }
 
             for (Intersection p1: listPoints) {
-                System.out.println("Test boucle p1: " + p1);
                 List<Path> listPaths = new ArrayList<>();
                 for (Intersection p2: listPoints) {
-                    System.out.println("Test boucle p2: " + p2);
                     if (p1.getId() != p2.getId()) {
                         List<Intersection> listIntersections = algorithm.computeSmallestPath(p1, p2);
 
@@ -60,7 +54,7 @@ public class Algorithme {
                             }
                             step = i;
                         }
-                        listPaths.add(new Path(listSegments));
+                        listPaths.add(new Path(listSegments, p1.getId(), p2.getId()));
                     }
                 }
                 mapSmallestPaths.put(p1.getId(), listPaths);
