@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class Window extends Application {
 
-    GraphicalView Gview = new GraphicalView();
+    GraphicalView Gview;
     TextualView Tview = new TextualView();
     Map map;
     Controller controller;
@@ -55,6 +55,7 @@ public class Window extends Application {
 
     public void Zoom(ActionEvent event) {
         Gview.zoom();
+        Gview.reloadMap();
         //canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());;
         //Gview.drawMap(map,canvas,overlay);
 
@@ -62,12 +63,9 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
         map = new Map();
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML("../fichiersXML2020/mediumMap.xml", map);
-        map.display();
-        Intersection intersection = map.getListIntersections().get(25303831);
-        System.out.println(intersection);
-        Gview.drawMap(map,canvas,overlay);
+        Gview = new GraphicalView(map,canvas,overlay,"../fichiersXML2020/mediumMap.xml");
+        Gview.LoadMap();
+        Gview.drawMap();
         //Gview.drawShapes(canvas);
     }
 }
