@@ -12,6 +12,8 @@ public class Map extends Observable {
     protected List<Request> listRequests;
 
     protected HashMap<Long,Intersection> listIntersections;
+
+    protected HashMap<Long, List<Path>> mapSmallestPaths;
     protected Depot depot;
 
 
@@ -92,6 +94,14 @@ public class Map extends Observable {
 
     public void setDepot(Depot depot) {
         this.depot = depot;
+    }
+
+    public HashMap<Long, List<Path>> getMapSmallestPaths() {
+        return mapSmallestPaths;
+    }
+
+    public void setMapSmallestPaths(HashMap<Long, List<Path>> mapSmallestPaths) {
+        this.mapSmallestPaths = mapSmallestPaths;
     }
 
 

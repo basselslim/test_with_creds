@@ -17,9 +17,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Intersection;
 import model.Map;
+import model.Path;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class Window extends Application {
 
@@ -93,9 +96,14 @@ public class Window extends Application {
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         System.out.println(map.getListRequests().get(0).getDeliveryPoint());
-        Gview.drawRequests();
+        Gview.reloadMap();
+    }
 
+    public void Compute(ActionEvent event) {
         Algorithme algo = new Algorithme(map);
+        HashMap<Long, List<Path>> mapSmallestPaths = algo.computeSmallestPaths();
+        map.setMapSmallestPaths(mapSmallestPaths);
+        Gview.reloadMap();
     }
 
 }

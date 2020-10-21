@@ -16,7 +16,7 @@ public class Algorithme {
         this.listRequests = map.getListRequests();
         this.timeZero = System.currentTimeMillis();
 
-        HashMap<Long, List<Path>> mapSmallestPaths = this.computeSmallestPaths();
+
         // LinkedList<Path> optimalTour = this.computeOptimalTour(mapSmallestPaths);
     }
 

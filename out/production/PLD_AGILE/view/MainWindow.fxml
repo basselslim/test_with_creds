@@ -43,7 +43,7 @@
    </SplitPane>
    <HBox prefHeight="100.0" prefWidth="200.0">
       <children>
-         <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="170.0" text="Compute" translateX="40.0" translateY="30.0">
+         <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#Compute" prefHeight="41.0" prefWidth="170.0" text="Compute" translateX="40.0" translateY="30.0">
             <font>
                <Font size="21.0" />
             </font>
