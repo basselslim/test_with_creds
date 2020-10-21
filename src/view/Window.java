@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -33,6 +34,8 @@ public class Window extends Application {
     private Pane overlay;
     @FXML
     private Pane myPane;
+    @FXML
+    private Button btn_load_requests;
 
     @Override
     public void start(Stage MainFrame) throws Exception {
@@ -84,6 +87,7 @@ public class Window extends Application {
         Gview.drawMap();
 
         ((Node) event.getSource()).setDisable(true);
+        btn_load_requests.setDisable(false);
     }
 
     public void LoadRequests(ActionEvent event) {
