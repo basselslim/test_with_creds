@@ -22,15 +22,17 @@ import java.io.IOException;
 
 public class Window extends Application {
 
-    GraphicalView Gview = new GraphicalView();
-    TextualView Tview = new TextualView();
-    Map map;
-    Controller controller;
-
     @FXML
     private Canvas canvas;
     @FXML
     private Pane overlay;
+    @FXML
+    private Pane myPane;
+
+    GraphicalView Gview = new GraphicalView();
+    TextualView Tview = new TextualView();
+    Map map;
+    Controller controller;
 
     @Override
     public void start(Stage MainFrame) throws Exception {
@@ -84,10 +86,9 @@ public class Window extends Application {
         requestsFileChooser.setTitle("Load Requests");
         requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
-        System.out.println(requestsFile.getAbsolutePath());
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
-        Tview.updateRequestList(map);
+        Tview.createRequestList(map, myPane);
     }
 
 }

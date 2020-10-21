@@ -40,7 +40,7 @@
            </Pane>
         </children>
        </AnchorPane>
-       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+       <AnchorPane fx:id="myPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="220.0">
        </AnchorPane>
      </items>
    </SplitPane>
