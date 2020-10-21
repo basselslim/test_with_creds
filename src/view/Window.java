@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -35,6 +36,10 @@ public class Window extends Application {
     private Canvas canvas;
     @FXML
     private Pane overlay;
+    @FXML
+    private Pane myPane;
+    @FXML
+    private Button btn_load_requests;
 
     @Override
     public void start(Stage MainFrame) throws Exception {
@@ -85,6 +90,8 @@ public class Window extends Application {
         //Dessin map
         Gview.drawMap();
 
+        ((Node) event.getSource()).setDisable(true);
+        btn_load_requests.setDisable(false);
     }
 
     public void LoadRequests(ActionEvent event) {
@@ -96,7 +103,11 @@ public class Window extends Application {
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         System.out.println(map.getListRequests().get(0).getDeliveryPoint());
+
         Gview.reloadMap();
+        
+        Tview.createRequestList(map, myPane);
+        ((Node) event.getSource()).setDisable(true);
     }
 
     public void Compute(ActionEvent event) {
@@ -104,6 +115,10 @@ public class Window extends Application {
         HashMap<Long, List<Path>> mapSmallestPaths = algo.computeSmallestPaths();
         map.setMapSmallestPaths(mapSmallestPaths);
         Gview.reloadMap();
+
+        
+        
+
     }
 
 }
