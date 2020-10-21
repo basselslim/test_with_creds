@@ -128,8 +128,8 @@ public class XMLLoader {
                         System.out.println("delivery duration "+deliveryDuration);
                         Intersection pickupIntersection = map.getListIntersections().get(pickUpAdress);
                         Intersection deliveryIntersection = map.getListIntersections().get(deliveryAdress);
-                        PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(),pickupIntersection.getLongitude(),pickupIntersection.getLatitude(),pickUpDuration);
-                        DeliveryPoint deliveryPoint = new DeliveryPoint(deliveryIntersection.getId(),deliveryIntersection.getLongitude(),deliveryIntersection.getLatitude(),deliveryDuration);
+                        PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(),pickupIntersection.getLatitude(),pickupIntersection.getLongitude(),pickUpDuration);
+                        DeliveryPoint deliveryPoint = new DeliveryPoint(deliveryIntersection.getId(),deliveryIntersection.getLatitude(),deliveryIntersection.getLongitude(),deliveryDuration);
                         Request request = new Request(pickUpPoint,deliveryPoint);
                         map.getListRequests().add(request);
                     }

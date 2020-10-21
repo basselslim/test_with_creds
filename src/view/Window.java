@@ -22,17 +22,17 @@ import java.io.IOException;
 
 public class Window extends Application {
 
+    GraphicalView Gview;
+    TextualView Tview = new TextualView();
+    Map map;
+    Controller controller;
+
     @FXML
     private Canvas canvas;
     @FXML
     private Pane overlay;
     @FXML
     private Pane myPane;
-
-    GraphicalView Gview = new GraphicalView();
-    TextualView Tview = new TextualView();
-    Map map;
-    Controller controller;
 
     @Override
     public void start(Stage MainFrame) throws Exception {
@@ -60,25 +60,28 @@ public class Window extends Application {
 
     public void Zoom(ActionEvent event) {
         Gview.zoom();
+        Gview.reloadMap();
         //canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());;
-        //Gview.drawMap(map,canvas,overlay);
+
 
     }
 
     public void LoadMap(ActionEvent event) {
+
         map = new Map();
+        Gview = new GraphicalView(map,canvas,overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+
+        //Chargement map
         FileChooser mapFileChooser = new FileChooser();
         mapFileChooser.setTitle("Load Map");
         mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File mapFile = mapFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+        
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
-        map.display();
-        Intersection intersection = map.getListIntersections().get(25303831);
-        System.out.println(intersection);
 
-        Gview.drawMap(map,canvas,overlay);
-        //Gview.drawShapes(canvas);
+        //Dessin map
+        Gview.drawMap();
 
         ((Node) event.getSource()).setDisable(true);
     }
@@ -88,8 +91,11 @@ public class Window extends Application {
         requestsFileChooser.setTitle("Load Requests");
         requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        System.out.println(map.getListRequests().get(0).getDeliveryPoint());
+        Gview.drawRequests();
         Tview.createRequestList(map, myPane);
 
         ((Node) event.getSource()).setDisable(true);
