@@ -25,12 +25,12 @@ public class GraphicalView implements Observer {
     Canvas m_canvas;
     int screenX = 1200;
     int screenY = 600;
-    double zoomVal = 0.4;
+    double zoomVal = 0.6;
     double coeffX = (double)screenX/(554.64-554.57)*zoomVal;
     double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
     double ordonneeX = 554.57*coeffX;
     double ordonneeY = 132.71*coeffY;
-    double pointSize = 5.0*zoomVal;
+    double pointSize = 8.0*zoomVal;
     double ReqpointSize = 15.0*zoomVal;
 
     public GraphicalView(Map map,Canvas canvas,Pane overlay) {
