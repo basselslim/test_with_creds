@@ -31,12 +31,12 @@ public class TextualView implements Observer {
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
         requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        requestsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        /*requestsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             System.out.println("-------------");
             System.out.println(obs);
             System.out.println(oldSelection);
             System.out.println(newSelection);
-        });
+        });*/
 
         intersectionColumn = new TableColumn<>("Intersection Id");
         intersectionColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
