@@ -15,7 +15,6 @@ public class Intersection implements Comparable<Intersection>{
     protected double longitude;
     protected List<Segment> listSegments;
 
-    // protected Intersection current;
     protected Intersection previous;
     protected double routeScore;
     protected double estimatedScore;
@@ -41,7 +40,6 @@ public class Intersection implements Comparable<Intersection>{
     }
 
     public Intersection(Intersection current) {
-        // this.current = current;
         this.previous = null;
         this.routeScore = Double.POSITIVE_INFINITY;
         this.estimatedScore = Double.POSITIVE_INFINITY;
@@ -53,7 +51,6 @@ public class Intersection implements Comparable<Intersection>{
     }
 
     public Intersection(Intersection current, Intersection previous, double routeScore, double estimatedScore) {
-        // this.current = current;
         this.previous = previous;
         this.routeScore = routeScore;
         this.estimatedScore = estimatedScore;
@@ -98,14 +95,6 @@ public class Intersection implements Comparable<Intersection>{
     public void setListSegments(List<Segment> listSegments) {
         this.listSegments = listSegments;
     }
-/*
-    public Intersection getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Intersection current) {
-        this.current = current;
-    } */
 
     public Intersection getPrevious() {
         return previous;
