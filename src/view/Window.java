@@ -79,6 +79,8 @@ public class Window extends Application {
 
         Gview.drawMap(map,canvas,overlay);
         //Gview.drawShapes(canvas);
+
+        ((Node) event.getSource()).setDisable(true);
     }
 
     public void LoadRequests(ActionEvent event) {
@@ -89,6 +91,8 @@ public class Window extends Application {
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         Tview.createRequestList(map, myPane);
+
+        ((Node) event.getSource()).setDisable(true);
     }
 
 }
