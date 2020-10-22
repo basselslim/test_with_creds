@@ -36,4 +36,6 @@ public class Tour extends Observable {
     public List<Path> getListPaths() {
         return listPaths;
     }
+
+    public void addPath(Path newPath) { listPaths.add(newPath); }
 }

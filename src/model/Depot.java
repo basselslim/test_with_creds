@@ -14,5 +14,8 @@ public class Depot {
         this.id = id;
         this.departureTime=departureTime;
     }
-    
+
+    public long getId() {
+        return id;
+    }
 }

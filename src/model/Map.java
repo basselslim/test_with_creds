@@ -6,11 +6,11 @@ import java.util.*;
  * check for java beans for Observable
  */
 public class Map extends Observable {
+
     /**
      *
      */
     protected List<Request> listRequests;
-
     protected HashMap<Long,Intersection> listIntersections;
     protected Depot depot;
 

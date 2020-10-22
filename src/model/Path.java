@@ -11,15 +11,18 @@ public class Path {
      */
     protected int pathLength;
     protected List<Segment> listSegments;
-
+    protected Long idDeparture;
+    protected Long idArrival;
     /**
      * Default constructor
      */
     public Path() {
     }
 
-    public Path(List<Segment> listSegments) {
+    public Path(List<Segment> listSegments,Long departure, Long arrival) {
         this.listSegments = listSegments;
+        idDeparture = departure;
+        idArrival = arrival;
         this.pathLength = 0;
         for(Segment s: listSegments) {
             this.pathLength += s.getLength();
@@ -31,6 +34,14 @@ public class Path {
      */
     public int getPathLength() {
         return pathLength;
+    }
+
+    public Long getIdDeparture() {
+        return idDeparture;
+    }
+
+    public Long getIdArrival() {
+        return idArrival;
     }
 
     public List<Segment> getListSegments() {

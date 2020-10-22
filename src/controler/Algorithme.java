@@ -1,5 +1,4 @@
 package controler;
-import model.Map;
 import model.Path;
 import model.Request;
 import java.util.HashMap;
@@ -8,12 +7,12 @@ import java.util.List;
 
 public class Algorithme {
 
-    protected Map map;
+    protected model.Map map;
     protected List<Request> listRequests;
     protected final long timeZero;
     protected final long TIMEOUT = 20000;
 
-    public Algorithme(Map map, List<Request> listRequests) {
+    public Algorithme(model.Map map, List<Request> listRequests) {
         this.map = map;
         this.listRequests = listRequests;
         this.timeZero = System.currentTimeMillis();
@@ -34,6 +33,9 @@ public class Algorithme {
         return mapSmallestPaths;
     }
 
+    /**
+    *
+     **/
     public LinkedList<Path> computeOptimalTour(HashMap<Long, List<Path>> mapSmallestPaths) {
         System.out.println("Computing the optimal tour...");
         LinkedList<Path> optimalTour = new LinkedList<>();
