@@ -23,6 +23,7 @@ public class MouseGestures {
 
     }
 
+
     public void makeMovable(Node node, List<Circle> circles, List<Line> lines) {
         this.lines = lines;
         this.circles = circles;

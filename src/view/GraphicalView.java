@@ -24,13 +24,14 @@ public class GraphicalView implements Observer {
     Pane m_overlay;
     int screenX = 1200;
     int screenY = 600;
-    double zoomVal = 0.4;
+    double zoomVal = 1.0;
     double coeffX = (double)screenX/(554.64-554.57)*zoomVal;
     double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
     double ordonneeX = 554.57*coeffX;
     double ordonneeY = 132.71*coeffY;
     double pointSize = 8.0*zoomVal;
     double ReqpointSize = 15.0*zoomVal;
+    double StrokeSize = 4.0*zoomVal;
 
     public GraphicalView(Map map,Pane overlay) {
         m_map = map;
@@ -44,36 +45,45 @@ public class GraphicalView implements Observer {
 
     public static List<Line> lines = new ArrayList<Line>();
 
+    private void updateCoeff() {
+        double maxHeigth = ((-1 * m_map.findMaxLat()) + 90) * (screenY / 180);
+        double minHeigth = ((-1 * m_map.findMinLat()) + 90) * (screenY / 180);
+
+        double maxWidth = (m_map.findMaxLong() + 180) * (screenX / 360);
+        double minWidth = (m_map.findMinLong() + 180) * (screenX / 360);
+
+        coeffX = (double)screenX/(maxWidth-minWidth)*zoomVal;
+        coeffY = (double)screenY/(maxHeigth-minHeigth)*zoomVal;
+
+        ordonneeX = minWidth*coeffX;
+        ordonneeY = minHeigth*coeffY;
+
+        pointSize = 0.0004*coeffX;
+        ReqpointSize = 0.0008*coeffX;
+        StrokeSize = 0.0002*coeffX;
+    }
+
     public void Zoom() {
-        if(zoomVal <1.5)
+        if(zoomVal <3.0)
             zoomVal +=0.1;
 
-        coeffX = (double)screenX/(554.64-554.57)*zoomVal;;
-        coeffY = (double)screenY/(132.76-132.71)*zoomVal;
-        ordonneeX = 554.57*coeffX;
-        ordonneeY = 132.71*coeffY;
-        pointSize = 8.0*zoomVal;
-        ReqpointSize = 15.0*zoomVal;
+        updateCoeff();
         refreshMap();
 
     }
 
     public void unZoom() {
-        if(zoomVal > 0.3)
+        if(zoomVal > 0.5)
             zoomVal -=0.1;
 
-        coeffX = (double)screenX/(554.64-554.57)*zoomVal;;
-        coeffY = (double)screenY/(132.76-132.71)*zoomVal;
-        ordonneeX = 554.57*coeffX;
-        ordonneeY = 132.71*coeffY;
-        pointSize = 8.0*zoomVal;
-        ReqpointSize = 15.0*zoomVal;
+        updateCoeff();
         refreshMap();
 
     }
 
     public void drawMap() {
 
+        updateCoeff();
 
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -130,7 +140,7 @@ public class GraphicalView implements Observer {
         mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {
-            line.setStrokeWidth(4*zoomVal);
+            line.setStrokeWidth(StrokeSize);
             m_overlay.getChildren().add(line);
         }
 

@@ -78,6 +78,11 @@ public class Window extends Application {
 
         //reactivate Requests button
         btn_load_requests.setDisable(false);
+
+        System.out.println("Min long :" + map.findMinLong());
+        System.out.println("Max long :" + map.findMaxLong());
+        System.out.println("Min lat :" + map.findMinLat());
+        System.out.println("Max lat :" + map.findMaxLat());
     }
 
     public void LoadRequests(ActionEvent event) {

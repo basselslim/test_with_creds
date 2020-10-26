@@ -74,6 +74,46 @@ public class Map extends Observable {
         listRequests.clear();
     }
 
+    public double findMinLat() {
+        double min = 100;
+        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
+            Intersection intersection = (Intersection) mapentry.getValue();
+            if (intersection.getLatitude() < min)
+                min = intersection.getLatitude();
+        }
+        return min;
+    }
+
+    public double findMaxLat() {
+        double max = 0;
+        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
+            Intersection intersection = (Intersection) mapentry.getValue();
+            if (intersection.getLatitude() > max)
+                max = intersection.getLatitude();
+        }
+        return max;
+    }
+
+    public double findMinLong() {
+        double min = 100;
+        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
+            Intersection intersection = (Intersection) mapentry.getValue();
+            if (intersection.getLongitude() < min)
+                min = intersection.getLongitude();
+        }
+        return min;
+    }
+
+    public double findMaxLong() {
+        double max = 0;
+        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
+            Intersection intersection = (Intersection) mapentry.getValue();
+            if (intersection.getLongitude() > max)
+                max = intersection.getLongitude();
+        }
+        return max;
+    }
+
     /**
      * Getters - Setters
      */
