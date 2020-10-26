@@ -22,10 +22,9 @@ public class GraphicalView implements Observer {
 
     Map m_map;
     Pane m_overlay;
-    Canvas m_canvas;
     int screenX = 1200;
     int screenY = 600;
-    double zoomVal = 0.6;
+    double zoomVal = 0.4;
     double coeffX = (double)screenX/(554.64-554.57)*zoomVal;
     double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
     double ordonneeX = 554.57*coeffX;
@@ -33,12 +32,10 @@ public class GraphicalView implements Observer {
     double pointSize = 8.0*zoomVal;
     double ReqpointSize = 15.0*zoomVal;
 
-    public GraphicalView(Map map,Canvas canvas,Pane overlay) {
+    public GraphicalView(Map map,Pane overlay) {
         m_map = map;
-        m_canvas = canvas;
+
         m_overlay = overlay;
-        m_canvas.setWidth(screenX);
-        m_canvas.setHeight(screenY);
         m_overlay.setPrefWidth(screenX);
         m_overlay.setPrefHeight(screenY);
     }
@@ -47,16 +44,35 @@ public class GraphicalView implements Observer {
 
     public static List<Line> lines = new ArrayList<Line>();
 
-    public void zoom() {
-        zoomVal+= 1.0;
-        m_overlay.getChildren().clear();
-        drawMap();
+    public void Zoom() {
+        if(zoomVal <1.5)
+            zoomVal +=0.1;
+
+        coeffX = (double)screenX/(554.64-554.57)*zoomVal;;
+        coeffY = (double)screenY/(132.76-132.71)*zoomVal;
+        ordonneeX = 554.57*coeffX;
+        ordonneeY = 132.71*coeffY;
+        pointSize = 8.0*zoomVal;
+        ReqpointSize = 15.0*zoomVal;
+        refreshMap();
+
     }
 
+    public void unZoom() {
+        if(zoomVal > 0.3)
+            zoomVal -=0.1;
 
+        coeffX = (double)screenX/(554.64-554.57)*zoomVal;;
+        coeffY = (double)screenY/(132.76-132.71)*zoomVal;
+        ordonneeX = 554.57*coeffX;
+        ordonneeY = 132.71*coeffY;
+        pointSize = 8.0*zoomVal;
+        ReqpointSize = 15.0*zoomVal;
+        refreshMap();
+
+    }
 
     public void drawMap() {
-
 
 
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
@@ -71,9 +87,7 @@ public class GraphicalView implements Observer {
             circles.add(circle);
 
             drawMultipleLines(intersection,intersection.getListSegments());
-
         }
-
             for (Request request:m_map.getListRequests()) {
 
                 Intersection pickup = request.getPickUpPoint();
@@ -112,7 +126,6 @@ public class GraphicalView implements Observer {
             }
         }
 
-
         MouseGestures mg = new MouseGestures();
         mg.makeMovable(m_overlay, circles, lines);
 
@@ -127,9 +140,15 @@ public class GraphicalView implements Observer {
         }
     }
 
-    public void reloadMap(){
-       m_overlay.getChildren().clear();
+    public void refreshMap(){
+        m_overlay.getChildren().clear();
+        lines.clear();
+        circles.clear();
         drawMap();
+    }
+
+    public void clear(){
+        m_overlay.getChildren().clear();
     }
 
     public void drawMultipleLines(Intersection origin, List<Segment> Listsegment) {

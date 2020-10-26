@@ -27,6 +27,7 @@ public class XMLLoader {
 
     public void parseMapXML(String pathNameXMLFile, Map map){
 
+        map.clearMap();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 
@@ -96,6 +97,7 @@ public class XMLLoader {
     }
     public void parseRequestXML(String pathNameXMLFile, Map map){
 
+        map.clearRequests();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         try {
