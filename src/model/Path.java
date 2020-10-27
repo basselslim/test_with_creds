@@ -11,18 +11,19 @@ public class Path {
      */
     protected int pathLength;
     protected List<Segment> listSegments;
-    protected Long idDeparture;
-    protected Long idArrival;
+    protected long idDeparture;
+    protected long idArrival;
+
     /**
      * Default constructor
      */
     public Path() {
     }
 
-    public Path(List<Segment> listSegments,Long departure, Long arrival) {
+    public Path(List<Segment> listSegments, long departure, long arrival) {
         this.listSegments = listSegments;
-        idDeparture = departure;
-        idArrival = arrival;
+        this.idDeparture = departure;
+        this.idArrival = arrival;
         this.pathLength = 0;
         for(Segment s: listSegments) {
             this.pathLength += s.getLength();
@@ -36,19 +37,28 @@ public class Path {
         return pathLength;
     }
 
-    public Long getIdDeparture() {
-        return idDeparture;
-    }
-
-    public Long getIdArrival() {
-        return idArrival;
-    }
-
     public List<Segment> getListSegments() {
         return listSegments;
     }
 
     public int getDuration() {
         return (int) (((double) pathLength/15.0)*3.6);
+    }
+
+    public long getIdDeparture() {
+        return idDeparture;
+    }
+
+    public long getIdArrival() {
+        return idArrival;
+    }
+
+    @Override
+    public String toString() {
+        return "Path{" +
+                "pathLength=" + pathLength +
+                ", idDeparture=" + idDeparture +
+                ", idArrival=" + idArrival +
+                '}';
     }
 }

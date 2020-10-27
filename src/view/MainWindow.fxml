@@ -1,25 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<HBox prefHeight="1050.0" prefWidth="1650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Window" >
-
-
-    <children>
-        <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="56.0" prefWidth="190.0" text="Load Map" translateX="30.0" translateY="30.0" GridPane.rowIndex="1">
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Window">
+    <HBox minHeight="-Infinity" prefHeight="100.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+      <children>
+        <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="56.0" prefWidth="190.0" text="Load Map" translateX="20.0" translateY="30.0">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
-      <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" translateX="50.0" translateY="70.0">
-         <children>
-            <Canvas fx:id="canvas" height="600.0" width="1200.0" />
-         </children></Pane>
-    </children>
-</HBox>
+        <Button fx:id="btn_load_requests" disable="true" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="56.0" prefWidth="290.0" text="Load Requests" translateX="800.0" translateY="30.0">
+          <font>
+              <Font size="18.0" />
+          </font>
+        </Button>
+      </children>
+    </HBox>
+   <SplitPane dividerPositions="0.7390776699029126">
+     <items>
+       <AnchorPane minHeight="0.0" minWidth="0.0">
+            <children>
+                <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onZoom="#Zoom" prefHeight="600.0" prefWidth="1200.0">
+
+               </Pane>
+            </children>
+         </AnchorPane>
+       <AnchorPane fx:id="myPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+     </items>
+   </SplitPane>
+   <HBox prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#Compute" prefHeight="41.0" prefWidth="170.0" text="Compute" translateX="40.0" translateY="30.0">
+            <font>
+               <Font size="21.0" />
+            </font>
+         </Button>
+         <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="1000.0" translateY="30.0">
+            <font>
+               <Font size="19.0" />
+            </font>
+         </Button>
+      </children>
+   </HBox>
+   <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="30.0" translateY="-160.0" />
+    <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="90.0" translateY="-189.0" />
+</VBox>

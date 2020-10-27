@@ -51,4 +51,13 @@ public class Segment {
     public void setDestination(long destination) {
         this.destination = destination;
     }
+
+    @Override
+    public String toString() {
+        return "Segment{" +
+                "length=" + length +
+                ", street name=" + streetName +
+                ", destination=" + destination +
+                '}';
+    }
 }

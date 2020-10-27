@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class Intersection {
+public class Intersection implements Comparable<Intersection>{
     /**
      *
      */
@@ -14,6 +14,10 @@ public class Intersection {
     protected double latitude;
     protected double longitude;
     protected List<Segment> listSegments;
+
+    protected Intersection previous;
+    protected double routeScore;
+    protected double estimatedScore;
 
     /**
      * Default constructor
@@ -25,7 +29,7 @@ public class Intersection {
         this.longitude = longitude;
         this.latitude = latitude;
         this.id = id;
-        this.listSegments = listSegments;
+        this.listSegments = new ArrayList<Segment>();
     }
 
     public Intersection(long id, double latitude, double longitude, List<Segment> listSegments) {
@@ -33,6 +37,28 @@ public class Intersection {
         this.latitude = latitude;
         this.id = id;
         this.listSegments = listSegments;
+    }
+
+    public Intersection(Intersection current) {
+        this.previous = null;
+        this.routeScore = Double.POSITIVE_INFINITY;
+        this.estimatedScore = Double.POSITIVE_INFINITY;
+
+        this.longitude = current.longitude;
+        this.latitude = current.latitude;
+        this.id = current.id;
+        this.listSegments = current.listSegments;
+    }
+
+    public Intersection(Intersection current, Intersection previous, double routeScore, double estimatedScore) {
+        this.previous = previous;
+        this.routeScore = routeScore;
+        this.estimatedScore = estimatedScore;
+
+        this.longitude = current.longitude;
+        this.latitude = current.latitude;
+        this.id = current.id;
+        this.listSegments = current.listSegments;
     }
 
     /**
@@ -70,16 +96,50 @@ public class Intersection {
         this.listSegments = listSegments;
     }
 
+    public Intersection getPrevious() {
+        return previous;
+    }
 
+    public void setPrevious(Intersection previous) {
+        this.previous = previous;
+    }
 
+    public double getRouteScore() {
+        return routeScore;
+    }
+
+    public void setRouteScore(double routeScore) {
+        this.routeScore = routeScore;
+    }
+
+    public double getEstimatedScore() {
+        return estimatedScore;
+    }
+
+    public void setEstimatedScore(double estimatedScore) {
+        this.estimatedScore = estimatedScore;
+    }
+
+    @Override
+    public int compareTo(Intersection other) {
+        if (this.estimatedScore > other.estimatedScore) {
+            return 1;
+        } else if (this.estimatedScore < other.estimatedScore) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     public String toString() {
         return "Intersection{" +
-                "longitude=" + longitude +
+                "id=" + id +
                 ", latitude=" + latitude +
-                ", id=" + id +
+                ", longitude=" + longitude +
                 ", listSegments=" + listSegments +
+                ", routeScore=" + routeScore +
+                ", estimatedScore=" + estimatedScore +
                 '}';
     }
 }
