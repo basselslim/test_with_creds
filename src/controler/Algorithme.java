@@ -1,7 +1,6 @@
 package controler;
 import model.*;
 import model.Map;
-
 import java.util.*;
 
 public class Algorithme {

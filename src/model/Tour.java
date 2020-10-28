@@ -16,6 +16,8 @@ public class Tour extends Observable {
      * Default constructor
      */
     public Tour() {
+        this.listPaths = new LinkedList<Path>();
+        this.tourLength = 0;
     }
 
     public Tour(List<Path> listPaths) {
@@ -35,5 +37,10 @@ public class Tour extends Observable {
 
     public List<Path> getListPaths() {
         return listPaths;
+    }
+
+    public void addPath(Path newPath) {
+        listPaths.add(newPath);
+        tourLength += newPath.pathLength;
     }
 }
