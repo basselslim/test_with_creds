@@ -15,6 +15,13 @@ public class Depot {
         this.departureTime=departureTime;
     }
 
+    /**
+     * Getters - Setters
+     */
+    public long getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Depot{" +
