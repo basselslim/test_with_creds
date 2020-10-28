@@ -20,9 +20,9 @@ public class MouseGestures {
     public void makeClickable(Node node) {
         node.setOnMouseEntered(circleOnMouseEnteredEventHandler);
         node.setOnMouseExited(circleOnMouseExitedEventHandler);
+        node.setOnMouseClicked(circleOnMouseClickedEventHandler);
 
     }
-
 
     public void makeMovable(Node node, List<Circle> circles, List<Line> lines) {
         this.lines = lines;
@@ -31,12 +31,25 @@ public class MouseGestures {
         node.setOnMousePressed(circleOnMousePressedEventHandler);
     }
 
+    EventHandler<MouseEvent> circleOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent t) {
+            if (t.getSource() instanceof Circle) {
+                Circle circle = ((Circle) (t.getSource()));
+                circle.setFill(Color.RED.deriveColor(1, 1, 1, 0.9));
+
+                if (circle.getRotate() != 1.0) {
+                    circle.setRadius(circle.getRadius() * 2);
+                    circle.setRotate(1.0);
+                }
+            }
+        }
+    };
 
     EventHandler<MouseEvent> circleOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent t) {
-
 
 
             if (t.getSource() instanceof Circle) {
@@ -55,12 +68,11 @@ public class MouseGestures {
         public void handle(MouseEvent t) {
 
 
-
             if (t.getSource() instanceof Circle) {
 
                 Circle p = ((Circle) (t.getSource()));
-
-                p.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
+                if (p.getRotate() != 1.0)
+                    p.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
 
             }
         }
@@ -79,7 +91,6 @@ public class MouseGestures {
         }
     };
 
-
     EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 
         @Override
@@ -91,7 +102,7 @@ public class MouseGestures {
             double newTranslateX = orgTranslateX + offsetX;
             double newTranslateY = orgTranslateY + offsetY;
 
-            if(circles.get(1).getCenterX()<100) {
+            if (circles.get(1).getCenterX() < 100) {
                 for (Circle circle : circles) {
                     circle.setTranslateX(newTranslateX);
                     circle.setTranslateY(newTranslateY);
@@ -103,11 +114,7 @@ public class MouseGestures {
 
                 }
             }
-
-
-
         }
-
     };
 
 }

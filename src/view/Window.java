@@ -25,8 +25,7 @@ public class Window extends Application {
     TextualView Tview = new TextualView();
     Map map = new Map();
     GraphicalView Gview;
-    Controller controller = new Controller(map);;
-
+    Controller controller = new Controller(map);
 
     @FXML
     private Pane overlay;
@@ -68,7 +67,7 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
 
-        Gview = new GraphicalView(map,overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+        Gview = new GraphicalView(map, overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
 
         //Load the map
         controller.LoadMap(event);
@@ -76,20 +75,16 @@ public class Window extends Application {
         //Draw the map
         Gview.refreshMap();
 
+        Gview.enbaleSelect();
         //reactivate Requests button
         btn_load_requests.setDisable(false);
-
-        System.out.println("Min long :" + map.findMinLong());
-        System.out.println("Max long :" + map.findMaxLong());
-        System.out.println("Min lat :" + map.findMinLat());
-        System.out.println("Max lat :" + map.findMaxLat());
     }
 
     public void LoadRequests(ActionEvent event) {
         controller.LoadRequests(event);
 
         Gview.refreshMap();
-        
+
         Tview.createRequestList(map, myPane);
     }
 
@@ -99,9 +94,6 @@ public class Window extends Application {
         map.setMapSmallestPaths(mapSmallestPaths);
         Gview.refreshMap();
 
-
-        
-        
 
     }
 
