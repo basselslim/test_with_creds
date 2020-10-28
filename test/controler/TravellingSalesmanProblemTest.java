@@ -87,7 +87,7 @@ class TravellingSalesmanProblemTest {
 
         Tour randomTour = new Tour(tour);
         TSP.copyToFinal(randomTour);
-        assert(TSP.final_path.getTourLength() == finalpathLengthExpected);
+        assert(TSP.final_tour.getTourLength() == finalpathLengthExpected);
     }
 
     @Test
@@ -109,6 +109,6 @@ class TravellingSalesmanProblemTest {
         System.out.println("TSPTest");
         TSP.TSP();
         System.out.println(TSP.final_res);
-        System.out.println(TSP.final_path.getListPaths());
+        System.out.println(TSP.final_tour.getListPaths());
     }
 }

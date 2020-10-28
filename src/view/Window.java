@@ -89,11 +89,7 @@ public class Window extends Application {
     }
 
     public void Compute(ActionEvent event) {
-        /*
-        Algorithme algo = new Algorithme(map);
-        HashMap<Long, List<Path>> mapSmallestPaths = algo.computeSmallestPaths();
-        map.setMapSmallestPaths(mapSmallestPaths);
-         */
+        controller.computeOptimalTour();
         Gview.refreshMap();
     }
 

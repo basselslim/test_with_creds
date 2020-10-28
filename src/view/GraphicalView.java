@@ -48,7 +48,7 @@ public class GraphicalView implements Observer {
         if(zoomVal <1.5)
             zoomVal +=0.1;
 
-        coeffX = (double)screenX/(554.64-554.57)*zoomVal;;
+        coeffX = (double)screenX/(554.64-554.57)*zoomVal;
         coeffY = (double)screenY/(132.76-132.71)*zoomVal;
         ordonneeX = 554.57*coeffX;
         ordonneeY = 132.71*coeffY;
@@ -111,11 +111,9 @@ public class GraphicalView implements Observer {
                 circles.add(deliveryCircle);
             }
 
-            if(m_map.getMapSmallestPaths() != null) {
+            if(m_map.getTour() != null) {
                 System.out.println("ENTREE");
-            for (HashMap.Entry mapentry : m_map.getMapSmallestPaths().entrySet()) {
-                List<Path> ListPaths = (List<Path>) mapentry.getValue();
-                for (Path path: ListPaths) {
+                for (Path path: m_map.getTour().getListPaths()) {
                       Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
                     for (Segment segment:path.getListSegments()) {
                         Intersection step = m_map.getListIntersections().get(segment.getDestination());
@@ -124,7 +122,6 @@ public class GraphicalView implements Observer {
                     }
                 }
             }
-        }
 
         MouseGestures mg = new MouseGestures();
         mg.makeMovable(m_overlay, circles, lines);

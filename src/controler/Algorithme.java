@@ -74,15 +74,14 @@ public class Algorithme {
     /*
      * Compute optimal tour
      */
-    public LinkedList<Path> computeOptimalTour(HashMap<Long, List<Path>> mapSmallestPaths) {
+    public void computeOptimalTour(HashMap<Long, HashMap<Long,Path>> mapSmallestPaths) {
         System.out.println("Computing the optimal tour...");
         LinkedList<Path> optimalTour = new LinkedList<>();
-        while (System.currentTimeMillis() - this.timeZero < this.TIMEOUT) {
-            /*
-             * Algo
-             */
-        }
+        /*while (System.currentTimeMillis() - this.timeZero < this.TIMEOUT) {
+
+        }*/
+        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths);
+        travellingSalesmanProblem.TSP();
         System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
-        return optimalTour;
     }
 }

@@ -3,6 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
 import model.Map;
+import model.Path;
 
 import java.io.File;
 import java.util.*;
@@ -56,6 +57,12 @@ public class Controller {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+    }
+
+    public void computeOptimalTour () {
+        Algorithme algo = new Algorithme(map);
+        HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
+        algo.computeOptimalTour(mapSmallestPaths);
     }
 }
 

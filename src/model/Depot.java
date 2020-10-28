@@ -29,8 +29,4 @@ public class Depot {
                 ", departureTime=" + departureTime +
                 '}';
     }
-
-    public long getId() {
-        return id;
-    }
 }
