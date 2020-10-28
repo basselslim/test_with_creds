@@ -1,15 +1,17 @@
 package controler;
 
+import javafx.util.Pair;
 import model.*;
 
 import java.util.*;
+import java.util.Map;
 
 public class TravellingSalesmanProblem {
     // Java program to solve Traveling Salesman Problem
     protected int numberOfStep = 0;
     protected model.Map map;
     protected HashMap<Long, HashMap<Long, Path>> adjacencyMatrixOfShortestPath;
-
+    protected HashMap<Long,Long> precedenceOrderMatrix;
     // final_path stores the final solution ie, the
     // path of the salesman.
     protected Tour final_tour;
@@ -27,6 +29,14 @@ public class TravellingSalesmanProblem {
         final_tour = new Tour();
         adjacencyMatrixOfShortestPath = mapSmallestPaths;
         visited = new HashMap<Long, Boolean>();
+        initialisePrecedenceMatrix();
+    }
+
+    private void initialisePrecedenceMatrix() {
+        precedenceOrderMatrix = new HashMap<Long,Long>();
+        for (Request r : map.getListRequests()) {
+            precedenceOrderMatrix.put(r.getDeliveryPoint().getId(),r.getPickUpPoint().getId());
+        }
     }
 
     // Function to copy temporary solution to
@@ -145,7 +155,15 @@ public class TravellingSalesmanProblem {
 
         for (java.util.Map.Entry<Long, Path> pathStartingAtCurrentStep : adjacencyMatrixOfShortestPath.get(currentStepId).entrySet()) {
             // check if not visited already
-            if (!visited.containsKey(pathStartingAtCurrentStep.getKey())) {
+            boolean precedenceRespected = false;
+            if (precedenceOrderMatrix.containsKey(pathStartingAtCurrentStep.getKey()) ) {
+                if (visited.containsKey(precedenceOrderMatrix.get(pathStartingAtCurrentStep.getKey()))) {
+                    precedenceRespected = true;
+                }
+            } else {
+                precedenceRespected = true;
+            }
+            if (!visited.containsKey(pathStartingAtCurrentStep.getKey()) && precedenceRespected) {
                 int temp = curr_bound;
                 curr_weight += pathStartingAtCurrentStep.getValue().getPathLength();
 
