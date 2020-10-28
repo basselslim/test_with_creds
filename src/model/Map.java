@@ -66,6 +66,14 @@ public class Map extends Observable {
         System.out.println(this.depot);
     }
 
+    public void clearMap(){
+        listIntersections.clear();
+    }
+
+    public void clearRequests(){
+        listRequests.clear();
+    }
+
     /**
      * Getters - Setters
      */
