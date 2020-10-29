@@ -14,6 +14,7 @@ public class Map extends Observable {
     protected HashMap<Long,Intersection> listIntersections;
 
     protected HashMap<Long, List<Path>> mapSmallestPaths;
+    
     protected Depot depot;
 
 
@@ -51,9 +52,8 @@ public class Map extends Observable {
             for ( Segment segment : intersection.getListSegments()) {
                 System.out.println(segment);
             }
-            ;
-        }
 
+        }
 
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             System.out.println(mapentry.getValue());

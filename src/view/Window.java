@@ -67,6 +67,7 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
 
+
         Gview = new GraphicalView(map, overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
 
         //Load the map
@@ -75,7 +76,7 @@ public class Window extends Application {
         //Draw the map
         Gview.refreshMap();
 
-        Gview.enbaleSelect();
+        Gview.enableSelection();
         //reactivate Requests button
         btn_load_requests.setDisable(false);
     }

@@ -111,10 +111,12 @@ public class GraphicalView implements Observer {
                 List<Path> ListPaths = (List<Path>) mapentry.getValue();
                 for (Path path : ListPaths) {
                     Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
-                    for (Segment segment : path.getListSegments()) {
-                        Intersection step = m_map.getListIntersections().get(segment.getDestination());
-                        drawLine(depart, step);
-                        depart = step;
+                    if(depart != null) {
+                        for (Segment segment : path.getListSegments()) {
+                            Intersection step = m_map.getListIntersections().get(segment.getDestination());
+                            drawLine(depart, step, StrokeSize * 1.5);
+                            depart = step;
+                        }
                     }
                 }
             }
@@ -124,7 +126,6 @@ public class GraphicalView implements Observer {
         mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {
-            line.setStrokeWidth(StrokeSize);
             m_overlay.getChildren().add(line);
         }
 
@@ -134,7 +135,7 @@ public class GraphicalView implements Observer {
 
     }
 
-    public void enbaleSelect() {
+    public void enableSelection() {
         for (Node node:m_overlay.getChildren()) {
             if(node instanceof Circle)
                 mg.makeClickable(node);
@@ -148,25 +149,28 @@ public class GraphicalView implements Observer {
         drawMap();
     }
 
-    public void clear(){
+    public void clearMap(){
         m_overlay.getChildren().clear();
+        lines.clear();
+        circles.clear();
     }
 
-    private void drawMultipleLines(Intersection origin, List<Segment> Listsegment) {
+    private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
         double originX = (origin.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
         double originY = ((-1 * origin.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
 
-        for (Segment segment : Listsegment) {
+        for (Segment segment : segmentList) {
             Intersection destination = m_map.getListIntersections().get(segment.getDestination());
             double destinationX = (destination.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
             double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
             Line line = new Line(originX, originY, destinationX, destinationY);
+            line.setStrokeWidth(StrokeSize);
             lines.add(line);
         }
     }
 
-    private void drawLine(Intersection origin, Intersection destination) {
+    private void drawLine(Intersection origin, Intersection destination, double size) {
 
         double originX = (origin.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
         double originY = ((-1 * origin.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
@@ -174,7 +178,7 @@ public class GraphicalView implements Observer {
         double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
         Line line = new Line(originX, originY, destinationX, destinationY);
         line.setStroke(Color.RED);
-        line.setStrokeWidth(10.0);
+        line.setStrokeWidth(size);
         lines.add(line);
     }
 
@@ -206,6 +210,5 @@ public class GraphicalView implements Observer {
     public void update(Observable o, Object arg) {
 
     }
-
 
 }
