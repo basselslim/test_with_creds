@@ -111,7 +111,7 @@ public class GraphicalView implements Observer {
                       Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
                     for (Segment segment:path.getListSegments()) {
                         Intersection step = m_map.getListIntersections().get(segment.getDestination());
-                        drawLine(depart,step);
+                        drawLine(depart,step,StrokeSize*1.5);
                         depart = step;
                     }
                 }
