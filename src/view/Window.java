@@ -57,7 +57,7 @@ public class Window extends Application {
     }
 
     public void Zoom(ActionEvent event) {
-        Gview.Zoom();
+        Gview.zoom();
 
     }
 

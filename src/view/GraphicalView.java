@@ -65,7 +65,7 @@ public class GraphicalView implements Observer {
         StrokeSize = 0.0002*coeffX;
     }
 
-    public void Zoom() {
+    public void zoom() {
         if(zoomVal <3.0)
             zoomVal +=0.1;
 
