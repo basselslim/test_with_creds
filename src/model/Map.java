@@ -36,17 +36,12 @@ public class Map extends Observable {
     }
 
 
-    public void setListIntersection(HashMap<Long,Intersection> listIntersection) {
-        this.listIntersections = listIntersection;
-        listRequests = new ArrayList<>();
-        depot= new Depot();
 
-    }
 
     public void display(){
 
-        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
-            Intersection intersection = (Intersection) mapentry.getValue();
+        for (HashMap.Entry mapEntry : listIntersections.entrySet()) {
+            Intersection intersection = (Intersection) mapEntry.getValue();
             System.out.println(intersection);
 
             for ( Segment segment : intersection.getListSegments()) {

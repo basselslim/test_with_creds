@@ -15,6 +15,22 @@ public class Depot {
         this.departureTime=departureTime;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
     @Override
     public String toString() {
         return "Depot{" +
