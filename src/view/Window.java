@@ -6,23 +6,31 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Map;
 import model.Path;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class Window extends Application {
 
 
-    TextualView Tview = new TextualView();
+    TextualView Tview;
     Map map = new Map();
     GraphicalView Gview;
     Controller controller = new Controller(map);
@@ -86,12 +94,24 @@ public class Window extends Application {
 
         Gview.refreshMap();
 
-        Tview.createRequestList(map, myPane);
+        Tview = new TextualView(map, myPane);
     }
 
     public void Compute(ActionEvent event) {
         controller.computeOptimalTour();
         Gview.refreshMap();
+        Tview.refreshTable();
+    }
+
+    public void Export(ActionEvent event) {
+        TextInputDialog popup = new TextInputDialog();
+        popup.initStyle(StageStyle.UNDECORATED);
+        popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+        popup.setTitle("Duration");
+        popup.setHeaderText("");
+        popup.setContentText("Please enter the duration:");
+        Optional<String> result = popup.showAndWait();
+        result.ifPresent(duration -> System.out.println("Duration: " + duration));
     }
 
 }

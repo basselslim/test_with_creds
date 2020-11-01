@@ -42,7 +42,7 @@
                <Font size="21.0" />
             </font>
          </Button>
-         <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="1000.0" translateY="30.0">
+         <Button fx:id="btn_export" mnemonicParsing="false" onAction="#Export" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="1000.0" translateY="30.0">
             <font>
                <Font size="19.0" />
             </font>

@@ -17,16 +17,28 @@ import static java.lang.String.valueOf;
 
 public class TextualView implements Observer {
 
+    Map map;
+    Pane pane;
     TableView requestsTable;
     TableColumn<Intersection, Long> intersectionColumn;
     TableColumn<Intersection, Integer> durationColumn;
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
 
-    public TextualView() {
+    public TextualView(Map map, Pane pane) {
+        this.map = map;
+        this.pane = pane;
+        createRequestList();
     }
 
-    public void createRequestList(Map map, Pane myPane) {
+    public void refreshTable() {
+        if (!map.getTour().getListPaths().isEmpty()) {
+            sortRequestsTable();
+        }
+        System.out.println(map.getTour().getListPaths());
+    }
+
+    public void createRequestList() {
 
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
@@ -89,7 +101,21 @@ public class TextualView implements Observer {
             //requestsTable.getItems().indexOf()
         }
 
-        myPane.getChildren().add(requestsTable);
+        pane.getChildren().add(requestsTable);
+    }
+
+    public void sortRequestsTable() {
+        int newTableIndex = 0;
+        for (Path path: map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
+            long id = path.getIdDeparture();
+            int tableIndex = 0;
+            while (((Intersection)requestsTable.getItems().get(tableIndex)).getId() != id) {
+                tableIndex++;
+            }
+            Intersection point = (Intersection)requestsTable.getItems().remove(tableIndex);
+            requestsTable.getItems().add(newTableIndex, point);
+            newTableIndex++;
+        }
     }
 
     @Override
