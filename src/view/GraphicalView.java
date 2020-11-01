@@ -87,13 +87,17 @@ public class GraphicalView implements Observer {
 
         updateCoeff();
 
+        //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-
-            drawPoint(intersection, Color.BLACK, pointSize);
+            if(intersection.getId() == m_map.getDepot().getId())
+                drawPoint(intersection, Color.RED, pointSize*2); //draw Depot point
+            else
+                drawPoint(intersection, Color.BLACK, pointSize); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
+        //draw request points
         for (Request request : m_map.getListRequests()) {
 
             Intersection pickup = request.getPickUpPoint();
@@ -104,7 +108,7 @@ public class GraphicalView implements Observer {
 
         }
 
-
+            //draw best tour
             if(m_map.getTour() != null) {
                 System.out.println("ENTREE");
                 for (Path path: m_map.getTour().getListPaths()) {
@@ -117,7 +121,7 @@ public class GraphicalView implements Observer {
                 }
             }
 
-
+        //allow for objects to be moved
         mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {

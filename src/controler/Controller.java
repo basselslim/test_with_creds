@@ -64,5 +64,15 @@ public class Controller {
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
     }
+
+    protected void setCurrentState(State state){
+        currentState = state;
+    }
+
+    public void leftClick(long idIntersection){
+        //currentState.leftClick(this, map, listOfCommand);
+    }
+
+
 }
 
