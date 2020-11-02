@@ -22,6 +22,9 @@ public class MouseGestures {
     Controller controller;
     Color currentcolor;
 
+    protected double newTranslateX;
+    protected double newTranslateY;
+
     MouseGestures(Controller c) {
         controller = c;
     }
@@ -107,8 +110,8 @@ public class MouseGestures {
             double offsetX = t.getSceneX() - orgSceneX;
             double offsetY = t.getSceneY() - orgSceneY;
 
-            double newTranslateX = orgTranslateX + offsetX;
-            double newTranslateY = orgTranslateY + offsetY;
+            newTranslateX = orgTranslateX + offsetX;
+            newTranslateY = orgTranslateY + offsetY;
 
             if (circles.get(1).getCenterX() < 100) {
                 for (Circle circle : circles) {

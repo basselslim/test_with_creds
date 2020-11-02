@@ -1,12 +1,6 @@
 package view;
 
-import com.sun.source.tree.IntersectionTypeTree;
-import controler.XMLLoader;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -17,28 +11,33 @@ import model.Map;
 import java.util.*;
 
 /**
- * 
+ *
  */
 
 public class GraphicalView implements observer.Observer {
 
-    MouseGestures m_mg;
+    MouseGestures mouseGestures;
     Map m_map;
     Pane m_overlay;
     int screenX = 1000;
     int screenY = 800;
     double zoomVal = 1.0;
-    double coeffX = (double)screenX/(554.64-554.57)*zoomVal;
-    double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
-    double ordonneeX = 554.57*coeffX;
-    double ordonneeY = 132.71*coeffY;
+    double zoomStep = 0.1;
+    double zoomTranslateX = 0;
+    double zoomTranslateY = 0;
+    double coeffX;
+    double coeffY;
+    double ordonneeX;
+    double ordonneeY;
     double pointSize;
     double ReqpointSize;
     double StrokeSize;
 
-    public GraphicalView(Map map,Pane overlay, MouseGestures mg) {
+    public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
-        m_mg = mg;
+        mouseGestures = mg;
+        mg.newTranslateX = 0;
+        mg.newTranslateY = 0;
         m_overlay = overlay;
         m_overlay.setPrefWidth(screenX);
         m_overlay.setPrefHeight(screenY);
@@ -57,33 +56,59 @@ public class GraphicalView implements observer.Observer {
         double maxWidth = (m_map.findMaxLong() + 180) * (screenX / 360);
         double minWidth = (m_map.findMinLong() + 180) * (screenX / 360);
 
-        coeffX = (double)screenX/(maxWidth-minWidth)*zoomVal;
-        coeffY = -(double)screenY/(maxHeigth-minHeigth)*zoomVal;
+        coeffX = (double) screenX / (maxWidth - minWidth) * zoomVal;
+        coeffY = -(double) screenY / (maxHeigth - minHeigth) * zoomVal;
 
-        ordonneeX = minWidth*coeffX;
-        ordonneeY = maxHeigth*coeffY;
+        ordonneeX = minWidth * coeffX;
+        ordonneeY = maxHeigth * coeffY;
 
-        pointSize = 0.00035*coeffX;
-        ReqpointSize = 0.0007*coeffX;
-        StrokeSize = 0.00015*coeffX;
+        pointSize = 0.00035 * coeffX;
+        ReqpointSize = 0.0007 * coeffX;
+        StrokeSize = 0.00015 * coeffX;
+    }
+
+    private void updateTranslation(double XValue, double YValue) {
+        if (circles.get(1).getCenterX() < 100) {
+            for (Circle circle : circles) {
+                circle.setTranslateX(XValue);
+                circle.setTranslateY(YValue);
+            }
+
+            for (Line line : lines) {
+                line.setTranslateX(XValue);
+                line.setTranslateY(YValue);
+
+            }
+            for (Arrow arrow : arrows) {
+                arrow.setTranslateX(XValue);
+                arrow.setTranslateY(YValue);
+
+            }
+        }
     }
 
     public void zoom() {
-        if(zoomVal <3.0)
-            zoomVal +=0.1;
-
-        updateCoeff();
-        refreshMap();
-
+        if (zoomVal < 3.5) {
+            zoomVal += zoomStep;
+            updateCoeff();
+            zoomTranslateX = -screenX * zoomStep;
+            zoomTranslateY = -screenY * zoomStep;
+            refreshMap();
+            zoomTranslateX = 0;
+            zoomTranslateY = 0;
+        }
     }
 
     public void unZoom() {
-        if(zoomVal > 0.5)
-            zoomVal -=0.1;
-
-        updateCoeff();
-        refreshMap();
-
+        if (zoomVal > 0.5) {
+            zoomVal -= zoomStep;
+            updateCoeff();
+            zoomTranslateX = screenX * zoomStep;
+            zoomTranslateY = screenY * zoomStep;
+            refreshMap();
+            zoomTranslateX = 0;
+            zoomTranslateY = 0;
+        }
     }
 
     public void drawMap() {
@@ -129,7 +154,11 @@ public class GraphicalView implements observer.Observer {
         }
 
         //allow for objects to be moved
-        m_mg.makeMovable(m_overlay, circles, lines, arrows);
+        mouseGestures.makeMovable(m_overlay, circles, lines, arrows);
+
+        updateTranslation(mouseGestures.newTranslateX + zoomTranslateX, mouseGestures.newTranslateY + zoomTranslateY);
+        mouseGestures.newTranslateX += zoomTranslateX / 2;
+        mouseGestures.newTranslateY += zoomTranslateY / 2;
 
         for (Line line : lines) {
             m_overlay.getChildren().add(line);
@@ -148,7 +177,7 @@ public class GraphicalView implements observer.Observer {
     public void enableSelection() {
         for (Node node : m_overlay.getChildren()) {
             if (node instanceof Circle)
-                m_mg.makeClickable(node);
+                mouseGestures.makeClickable(node);
         }
     }
 
@@ -171,13 +200,13 @@ public class GraphicalView implements observer.Observer {
 
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
-        double originX = (origin.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
-        double originY = ((-1 * origin.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
+        double originX = longToPix(origin.getLongitude());
+        double originY = latToPix(origin.getLatitude());
 
         for (Segment segment : segmentList) {
             Intersection destination = m_map.getListIntersections().get(segment.getDestination());
-            double destinationX = (destination.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
-            double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
+            double destinationX = longToPix(destination.getLongitude());
+            double destinationY = latToPix(destination.getLatitude());
             Line line = new Line(originX, originY, destinationX, destinationY);
             line.setStrokeWidth(StrokeSize);
             lines.add(line);
@@ -186,11 +215,11 @@ public class GraphicalView implements observer.Observer {
 
     private void drawLine(Intersection origin, Intersection destination, double size) {
 
-        double originX = (origin.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
-        double originY = ((-1 * origin.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
-        double destinationX = (destination.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
-        double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
-        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY,pointSize);
+        double originX = longToPix(origin.getLongitude());
+        double originY = latToPix(origin.getLatitude());
+        double destinationX = longToPix(destination.getLongitude());
+        double destinationY = latToPix(destination.getLatitude());
+        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, pointSize);
         arrow.setFill(Color.RED);
         arrow.setStrokeWidth(StrokeSize);
         arrows.add(arrow);
@@ -198,12 +227,12 @@ public class GraphicalView implements observer.Observer {
 
     private void drawPoint(Intersection intersection, Color color, double size) {
 
-        double pointX = (intersection.getLongitude() + 180) * (screenX / 360)*coeffX - ordonneeX;
-        double pickupY = ((-1 * intersection.getLatitude()) + 90) * (screenY / 180)*coeffY - ordonneeY;
+        double pointX = longToPix(intersection.getLongitude());
+        double pickupY = latToPix(intersection.getLatitude());
 
         Circle circle = new Circle(size);
         circle.setStroke(Color.BLACK);
-        circle.setFill(color.deriveColor(1, 1, 1, 0.9));
+        circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setRotate(0.0);
         circle.setUserData(intersection.getId());
@@ -212,12 +241,20 @@ public class GraphicalView implements observer.Observer {
 
     public List<Intersection> getSelectedIntersection() {
         List<Intersection> listIntersections = new ArrayList<Intersection>();
-        for (Circle circle: circles) {
-            if(circle.getRotate()==1.0)
+        for (Circle circle : circles) {
+            if (circle.getRotate() == 1.0)
                 listIntersections.add(m_map.getListIntersections().get(circle.getUserData()));
 
         }
         return listIntersections;
+    }
+
+    private double latToPix(double lat) {
+        return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;
+    }
+
+    private double longToPix(double lon) {
+        return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
     }
 
     @Override
