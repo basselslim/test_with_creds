@@ -6,6 +6,7 @@ import java.util.*;
  * check for java beans for Observable
  */
 public class Map extends Observable {
+
     /**
      *
      */
@@ -13,8 +14,7 @@ public class Map extends Observable {
 
     protected HashMap<Long,Intersection> listIntersections;
 
-    protected HashMap<Long, List<Path>> mapSmallestPaths;
-    
+    protected Tour deliveryTour;
     protected Depot depot;
 
 
@@ -26,6 +26,7 @@ public class Map extends Observable {
         listIntersections = new HashMap<Long,Intersection>();
         listRequests = new ArrayList<>();
         depot= new Depot();
+        deliveryTour = new Tour();
     }
 
 
@@ -144,12 +145,12 @@ public class Map extends Observable {
         this.depot = depot;
     }
 
-    public HashMap<Long, List<Path>> getMapSmallestPaths() {
-        return mapSmallestPaths;
+    public Tour getTour() {
+        return deliveryTour;
     }
 
-    public void setMapSmallestPaths(HashMap<Long, List<Path>> mapSmallestPaths) {
-        this.mapSmallestPaths = mapSmallestPaths;
+    public void setDeliveryTour(Tour newTour) {
+        this.deliveryTour = newTour;
     }
 
 

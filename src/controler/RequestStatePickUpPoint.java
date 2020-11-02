@@ -1,5 +1,7 @@
 package controler;
 
+import model.Intersection;
+import model.Map;
 import model.Request;
 import view.Window;
 
@@ -16,7 +18,8 @@ public class RequestStatePickUpPoint implements State {
     public RequestStatePickUpPoint() {
     }
 
-    public void leftClick(Controller controler, Window window, Map map, ListOfCommand listOfCommand, Request r) {
+    @Override
+    public void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i) {
         
     }
 }

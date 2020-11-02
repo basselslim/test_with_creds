@@ -19,9 +19,10 @@ import java.util.*;
 /**
  * 
  */
+
 public class GraphicalView implements Observer {
 
-    MouseGestures mg;
+    MouseGestures m_mg;
     Map m_map;
     Pane m_overlay;
     int screenX = 1200;
@@ -35,9 +36,9 @@ public class GraphicalView implements Observer {
     double ReqpointSize = 15.0*zoomVal;
     double StrokeSize = 4.0*zoomVal;
 
-    public GraphicalView(Map map,Pane overlay) {
+    public GraphicalView(Map map,Pane overlay, MouseGestures mg) {
         m_map = map;
-        mg = new MouseGestures();
+        m_mg = mg;
         m_overlay = overlay;
         m_overlay.setPrefWidth(screenX);
         m_overlay.setPrefHeight(screenY);
@@ -87,13 +88,17 @@ public class GraphicalView implements Observer {
 
         updateCoeff();
 
+        //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-
-            drawPoint(intersection, Color.BLACK, pointSize);
+            if(intersection.getId() == m_map.getDepot().getId())
+                drawPoint(intersection, Color.RED, pointSize*2); //draw Depot point
+            else
+                drawPoint(intersection, Color.BLACK, pointSize); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
+        //draw request points
         for (Request request : m_map.getListRequests()) {
 
             Intersection pickup = request.getPickUpPoint();
@@ -104,26 +109,21 @@ public class GraphicalView implements Observer {
 
         }
 
-
-        if (m_map.getMapSmallestPaths() != null) {
-            System.out.println("ENTREE");
-            for (HashMap.Entry mapentry : m_map.getMapSmallestPaths().entrySet()) {
-                List<Path> ListPaths = (List<Path>) mapentry.getValue();
-                for (Path path : ListPaths) {
-                    Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
-                    if(depart != null) {
-                        for (Segment segment : path.getListSegments()) {
-                            Intersection step = m_map.getListIntersections().get(segment.getDestination());
-                            drawLine(depart, step, StrokeSize * 1.5);
-                            depart = step;
-                        }
+            //draw best tour
+            if(m_map.getTour() != null) {
+                System.out.println("ENTREE");
+                for (Path path: m_map.getTour().getListPaths()) {
+                      Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
+                    for (Segment segment:path.getListSegments()) {
+                        Intersection step = m_map.getListIntersections().get(segment.getDestination());
+                        drawLine(depart,step,StrokeSize*1.5);
+                        depart = step;
                     }
                 }
             }
-        }
 
-
-        mg.makeMovable(m_overlay, circles, lines);
+        //allow for objects to be moved
+        m_mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {
             m_overlay.getChildren().add(line);
@@ -138,7 +138,7 @@ public class GraphicalView implements Observer {
     public void enableSelection() {
         for (Node node:m_overlay.getChildren()) {
             if(node instanceof Circle)
-                mg.makeClickable(node);
+                m_mg.makeClickable(node);
         }
     }
 
