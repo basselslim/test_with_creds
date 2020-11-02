@@ -2,8 +2,10 @@ package controler;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.FileChooser;
+import model.Intersection;
 import model.Map;
 import model.Path;
+import model.Request;
 
 import java.io.File;
 import java.util.*;
@@ -70,8 +72,15 @@ public class Controller {
     }
 
     public void leftClick(long idIntersection){
-        //currentState.leftClick(this, map, listOfCommand);
+        Intersection intersection = map.getListIntersections().get(idIntersection);
+        currentState.leftClick(this, map, listOfCommand, intersection);
     }
+
+    public void addDuration(int duration) {
+
+    }
+
+
 
 
 }
