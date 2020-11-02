@@ -1,6 +1,6 @@
 package view;
 
-import controler.Algorithme;
+import controler.Algorithm;
 import controler.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
