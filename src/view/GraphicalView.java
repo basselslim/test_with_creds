@@ -20,7 +20,7 @@ import java.util.*;
  * 
  */
 
-public class GraphicalView implements Observer {
+public class GraphicalView implements observer.Observer {
 
     MouseGestures m_mg;
     Map m_map;
@@ -207,8 +207,7 @@ public class GraphicalView implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-
+    public void update(observer.Observable observed, Object arg) {
+        refreshMap();
     }
-
 }
