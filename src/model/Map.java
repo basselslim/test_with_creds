@@ -127,6 +127,13 @@ public class Map extends Observable {
         this.listRequests = listRequests;
     }
 
+    public void addRequest(Request r) {
+        this.listRequests.add(r);
+    }
+
+    public void removeRequest(Request r) {
+        this.listRequests.remove(r);
+    }
 
     public HashMap<Long,Intersection> getListIntersections() {
         return listIntersections;
