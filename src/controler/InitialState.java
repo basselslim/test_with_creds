@@ -20,8 +20,9 @@ public class InitialState implements State {
 
     @Override
     public void addRequest(Controller controller){
+        controller.requestStatePickUpPoint.entryAction(controller);
+        controller.setCurrentState(controller.requestStatePickUpPoint);
 
-        controller.setCurrentState(controller.requestStateDeliveryPoint);
     }
 
 

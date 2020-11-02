@@ -88,11 +88,13 @@ public class Window extends Application {
 
         //Load the map
         controller.LoadMap(event);
+        controller.setTextArea(TextArea);
+        controller.setGview(Gview);
 
         //Draw the map
         Gview.refreshMap();
 
-        Gview.enableSelection();
+
         //reactivate Requests button
         btn_load_requests.setDisable(false);
         TextArea.setText("Please load a request list");
@@ -104,6 +106,12 @@ public class Window extends Application {
         Gview.refreshMap();
 
         Tview = new TextualView(map, myPane);
+    }
+
+    public void addRequest(ActionEvent event) {
+        controller.addRequest();
+        controller.confirmRequest(); //TEMPORAIRE
+
     }
 
     public void Compute(ActionEvent event) {
@@ -120,7 +128,8 @@ public class Window extends Application {
         popup.setHeaderText("");
         popup.setContentText("Please enter the duration:");
         Optional<String> result = popup.showAndWait();
-        result.ifPresent(duration -> System.out.println("Duration: " + duration));
+        controller.addDuration(Integer.valueOf(result.get()));
+
     }
 
 }
