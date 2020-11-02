@@ -62,7 +62,7 @@ public class Controller {
     }
 
     public void computeOptimalTour () {
-        Algorithme algo = new Algorithme(map);
+        Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
     }
