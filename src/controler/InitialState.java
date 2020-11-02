@@ -18,8 +18,8 @@ public class InitialState implements State {
     public InitialState() {
     }
 
-    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
-
+    @Override
+    public void addRequest(Controller controller){
 
         controller.setCurrentState(controller.requestStateDeliveryPoint);
     }

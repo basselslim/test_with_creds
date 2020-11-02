@@ -18,6 +18,7 @@ public class RequestStatePickUpPoint implements State {
     public RequestStatePickUpPoint() {
     }
 
+    @Override
     public void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i) {
         
     }
