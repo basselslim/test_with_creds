@@ -67,6 +67,15 @@ public class Controller {
         algo.computeOptimalTour(mapSmallestPaths);
     }
 
+    public void ExportRoadMap (ActionEvent event) {
+        FileChooser exportFileChooser = new FileChooser();
+        exportFileChooser.setTitle("Export RoadMap");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        exportFileChooser.getExtensionFilters().add(extFilter);
+        File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
+        System.out.println(exportLocation);
+    }
+
     protected void setCurrentState(State state){
         currentState = state;
     }
