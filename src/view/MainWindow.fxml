@@ -42,12 +42,12 @@
    <HBox prefHeight="100.0" prefWidth="200.0">
       <children>
          <TextArea fx:id="TextArea" maxHeight="50.0" prefHeight="30.0" prefWidth="500.0" text="Please load a map" translateX="10.0" translateY="10.0" />
-         <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#Compute" prefHeight="40.0" prefWidth="150.0" text="Compute" translateX="550.0" translateY="30.0">
+         <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#Compute" prefHeight="40.0" prefWidth="150.0" text="Compute" translateX="500.0" translateY="30.0">
             <font>
                <Font size="17.0" />
             </font>
          </Button>
-         <Button fx:id="btn_export" mnemonicParsing="false" onAction="#Export" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="1000.0" translateY="30.0">
+         <Button fx:id="btn_export" mnemonicParsing="false" onAction="#Export" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="550.0" translateY="30.0">
             <font>
                <Font size="17.0" />
             </font>
