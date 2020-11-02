@@ -69,6 +69,7 @@ public class Map extends Observable {
 
     public void clearMap(){
         listIntersections.clear();
+        deliveryTour.getListPaths().clear();
     }
 
     public void clearRequests(){
