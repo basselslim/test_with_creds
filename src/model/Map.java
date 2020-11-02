@@ -15,6 +15,9 @@ public class Map extends Observable {
     protected HashMap<Long,Intersection> listIntersections;
 
     protected Tour deliveryTour;
+
+    protected HashMap<Long,Intersection> listRequestsIntersection;
+
     protected Depot depot;
 
 
@@ -113,6 +116,26 @@ public class Map extends Observable {
                 max = intersection.getLongitude();
         }
         return max;
+    }
+
+    public void generateHashMapOfRequestsIntersection(){
+        List<Intersection> listPoints = new ArrayList<>();
+
+        Intersection point = this.getListIntersections().get(this.getDepot().getId());
+        if (point != null) {
+            listPoints.add(point);
+        }
+
+        for (Request r: this.listRequests) {
+            point = this.getListIntersections().get(r.getDeliveryPoint().getId());
+            if (!listPoints.contains(point) && point != null) {
+                listPoints.add(point);
+            }
+            point = this.getListIntersections().get(r.getPickUpPoint().getId());
+            if (!listPoints.contains(point) && point != null) {
+                listPoints.add(point);
+            }
+        }
     }
 
     /**
