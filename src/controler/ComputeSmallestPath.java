@@ -50,7 +50,7 @@ public class ComputeSmallestPath {
         return null;
     }
 
-    public double computeCost(Intersection from, Intersection to) {
+    protected double computeCost(Intersection from, Intersection to) {
         double R = 6372.8; // Earth's Radius, in kilometers
 
         double dLat = Math.toRadians(to.getLatitude() - from.getLatitude());
