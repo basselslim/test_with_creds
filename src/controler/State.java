@@ -12,5 +12,9 @@ import java.util.*;
  */
 public interface State {
 
-    public void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i);
+    public default void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i){};
+
+    public default void addDuration(int duration){};
+
+    public default void addRequest(Controller controller){};
 }

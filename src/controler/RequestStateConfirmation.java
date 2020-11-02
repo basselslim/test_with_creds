@@ -18,6 +18,7 @@ public class RequestStateConfirmation implements State {
     public RequestStateConfirmation() {
     }
 
+    @Override
     public void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i) {
 
     }

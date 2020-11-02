@@ -77,7 +77,11 @@ public class Controller {
     }
 
     public void addDuration(int duration) {
+        currentState.addDuration(duration);
+    }
 
+    public void addRequest(){
+        currentState.addRequest(this);
     }
 
 
