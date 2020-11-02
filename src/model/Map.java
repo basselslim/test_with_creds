@@ -122,7 +122,6 @@ public class Map extends observer.Observable {
     }
 
     //INTERSECTIONS
-    public HashMap<Long, Intersection> getListIntersections() {
     public void addRequest(Request r) {
         this.listRequests.add(r);
     }
