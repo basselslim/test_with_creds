@@ -29,14 +29,18 @@ public class RequestStateDeliveryPoint implements State {
         } else {
             DeliveryPoint delivery = new DeliveryPoint(i,0);
             request.setDeliveryPoint(delivery);
-            controller.Gview.refreshMap();
+
             controller.TextMessage.setText(("Enter duration"));
+            controller.addDuration(controller.Tview.durationPopup());
+
         }
     }
 
     @Override
     public void addDuration(int duration, Controller controller){
         request.getDeliveryPoint().setDeliveryDuration(duration);
+        controller.Gview.disableSelection();
+
         controller.requestStateConfirmation.entryAction(request, controller);
         controller.setCurrentState(controller.requestStateConfirmation);
 

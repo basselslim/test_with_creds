@@ -48,6 +48,8 @@ public class GraphicalView implements observer.Observer {
 
     public static List<Line> lines = new ArrayList<Line>();
 
+    public static List<Arrow> arrows = new ArrayList<Arrow>();
+
     private void updateCoeff() {
         double maxHeigth = ((-1 * m_map.findMaxLat()) + 90) * (screenY / 180);
         double minHeigth = ((-1 * m_map.findMinLat()) + 90) * (screenY / 180);
@@ -127,7 +129,7 @@ public class GraphicalView implements observer.Observer {
         }
 
         //allow for objects to be moved
-        m_mg.makeMovable(m_overlay, circles, lines);
+        m_mg.makeMovable(m_overlay, circles, lines, arrows);
 
         for (Line line : lines) {
             m_overlay.getChildren().add(line);
@@ -135,6 +137,10 @@ public class GraphicalView implements observer.Observer {
 
         for (Circle circle : circles) {
             m_overlay.getChildren().add(circle);
+        }
+
+        for (Arrow arrow : arrows) {
+            m_overlay.getChildren().add(arrow);
         }
 
     }
@@ -150,14 +156,18 @@ public class GraphicalView implements observer.Observer {
         m_overlay.getChildren().clear();
         lines.clear();
         circles.clear();
+        arrows.clear();
         drawMap();
     }
 
-    public void clearMap() {
+    public void disableSelection() {
         m_overlay.getChildren().clear();
         lines.clear();
         circles.clear();
+        arrows.clear();
+        drawMap();
     }
+
 
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
@@ -180,10 +190,10 @@ public class GraphicalView implements observer.Observer {
         double originY = ((-1 * origin.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
         double destinationX = (destination.getLongitude() + 180) * (screenX / 360) * coeffX - ordonneeX;
         double destinationY = ((-1 * destination.getLatitude()) + 90) * (screenY / 180) * coeffY - ordonneeY;
-        Line line = new Line(originX, originY, destinationX, destinationY);
-        line.setStroke(Color.RED);
-        line.setStrokeWidth(size);
-        lines.add(line);
+        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY,pointSize);
+        arrow.setFill(Color.RED);
+        arrow.setStrokeWidth(StrokeSize);
+        arrows.add(arrow);
     }
 
     private void drawPoint(Intersection intersection, Color color, double size) {

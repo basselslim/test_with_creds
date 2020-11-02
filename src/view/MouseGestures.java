@@ -18,9 +18,11 @@ public class MouseGestures {
     double orgTranslateX, orgTranslateY;
     List<Circle> circles;
     List<Line> lines;
+    List<Arrow> arrows;
     Controller controller;
+    Color currentcolor;
 
-    MouseGestures(Controller c){
+    MouseGestures(Controller c) {
         controller = c;
     }
 
@@ -30,9 +32,10 @@ public class MouseGestures {
         node.setOnMouseClicked(circleOnMouseClickedEventHandler);
     }
 
-    public void makeMovable(Node node, List<Circle> circles, List<Line> lines) {
+    public void makeMovable(Node node, List<Circle> circles, List<Line> lines, List<Arrow> arrows) {
         this.lines = lines;
         this.circles = circles;
+        this.arrows = arrows;
         node.setOnMouseDragged(circleOnMouseDraggedEventHandler);
         node.setOnMousePressed(circleOnMousePressedEventHandler);
     }
@@ -43,9 +46,10 @@ public class MouseGestures {
             if (t.getSource() instanceof Circle) {
                 Circle circle = ((Circle) (t.getSource()));
                 circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-                circle.setRadius(circle.getRadius()*2);
+                circle.setStrokeWidth(circle.getStrokeWidth() * 2);
+                circle.setStroke(Color.RED);
                 System.out.println(circle.getUserData());
-                controller.leftClick((long)circle.getUserData());
+                controller.leftClick((long) circle.getUserData());
             }
         }
     };
@@ -59,8 +63,8 @@ public class MouseGestures {
             if (t.getSource() instanceof Circle) {
 
                 Circle p = ((Circle) (t.getSource()));
-
-                p.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
+                currentcolor = (Color) p.getFill();
+                p.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
 
             }
         }
@@ -76,7 +80,7 @@ public class MouseGestures {
 
                 Circle p = ((Circle) (t.getSource()));
                 if (p.getRotate() != 1.0)
-                    p.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
+                    p.setFill(currentcolor);
 
             }
         }
@@ -115,6 +119,11 @@ public class MouseGestures {
                 for (Line line : lines) {
                     line.setTranslateX(newTranslateX);
                     line.setTranslateY(newTranslateY);
+
+                }
+                for (Arrow arrow : arrows) {
+                    arrow.setTranslateX(newTranslateX);
+                    arrow.setTranslateY(newTranslateY);
 
                 }
             }

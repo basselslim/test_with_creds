@@ -8,6 +8,7 @@ import model.Map;
 import model.Path;
 import model.Request;
 import view.GraphicalView;
+import view.TextualView;
 
 import java.io.File;
 import java.util.*;
@@ -25,6 +26,7 @@ public class Controller {
 
 
     protected GraphicalView Gview;
+    protected TextualView Tview;
     protected TextArea TextMessage;
 
     public void setTextArea(TextArea textArea) {
@@ -33,6 +35,10 @@ public class Controller {
 
     public void setGview(GraphicalView gview) {
         this.Gview = gview;
+    }
+
+    public void setTview(TextualView tview) {
+        this.Tview = tview;
     }
 
 
@@ -99,7 +105,6 @@ public class Controller {
     public void confirmRequest(){
         currentState.confirmRequest(this,map);
     }
-
 
 
 

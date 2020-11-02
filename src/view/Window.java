@@ -78,19 +78,18 @@ public class Window extends Application {
     }
 
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+        Gview = new GraphicalView(map, overlay, mg);
+        Tview = new TextualView(map, myPane);
+        controller.setTextArea(TextArea);
+        controller.setGview(Gview);
+        controller.setTview(Tview);
         map.addObserver(Gview);
 
         //Load the map
         controller.LoadMap(event);
 
-        controller.setTextArea(TextArea);
-        controller.setGview(Gview);
-
         //Draw the map
         Gview.refreshMap();
-
-
 
         //reactivate Requests button
         btn_load_requests.setDisable(false);
@@ -98,7 +97,6 @@ public class Window extends Application {
     }
 
     public void LoadRequests(ActionEvent event) {
-        Tview = new TextualView(map, myPane);
         map.addObserver(Tview);
         controller.LoadRequests(event);
     }
@@ -114,14 +112,6 @@ public class Window extends Application {
     }
 
     public void Export(ActionEvent event) {
-        TextInputDialog popup = new TextInputDialog();
-        popup.initStyle(StageStyle.UNDECORATED);
-        popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
-        popup.setTitle("Duration");
-        popup.setHeaderText("");
-        popup.setContentText("Please enter the duration:");
-        Optional<String> result = popup.showAndWait();
-        controller.addDuration(Integer.valueOf(result.get()));
 
     }
 
