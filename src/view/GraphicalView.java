@@ -19,9 +19,10 @@ import java.util.*;
 /**
  * 
  */
+
 public class GraphicalView implements Observer {
 
-    MouseGestures mg;
+    MouseGestures m_mg;
     Map m_map;
     Pane m_overlay;
     int screenX = 1200;
@@ -35,9 +36,9 @@ public class GraphicalView implements Observer {
     double ReqpointSize = 15.0*zoomVal;
     double StrokeSize = 4.0*zoomVal;
 
-    public GraphicalView(Map map,Pane overlay) {
+    public GraphicalView(Map map,Pane overlay, MouseGestures mg) {
         m_map = map;
-        mg = new MouseGestures();
+        m_mg = mg;
         m_overlay = overlay;
         m_overlay.setPrefWidth(screenX);
         m_overlay.setPrefHeight(screenY);
@@ -122,7 +123,7 @@ public class GraphicalView implements Observer {
             }
 
         //allow for objects to be moved
-        mg.makeMovable(m_overlay, circles, lines);
+        m_mg.makeMovable(m_overlay, circles, lines);
 
         for (Line line:lines) {
             m_overlay.getChildren().add(line);
@@ -137,7 +138,7 @@ public class GraphicalView implements Observer {
     public void enableSelection() {
         for (Node node:m_overlay.getChildren()) {
             if(node instanceof Circle)
-                mg.makeClickable(node);
+                m_mg.makeClickable(node);
         }
     }
 

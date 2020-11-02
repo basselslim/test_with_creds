@@ -1,5 +1,7 @@
 package controler;
 
+import model.Intersection;
+import model.Map;
 import model.Request;
 import view.Window;
 
@@ -15,7 +17,7 @@ public class RequestStateDeliveryPoint implements State {
      */
     public RequestStateDeliveryPoint() {
     }
-    public void leftClick(Controller controler, Window window, Map map, ListOfCommand listOfCommand, Request r)
+    public void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i)
     {
 
     }

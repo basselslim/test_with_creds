@@ -1,5 +1,6 @@
 package view;
 
+import controler.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -9,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import javax.sound.midi.SysexMessage;
 import java.util.List;
 
 public class MouseGestures {
@@ -16,6 +18,11 @@ public class MouseGestures {
     double orgTranslateX, orgTranslateY;
     List<Circle> circles;
     List<Line> lines;
+    Controller controller;
+
+    MouseGestures(Controller c){
+        controller = c;
+    }
 
     public void makeClickable(Node node) {
         node.setOnMouseEntered(circleOnMouseEnteredEventHandler);
@@ -37,10 +44,8 @@ public class MouseGestures {
                 Circle circle = ((Circle) (t.getSource()));
                 circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
 
-                if (circle.getRotate() != 1.0) {
-                    circle.setRadius(circle.getRadius() * 2);
-                    circle.setRotate(1.0);
-                }
+                System.out.println(circle.getUserData());
+                controller.leftClick((long)circle.getUserData());
             }
         }
     };
