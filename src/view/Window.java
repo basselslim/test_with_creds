@@ -1,6 +1,6 @@
 package view;
 
-import controler.Algorithme;
+import controler.Algorithm;
 import controler.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -58,13 +58,9 @@ public class Window extends Application {
 
         var scene = new Scene(root, 1650, 1050, Color.WHITE);
 
-
-
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);
         stage.show();
-
-
     }
 
     public static void main(String[] args) {
@@ -82,17 +78,18 @@ public class Window extends Application {
     }
 
     public void LoadMap(ActionEvent event) {
-
-
         Gview = new GraphicalView(map, overlay, mg); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+        map.addObserver(Gview);
 
         //Load the map
         controller.LoadMap(event);
+
         controller.setTextArea(TextArea);
         controller.setGview(Gview);
 
         //Draw the map
         Gview.refreshMap();
+
 
 
         //reactivate Requests button
@@ -101,11 +98,9 @@ public class Window extends Application {
     }
 
     public void LoadRequests(ActionEvent event) {
-        controller.LoadRequests(event);
-
-        Gview.refreshMap();
-
         Tview = new TextualView(map, myPane);
+        map.addObserver(Tview);
+        controller.LoadRequests(event);
     }
 
     public void addRequest(ActionEvent event) {
@@ -116,8 +111,6 @@ public class Window extends Application {
 
     public void Compute(ActionEvent event) {
         controller.computeOptimalTour();
-        Gview.refreshMap();
-        Tview.refreshTable();
     }
 
     public void Export(ActionEvent event) {

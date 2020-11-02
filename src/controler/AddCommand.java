@@ -6,7 +6,7 @@ import model.Request;
 public class AddCommand implements Command {
 
     private Map map;
-    private Request requet;
+    private Request request;
 
     /**
      * Create the command which adds the request r to the plan m
@@ -15,16 +15,16 @@ public class AddCommand implements Command {
      */
     public AddCommand(Map m, Request r){
         this.map = m;
-        this.requet = r;
+        this.request = r;
     }
 
     @Override
     public void doCommand() {
-        //map.add(requet);
+        map.addRequest(request);
     }
 
     @Override
     public void undoCommand() {
-        //map.remove(requet;
+        map.removeRequest(request);
     }
 }

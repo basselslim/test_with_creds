@@ -3,14 +3,14 @@ import model.*;
 import model.Map;
 import java.util.*;
 
-public class Algorithme {
+public class Algorithm {
 
     protected Map map;
     protected List<Request> listRequests;
     protected final long timeZero;
     protected final long TIMEOUT = 20000;
 
-    public Algorithme(Map map) {
+    public Algorithm(Map map) {
         this.map = map;
         this.listRequests = map.getListRequests();
         this.timeZero = System.currentTimeMillis();

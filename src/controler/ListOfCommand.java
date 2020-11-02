@@ -2,8 +2,8 @@ package controler;
 import java.util.LinkedList;
 
 public class ListOfCommand {
-    private LinkedList<Command> list;
-    private int currentIndex;
+    protected LinkedList<Command> list;
+    protected int currentIndex;
 
     public ListOfCommand(){
         currentIndex = -1;
