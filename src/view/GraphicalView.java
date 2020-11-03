@@ -62,7 +62,7 @@ public class GraphicalView implements observer.Observer {
         ordonneeX = minWidth * coeffX;
         ordonneeY = maxHeigth * coeffY;
 
-        pointSize = 0.00035 * coeffX;
+        pointSize = 0.00030 * coeffX;
         ReqpointSize = 0.0007 * coeffX;
         StrokeSize = 0.00015 * coeffX;
     }
@@ -118,10 +118,7 @@ public class GraphicalView implements observer.Observer {
         //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            if (intersection.getId() == m_map.getDepot().getId())
-                drawPoint(intersection, Color.RED, pointSize * 2); //draw Depot point
-            else
-                drawPoint(intersection, Color.BLACK, pointSize); //draw standard point
+            drawPoint(intersection, Color.BLACK, pointSize); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
@@ -132,7 +129,9 @@ public class GraphicalView implements observer.Observer {
             Intersection delivery = request.getDeliveryPoint();
             Random generator = new Random(pickup.getId());
             int rand = generator.nextInt(150);
-            Color color = Color.rgb((int) (rand + 100), (int) (150 - rand + 100), (int) (75 - rand + 100));
+            int rand2 = generator.nextInt(150);
+            int rand3 = generator.nextInt(150);
+            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
             drawPoint(pickup, color, ReqpointSize);
             drawPoint(delivery, color, ReqpointSize);
 
@@ -164,9 +163,18 @@ public class GraphicalView implements observer.Observer {
             m_overlay.getChildren().add(line);
         }
 
+        Circle depot = new Circle();
         for (Circle circle : circles) {
-            m_overlay.getChildren().add(circle);
+            if ((long) circle.getUserData() == m_map.getDepot().getId()) {
+                depot = circle;
+                depot.setRadius(pointSize * 2);
+                depot.setFill(Color.RED);
+                depot.setStroke(Color.BLACK);
+                depot.setStrokeWidth(StrokeSize * 1.5);
+            } else
+                m_overlay.getChildren().add(circle);
         }
+        m_overlay.getChildren().add(depot);
 
         for (Arrow arrow : arrows) {
             m_overlay.getChildren().add(arrow);
@@ -221,7 +229,7 @@ public class GraphicalView implements observer.Observer {
         double destinationY = latToPix(destination.getLatitude());
         Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, pointSize);
         arrow.setFill(Color.RED);
-        arrow.setStrokeWidth(StrokeSize);
+        arrow.setStrokeWidth(StrokeSize/2);
         arrows.add(arrow);
     }
 
