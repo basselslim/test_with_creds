@@ -73,34 +73,37 @@ public class Tour extends Observable {
 
         for (Request r: this.map.getListRequests()) {
             point = map.getListIntersections().get(r.getDeliveryPoint().getId());
-            if (!this.listRequestsIntersection.containsValue(point) && point != null) {
+            System.out.println("Delivery point trouvé"+point);
+            if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getDeliveryPoint().getId());
                 if (intermediateList == null) {
                     intermediateList= new ArrayList<Intersection>();
                 }
                 intermediateList.add(point);
+                System.out.println("intermediate list added for delivery points"+intermediateList);
                 this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
             }
             point = map.getListIntersections().get(r.getPickUpPoint().getId());
-            if (!this.listRequestsIntersection.containsValue(point) && point != null) {
+            System.out.println("Pick-up point trouvé"+point);
+            if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getPickUpPoint().getId());
                 if (intermediateList == null) {
                     intermediateList= new ArrayList<Intersection>();
                 }
                 intermediateList.add(point);
-                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
+                this.listRequestsIntersection.put(r.getPickUpPoint().getId(),intermediateList);
             }
         }
 
-        //for (long i : this.listRequestsIntersection.keySet())
-        //    System.out.println(this.listRequestsIntersection.get(i));
+        System.out.println("Etat de la liste");
+        for (long i : this.listRequestsIntersection.keySet())
+            System.out.println(this.listRequestsIntersection.get(i));
     }
 
     public String writeTextForInterestPoint(long id)
     {
         String text = "";
-        this.groupRequestIntersections();
-        System.out.println(this.listRequestsIntersection.get(id));
+        System.out.println(" État  de la liste d'intersection " +id+ this.listRequestsIntersection.get(id));
         for (Intersection i : this.listRequestsIntersection.get(id)) {
             Intersection interestPoint = i;
             if (interestPoint instanceof PickUpPoint) {
@@ -128,6 +131,7 @@ public class Tour extends Observable {
                 String SegmentDescription = "   "+ i +"."+j+": Take " + s.getStreetName() + " in direction of " + s.getDestination() + "\n\n";
                 totalText+=SegmentDescription;
             }
+            System.out.println("IdArrival is :" + p.idArrival);
             totalText+=this.writeTextForInterestPoint(p.idArrival);
             totalText+="\n";
 
