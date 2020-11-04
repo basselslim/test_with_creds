@@ -131,11 +131,10 @@ public class Tour extends Observable {
                 String SegmentDescription = "   "+ i +"."+j+": Take " + s.getStreetName() + " in direction of " + s.getDestination() + "\n\n";
                 totalText+=SegmentDescription;
             }
-            System.out.println("IdArrival is :" + p.idArrival);
-            totalText+=this.writeTextForInterestPoint(p.idArrival);
             totalText+="\n";
 
         }
+        totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
         return totalText;
     }
 

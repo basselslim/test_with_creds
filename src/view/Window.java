@@ -114,12 +114,11 @@ public class Window extends Application {
 
         PickUpPoint i1 = new PickUpPoint(1,0.0,0.0,10);
         PickUpPoint i2 = new PickUpPoint(2,0.0,0.0,10);
-        DeliveryPoint i3 = new DeliveryPoint(3,0.0,0.0,10);
         DeliveryPoint i4 = new DeliveryPoint(4,0.0,0.0,10);
         Intersection i0 = new Intersection(0,0.0,0.0);
         Depot d = new Depot(0,"09:00");
 
-        Request r1 = new Request(i1,i3);
+        Request r1 = new Request(i1,i4);
         Request r2 = new Request(i2,i4);
         ArrayList<Request> listRequest = new ArrayList<Request>();
         listRequest.add(r1);
@@ -129,7 +128,7 @@ public class Window extends Application {
         listIntersec.put(0l,i0);
         listIntersec.put(1l,i1);
         listIntersec.put(2l,i2);
-        listIntersec.put(3l,i3);
+        listIntersec.put(3l,i4);
         listIntersec.put(4l,i4);
 
 
