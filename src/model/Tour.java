@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * 
+ *
  */
 public class Tour extends Observable {
     /**
@@ -17,13 +17,12 @@ public class Tour extends Observable {
     protected List<int[]> listTimes;
     protected Map map;
     protected String roadMapFilePath;
-    protected HashMap<Long,Intersection> listRequestsIntersection;
+    protected HashMap<Long,ArrayList<Intersection>> listRequestsIntersection;
     /**
      * Default constructor
      *
      */
     public Tour(){
-
     }
 
     public Tour(Map map) {
@@ -31,7 +30,7 @@ public class Tour extends Observable {
         this.listTimes = new LinkedList<int[]>();
         this.tourLength = 0;
         this.map = map;
-        this.listRequestsIntersection = new HashMap<Long,Intersection>();
+        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
     }
 
     public Tour(Map map, List<Path> listPaths) {
@@ -42,7 +41,7 @@ public class Tour extends Observable {
         for(Path p: listPaths) {
             this.tourLength += p.getPathLength();
         }
-        this.listRequestsIntersection = new HashMap<Long,Intersection>();
+        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
         populateListTimes();
     }
     /**
@@ -63,22 +62,56 @@ public class Tour extends Observable {
 
         point = map.getListIntersections().get(map.getDepot().getId());
         if (point != null) {
-            this.listRequestsIntersection.put(map.getDepot().getId(),point);
+
+            ArrayList intermediateList = this.listRequestsIntersection.get(map.getDepot().getId());
+            if (intermediateList == null) {
+                intermediateList= new ArrayList<Intersection>();
+            }
+            intermediateList.add(point);
+            this.listRequestsIntersection.put(map.getDepot().getId(),intermediateList);
         }
 
         for (Request r: this.map.getListRequests()) {
             point = map.getListIntersections().get(r.getDeliveryPoint().getId());
             if (!this.listRequestsIntersection.containsValue(point) && point != null) {
-                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),point);
+                ArrayList intermediateList = this.listRequestsIntersection.get(r.getDeliveryPoint().getId());
+                if (intermediateList == null) {
+                    intermediateList= new ArrayList<Intersection>();
+                }
+                intermediateList.add(point);
+                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
             }
             point = map.getListIntersections().get(r.getPickUpPoint().getId());
             if (!this.listRequestsIntersection.containsValue(point) && point != null) {
-                this.listRequestsIntersection.put(r.getPickUpPoint().getId(),point);
+                ArrayList intermediateList = this.listRequestsIntersection.get(r.getPickUpPoint().getId());
+                if (intermediateList == null) {
+                    intermediateList= new ArrayList<Intersection>();
+                }
+                intermediateList.add(point);
+                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
             }
         }
 
-        for (long i : this.listRequestsIntersection.keySet())
-            System.out.println(this.listRequestsIntersection.get(i));
+        //for (long i : this.listRequestsIntersection.keySet())
+        //    System.out.println(this.listRequestsIntersection.get(i));
+    }
+
+    public String writeTextForInterestPoint(long id)
+    {
+        String text = "";
+        this.groupRequestIntersections();
+        System.out.println(this.listRequestsIntersection.get(id));
+        for (Intersection i : this.listRequestsIntersection.get(id)) {
+            Intersection interestPoint = i;
+            if (interestPoint instanceof PickUpPoint) {
+                text+= "Pick up the associated package for this intersection\n";
+            } else if (interestPoint instanceof DeliveryPoint) {
+                text+="Deliver the associated package for this intersection\n";
+            } else {
+                text +="Départ du dépot";
+            }
+        }
+        return text;
     }
 
     public String generateTextForRoadMap() {
@@ -89,11 +122,13 @@ public class Tour extends Observable {
             String PathTitle = "Path n°" + i + ": from intersection " + p.idDeparture + " to intersection " + p.idArrival + ":\n\n";
             totalText+=PathTitle;
             int j = 0;
+            totalText+=this.writeTextForInterestPoint(p.idDeparture);
             for(Segment s: p.getListSegments()) {
                 j++;
                 String SegmentDescription = "   "+ i +"."+j+": Take " + s.getStreetName() + " in direction of " + s.getDestination() + "\n\n";
                 totalText+=SegmentDescription;
             }
+            totalText+=this.writeTextForInterestPoint(p.idArrival);
             totalText+="\n";
 
         }
