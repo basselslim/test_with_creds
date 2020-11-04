@@ -1,5 +1,8 @@
 package controler;
 
+import model.Intersection;
+import model.Map;
+
 /**
  * 
  */
@@ -15,6 +18,12 @@ public class InitialState implements State {
     public void addRequest(Controller controller){
         controller.addPickupState.entryAction(controller);
         controller.setCurrentState(controller.addPickupState);
+
+    }
+
+    @Override
+    public void leftclick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i){
+        controller.Tview
 
     }
 
