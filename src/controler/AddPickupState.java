@@ -24,14 +24,18 @@ public class AddPickupState implements State {
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         if (precedingPoint == null) {
-            precedingPoint = new Intersection(i);
-            controller.TextMessage.setText("Select the pickup point");
+            if(map.getRequestByTourStopId(i.getId()) == null) {
+                precedingPoint = new Intersection(i);
+                controller.TextMessage.setText("Select the pickup point");
+            }
         } else {
-            PickUpPoint pickup = new PickUpPoint(i, 0);
-            request.setPickUpPoint(pickup);
+            if(map.getRequestByTourStopId(i.getId()) != null) {
+                PickUpPoint pickup = new PickUpPoint(i, 0);
+                request.setPickUpPoint(pickup);
 
-            controller.TextMessage.setText(("Enter duration"));
-            controller.addDuration(controller.Tview.durationPopup());
+                controller.TextMessage.setText(("Enter duration"));
+                controller.addDuration(controller.Tview.durationPopup());
+            }
 
         }
     }
