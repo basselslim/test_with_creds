@@ -117,7 +117,15 @@ public class Window extends Application {
     }
 
     public void Export(ActionEvent event) {
-
+        /*TextInputDialog popup = new TextInputDialog();
+        popup.initStyle(StageStyle.UNDECORATED);
+        popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+        popup.setTitle("Duration");
+        popup.setHeaderText("");
+        popup.setContentText("Please enter the duration:");
+        Optional<String> result = popup.showAndWait();
+        result.ifPresent(duration -> System.out.println("Duration: " + duration));*/
+        controller.ExportRoadMap(event);
     }
 
 }

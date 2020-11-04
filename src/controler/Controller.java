@@ -88,6 +88,16 @@ public class Controller {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
+
+    }
+
+    public void ExportRoadMap (ActionEvent event) {
+        FileChooser exportFileChooser = new FileChooser();
+        exportFileChooser.setTitle("Export RoadMap");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        exportFileChooser.getExtensionFilters().add(extFilter);
+        File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
+        System.out.println(exportLocation);
     }
 
     public void leftClick(long idIntersection){
