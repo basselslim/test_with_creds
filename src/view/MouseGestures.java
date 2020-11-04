@@ -43,7 +43,7 @@ public class MouseGestures {
             if (t.getSource() instanceof Circle) {
                 Circle circle = ((Circle) (t.getSource()));
                 circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-
+                circle.setRadius(circle.getRadius()*2);
                 System.out.println(circle.getUserData());
                 controller.leftClick((long)circle.getUserData());
             }

@@ -20,21 +20,21 @@ import java.util.*;
  * 
  */
 
-public class GraphicalView implements Observer {
+public class GraphicalView implements observer.Observer {
 
     MouseGestures m_mg;
     Map m_map;
     Pane m_overlay;
-    int screenX = 1200;
-    int screenY = 600;
+    int screenX = 1000;
+    int screenY = 800;
     double zoomVal = 1.0;
     double coeffX = (double)screenX/(554.64-554.57)*zoomVal;
     double coeffY = (double)screenY/(132.76-132.71)*zoomVal;
     double ordonneeX = 554.57*coeffX;
     double ordonneeY = 132.71*coeffY;
-    double pointSize = 8.0*zoomVal;
-    double ReqpointSize = 15.0*zoomVal;
-    double StrokeSize = 4.0*zoomVal;
+    double pointSize;
+    double ReqpointSize;
+    double StrokeSize;
 
     public GraphicalView(Map map,Pane overlay, MouseGestures mg) {
         m_map = map;
@@ -56,14 +56,14 @@ public class GraphicalView implements Observer {
         double minWidth = (m_map.findMinLong() + 180) * (screenX / 360);
 
         coeffX = (double)screenX/(maxWidth-minWidth)*zoomVal;
-        coeffY = (double)screenY/(maxHeigth-minHeigth)*zoomVal;
+        coeffY = -(double)screenY/(maxHeigth-minHeigth)*zoomVal;
 
         ordonneeX = minWidth*coeffX;
-        ordonneeY = minHeigth*coeffY;
+        ordonneeY = maxHeigth*coeffY;
 
-        pointSize = 0.0004*coeffX;
-        ReqpointSize = 0.0008*coeffX;
-        StrokeSize = 0.0002*coeffX;
+        pointSize = 0.00035*coeffX;
+        ReqpointSize = 0.0007*coeffX;
+        StrokeSize = 0.00015*coeffX;
     }
 
     public void zoom() {
@@ -91,8 +91,8 @@ public class GraphicalView implements Observer {
         //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            if(intersection.getId() == m_map.getDepot().getId())
-                drawPoint(intersection, Color.RED, pointSize*2); //draw Depot point
+            if (intersection.getId() == m_map.getDepot().getId())
+                drawPoint(intersection, Color.RED, pointSize * 2); //draw Depot point
             else
                 drawPoint(intersection, Color.BLACK, pointSize); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
@@ -103,53 +103,57 @@ public class GraphicalView implements Observer {
 
             Intersection pickup = request.getPickUpPoint();
             Intersection delivery = request.getDeliveryPoint();
-
-            drawPoint(pickup, Color.BLUE, ReqpointSize);
-            drawPoint(delivery, Color.YELLOW, ReqpointSize);
+            Random generator = new Random(pickup.getId());
+            int rand = generator.nextInt(150);
+            Color color = Color.rgb((int) (rand + 100), (int) (150 - rand + 100), (int) (75 - rand + 100));
+            drawPoint(pickup, color, ReqpointSize);
+            drawPoint(delivery, color, ReqpointSize);
 
         }
 
-            //draw best tour
-            if(m_map.getTour() != null) {
-                System.out.println("ENTREE");
-                for (Path path: m_map.getTour().getListPaths()) {
-                      Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
-                    for (Segment segment:path.getListSegments()) {
+        //draw best tour
+        if (!m_map.getTour().getListPaths().isEmpty() && m_map.getTour() != null) {
+            System.out.println("ENTREE");
+            for (Path path : m_map.getTour().getListPaths()) {
+                Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
+                if (depart != null) {
+                    for (Segment segment : path.getListSegments()) {
                         Intersection step = m_map.getListIntersections().get(segment.getDestination());
-                        drawLine(depart,step,StrokeSize*1.5);
+                        drawLine(depart, step, StrokeSize * 1.5);
                         depart = step;
                     }
                 }
             }
+        }
 
         //allow for objects to be moved
         m_mg.makeMovable(m_overlay, circles, lines);
 
-        for (Line line:lines) {
+        for (Line line : lines) {
             m_overlay.getChildren().add(line);
         }
 
-        for (Circle circle:circles) {
+        for (Circle circle : circles) {
             m_overlay.getChildren().add(circle);
         }
 
     }
 
     public void enableSelection() {
-        for (Node node:m_overlay.getChildren()) {
-            if(node instanceof Circle)
+        for (Node node : m_overlay.getChildren()) {
+            if (node instanceof Circle)
                 m_mg.makeClickable(node);
         }
     }
 
-    public void refreshMap(){
+    public void refreshMap() {
         m_overlay.getChildren().clear();
         lines.clear();
         circles.clear();
         drawMap();
     }
 
-    public void clearMap(){
+    public void clearMap() {
         m_overlay.getChildren().clear();
         lines.clear();
         circles.clear();
@@ -207,8 +211,7 @@ public class GraphicalView implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-
+    public void update(observer.Observable observed, Object arg) {
+        refreshMap();
     }
-
 }

@@ -24,18 +24,18 @@
         </Button>
       </children>
     </HBox>
-   <SplitPane dividerPositions="0.7390776699029126">
+   <SplitPane dividerPositions="0.6573676680972819">
      <items>
        <AnchorPane minHeight="0.0" minWidth="0.0">
             <children>
-                <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onZoom="#Zoom" prefHeight="600.0" prefWidth="1200.0">
+                <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onZoom="#Zoom" prefHeight="800.0" prefWidth="1000.0" translateX="30.0">
 
                </Pane>
             </children>
          </AnchorPane>
        <AnchorPane fx:id="myPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
             <children>
-               <Button layoutX="31.0" layoutY="327.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="200.0" text="Add request" translateX="50.0" translateY="200.0" />
+               <Button fx:id="addRequest" layoutX="99.0" layoutY="329.0" mnemonicParsing="false" onAction="#addRequest" prefHeight="20.0" prefWidth="200.0" text="Add request" translateX="50.0" translateY="200.0" />
             </children></AnchorPane>
      </items>
    </SplitPane>

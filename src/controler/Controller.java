@@ -1,11 +1,13 @@
 package controler;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import model.Intersection;
 import model.Map;
 import model.Path;
 import model.Request;
+import view.GraphicalView;
 
 import java.io.File;
 import java.util.*;
@@ -15,9 +17,23 @@ import java.util.*;
  */
 public class Controller {
 
+
     ListOfCommand listOfCommand;
     State currentState;
     Map map;
+
+
+
+    protected GraphicalView Gview;
+    protected TextArea TextMessage;
+
+    public void setTextArea(TextArea textArea) {
+        TextMessage = textArea;
+    }
+
+    public void setGview(GraphicalView gview) {
+        this.Gview = gview;
+    }
 
 
     protected final InitialState initialState = new InitialState();
@@ -35,7 +51,7 @@ public class Controller {
         map = newMap;
     }
 
-    protected void setCurrentstate(State newState) {
+    protected void setCurrentState(State newState) {
         currentState = newState;
     }
 
@@ -62,13 +78,10 @@ public class Controller {
     }
 
     public void computeOptimalTour () {
-        Algorithme algo = new Algorithme(map);
+        Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
-    }
 
-    protected void setCurrentState(State state){
-        currentState = state;
     }
 
     public void leftClick(long idIntersection){
@@ -77,11 +90,15 @@ public class Controller {
     }
 
     public void addDuration(int duration) {
-        currentState.addDuration(duration);
+        currentState.addDuration(duration, this);
     }
 
     public void addRequest(){
         currentState.addRequest(this);
+    }
+
+    public void confirmRequest(){
+        currentState.confirmRequest(this,map);
     }
 
 
