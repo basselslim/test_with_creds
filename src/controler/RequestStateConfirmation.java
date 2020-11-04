@@ -7,19 +7,26 @@ import view.Window;
 
 import java.util.*;
 
-/**
- * 
- */
+
 public class RequestStateConfirmation implements State {
 
-    /**
-     * Default constructor
-     */
+    Request request;
     public RequestStateConfirmation() {
     }
 
     @Override
-    public void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i) {
+    public void confirmRequest(Controller controller, Map map) {
+
+        if(request != null) {
+            map.getListRequests().add(request);
+            controller.setCurrentState(controller.initialState);
+        }
+    }
+
+
+    protected void entryAction(Request r, Controller controller) {
+        request = r;
+        controller.TextMessage.setText("Confirm adding the request ?");
 
     }
 }

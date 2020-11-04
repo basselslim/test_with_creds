@@ -15,7 +15,7 @@ import model.Map;
 import static java.lang.String.valueOf;
 
 
-public class TextualView implements Observer {
+public class TextualView implements observer.Observer {
 
     Map map;
     Pane pane;
@@ -119,8 +119,7 @@ public class TextualView implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-
+    public void update(observer.Observable observed, Object arg) {
+        createRequestList();
     }
-
 }

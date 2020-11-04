@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class Intersection implements Comparable<Intersection>{
+public class Intersection extends observer.Observable implements Comparable<Intersection>{
     /**
      *
      */
@@ -92,8 +92,9 @@ public class Intersection implements Comparable<Intersection>{
         return listSegments;
     }
 
-    public void setListSegments(List<Segment> listSegments) {
-        this.listSegments = listSegments;
+    public void addSegment(Segment s) {
+        listSegments.add(s);
+        notifyObservers();
     }
 
     public Intersection getPrevious() {
