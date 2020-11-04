@@ -32,6 +32,7 @@ public class GraphicalView implements observer.Observer {
     double pointSize;
     double ReqpointSize;
     double StrokeSize;
+    Boolean isMapClickable = false;
 
     public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
@@ -180,9 +181,13 @@ public class GraphicalView implements observer.Observer {
             m_overlay.getChildren().add(arrow);
         }
 
+        if(isMapClickable = true)
+            enableSelection();
+
     }
 
     public void enableSelection() {
+        isMapClickable = true;
         for (Node node : m_overlay.getChildren()) {
             if (node instanceof Circle)
                 mouseGestures.makeClickable(node);
@@ -198,6 +203,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     public void disableSelection() {
+        isMapClickable = false;
         m_overlay.getChildren().clear();
         lines.clear();
         circles.clear();
