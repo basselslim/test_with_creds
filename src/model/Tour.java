@@ -73,18 +73,15 @@ public class Tour extends Observable {
 
         for (Request r: this.map.getListRequests()) {
             point = map.getListIntersections().get(r.getDeliveryPoint().getId());
-            System.out.println("Delivery point trouvé"+point);
             if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getDeliveryPoint().getId());
                 if (intermediateList == null) {
                     intermediateList= new ArrayList<Intersection>();
                 }
                 intermediateList.add(point);
-                System.out.println("intermediate list added for delivery points"+intermediateList);
                 this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
             }
             point = map.getListIntersections().get(r.getPickUpPoint().getId());
-            System.out.println("Pick-up point trouvé"+point);
             if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getPickUpPoint().getId());
                 if (intermediateList == null) {
@@ -94,45 +91,50 @@ public class Tour extends Observable {
                 this.listRequestsIntersection.put(r.getPickUpPoint().getId(),intermediateList);
             }
         }
-
-        System.out.println("Etat de la liste");
-        for (long i : this.listRequestsIntersection.keySet())
-            System.out.println(this.listRequestsIntersection.get(i));
     }
 
     public String writeTextForInterestPoint(long id)
     {
         String text = "";
-        System.out.println(" État  de la liste d'intersection " +id+ this.listRequestsIntersection.get(id));
+        int nbPu = 0;
+        int nbDe=0;
+        int puTime=0;
+        int deTime = 0;
         for (Intersection i : this.listRequestsIntersection.get(id)) {
             Intersection interestPoint = i;
             if (interestPoint instanceof PickUpPoint) {
-                text+= "Pick up the associated package for this intersection\n";
+                nbPu++;
+                puTime += ((PickUpPoint) interestPoint).getPickUpDuration();
             } else if (interestPoint instanceof DeliveryPoint) {
-                text+="Deliver the associated package for this intersection\n";
+                nbDe++;
+                deTime += ((DeliveryPoint) interestPoint).getDeliveryDuration();
             } else {
-                text +="Départ du dépot";
+                text +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
             }
+        }
+        if (nbPu>0) {
+            text+= "   - You have to pick up "+nbPu+" packages at this intersection. This may take "+ puTime +" seconds\n\n";
+        }
+        if (nbDe>0) {
+            text+= "   - You have to deliver "+nbDe+" packages at this intersection. This may take "+ deTime +" seconds\n\n";
         }
         return text;
     }
 
     public String generateTextForRoadMap() {
-        String totalText = "Roadmap \n\n\n";
+        String totalText = "Roadmap \n\n";
         int i = 0;
         for(Path p: listPaths) {
-            i++;
-            String PathTitle = "Path n°" + i + ": from intersection " + p.idDeparture + " to intersection " + p.idArrival + ":\n\n";
+            String PathTitle = "Step n°" + (i+1) + ":\n\n";
             totalText+=PathTitle;
             int j = 0;
             totalText+=this.writeTextForInterestPoint(p.idDeparture);
             for(Segment s: p.getListSegments()) {
-                j++;
-                String SegmentDescription = "   "+ i +"."+j+": Take " + s.getStreetName() + " in direction of " + s.getDestination() + "\n\n";
+                String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m. Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
                 totalText+=SegmentDescription;
+                j++;
             }
-            totalText+="\n";
-
+            i++;
         }
         totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
         return totalText;
@@ -140,6 +142,9 @@ public class Tour extends Observable {
 
     public void generateRoadMap(String path)
     {
+        System.out.println("Tableau des heures\n");
+        for (int[] i : this.listTimes)
+            System.out.println(i[0]+" "+i[1]);
         try {
             File roadMap = new File(path);
             if (roadMap.createNewFile()) {

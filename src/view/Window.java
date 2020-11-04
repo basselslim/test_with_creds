@@ -66,23 +66,23 @@ public class Window extends Application {
     public static void main(String[] args) {
         launch(args);
 
-        double length1 = 1.1;
-        String streetName1 = "Rue du 0 au 1";
+        double length1 = 3000;
+        String streetName1 = "Rue de Rivoli";
         long destination1 = 1;
         Segment s1 = new Segment(length1,streetName1,destination1);
 
-        double length2 = 2.2;
-        String streetName2 = "Rue du 1 au 2";
+        double length2 = 200;
+        String streetName2 = "Rue de Saxe";
         long destination2 = 2;
         Segment s2 = new Segment(length2,streetName2,destination2);
 
-        double length3 = 3.3;
-        String streetName3 = "Rue du 2 au 3";
+        double length3 = 1300;
+        String streetName3 = "Rue du T-rexanome";
         long destination3 = 3;
         Segment s3 = new Segment(length3,streetName3,destination3);
 
-        double length4 = 4.4;
-        String streetName4 = "Rue du 3 au 4";
+        double length4 = 450;
+        String streetName4 = "Rue du j'ai plus d'inspi";
         long destination4 = 4;
         Segment s4 = new Segment(length4,streetName4,destination4);
 
@@ -113,8 +113,8 @@ public class Window extends Application {
 
 
         PickUpPoint i1 = new PickUpPoint(1,0.0,0.0,10);
-        PickUpPoint i2 = new PickUpPoint(2,0.0,0.0,10);
-        DeliveryPoint i4 = new DeliveryPoint(4,0.0,0.0,10);
+        PickUpPoint i2 = new PickUpPoint(2,0.0,0.0,21);
+        DeliveryPoint i4 = new DeliveryPoint(4,0.0,0.0,32);
         Intersection i0 = new Intersection(0,0.0,0.0);
         Depot d = new Depot(0,"09:00");
 
@@ -124,15 +124,15 @@ public class Window extends Application {
         listRequest.add(r1);
         listRequest.add(r2);
 
-        HashMap<Long, Intersection> listIntersec = new HashMap<Long, Intersection>();
-        listIntersec.put(0l,i0);
-        listIntersec.put(1l,i1);
-        listIntersec.put(2l,i2);
-        listIntersec.put(3l,i4);
-        listIntersec.put(4l,i4);
+        HashMap<Long, Intersection> listIntersection = new HashMap<Long, Intersection>();
+        listIntersection.put(0l,i0);
+        listIntersection.put(1l,i1);
+        listIntersection.put(2l,i2);
+        listIntersection.put(3l,i4);
+        listIntersection.put(4l,i4);
 
 
-        Map map = new Map(listIntersec);
+        Map map = new Map(listIntersection);
         map.setListRequest(listRequest);
         map.setDepot(d);
 
