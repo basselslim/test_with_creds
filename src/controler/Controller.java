@@ -6,7 +6,6 @@ import javafx.stage.FileChooser;
 import model.Intersection;
 import model.Map;
 import model.Path;
-import model.Request;
 import view.GraphicalView;
 import view.TextualView;
 
@@ -19,11 +18,9 @@ import java.util.*;
 public class Controller {
 
 
-    ListOfCommand listOfCommand;
-    State currentState;
-    Map map;
-
-
+    protected ListOfCommand listOfCommand;
+    protected State currentState;
+    protected Map map;
 
     protected GraphicalView Gview;
     protected TextualView Tview;
@@ -41,11 +38,15 @@ public class Controller {
         this.Tview = tview;
     }
 
+    public ListOfCommand getListOfCommand() {
+        return listOfCommand;
+    }
+
 
     protected final InitialState initialState = new InitialState();
-    protected final RequestStatePickUpPoint requestStatePickUpPoint = new RequestStatePickUpPoint();
-    protected final RequestStateDeliveryPoint requestStateDeliveryPoint = new RequestStateDeliveryPoint();
-    protected final RequestStateConfirmation requestStateConfirmation = new RequestStateConfirmation();
+    protected final AddPickupState addPickupState = new AddPickupState();
+    protected final AddDeliveryState addDeliveryState = new AddDeliveryState();
+    protected final ConfirmRequestState confirmRequestState = new ConfirmRequestState();
     protected final DeleteState deleteState = new DeleteState();
 
     /**
@@ -98,12 +99,20 @@ public class Controller {
         currentState.addDuration(duration, this);
     }
 
-    public void addRequest(){
+    public void addRequest() {
         currentState.addRequest(this);
     }
 
-    public void confirmRequest(){
-        currentState.confirmRequest(this,map);
+    public void confirmRequest() {
+        currentState.confirmRequest(this, map);
+    }
+
+    public void undo() {
+        currentState.undo(listOfCommand, this);
+    }
+
+    public void redo() {
+        currentState.redo(listOfCommand,this);
     }
 
 

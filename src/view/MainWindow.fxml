@@ -43,7 +43,9 @@
    </SplitPane>
    <HBox prefHeight="100.0" prefWidth="200.0">
       <children>
-         <TextArea fx:id="TextArea" maxHeight="50.0" prefHeight="30.0" prefWidth="500.0" text="Please load a map" translateX="10.0" translateY="10.0" />
+         <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo" translateX="47.0" translateY="50.0" />
+         <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo" translateY="10.0" />
+         <TextArea fx:id="TextArea" maxHeight="50.0" prefHeight="30.0" prefWidth="500.0" text="Please load a map" translateX="30.0" translateY="10.0" />
          <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#Compute" prefHeight="40.0" prefWidth="150.0" text="Compute" translateX="500.0" translateY="30.0">
             <font>
                <Font size="17.0" />

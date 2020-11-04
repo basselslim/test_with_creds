@@ -227,9 +227,9 @@ public class GraphicalView implements observer.Observer {
         double originY = latToPix(origin.getLatitude());
         double destinationX = longToPix(destination.getLongitude());
         double destinationY = latToPix(destination.getLatitude());
-        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, pointSize);
+        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, pointSize/1.5);
         arrow.setFill(Color.RED);
-        arrow.setStrokeWidth(StrokeSize/2);
+        arrow.setStrokeWidth(StrokeSize);
         arrows.add(arrow);
     }
 

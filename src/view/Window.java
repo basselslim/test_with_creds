@@ -88,9 +88,6 @@ public class Window extends Application {
         //Load the map
         controller.LoadMap(event);
 
-        //Draw the map
-        Gview.refreshMap();
-
         //reactivate Requests button
         btn_load_requests.setDisable(false);
         TextArea.setText("Please load a request list");
@@ -105,6 +102,14 @@ public class Window extends Application {
         controller.addRequest();
         controller.confirmRequest(); //TEMPORAIRE
 
+    }
+
+    public void undo(ActionEvent event){
+        controller.undo();
+    }
+
+    public void redo(ActionEvent event){
+        controller.redo();
     }
 
     public void Compute(ActionEvent event) {

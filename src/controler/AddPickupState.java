@@ -2,19 +2,22 @@ package controler;
 
 import model.*;
 import model.Map;
-import view.Window;
-
-import java.util.*;
 
 /**
  *
  */
-public class RequestStatePickUpPoint implements State {
+public class AddPickupState implements State {
 
     private Request request;
     private Intersection precedingPoint;
 
-    public RequestStatePickUpPoint() {
+
+
+    public AddPickupState() {
+    }
+
+    public Intersection getpreceding(){
+        return precedingPoint;
     }
 
     @Override
@@ -36,10 +39,24 @@ public class RequestStatePickUpPoint implements State {
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getPickUpPoint().setPickUpDuration(duration);
-        controller.Gview.disableSelection();
+        //controller.Gview.disableSelection();
 
-        controller.requestStateDeliveryPoint.entryAction(controller, request);
-        controller.setCurrentState(controller.requestStateDeliveryPoint);
+        controller.addDeliveryState.entryAction(controller, request);
+        controller.setCurrentState(controller.addDeliveryState);
+    }
+
+    @Override
+    public void undo(ListOfCommand listOfCommand, Controller controller) {
+        controller.initialState.entryAction(controller);
+        controller.setCurrentState(controller.initialState);
+
+    }
+
+    @Override
+    public void redo(ListOfCommand listOfCommand, Controller controller) {
+        if( precedingPoint != null && request.getPickUpPoint() != null && request.getPickUpPoint().getPickUpDuration() != 0)
+            controller.setCurrentState(controller.addDeliveryState);
+
     }
 
     protected void entryAction(Controller controller) {

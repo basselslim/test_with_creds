@@ -2,14 +2,11 @@ package controler;
 
 import model.*;
 import model.Map;
-import view.Window;
-
-import java.util.*;
 
 /**
  * 
  */
-public class RequestStateDeliveryPoint implements State {
+public class AddDeliveryState implements State {
 
     private Request request;
     private Intersection precedingPoint;
@@ -17,7 +14,13 @@ public class RequestStateDeliveryPoint implements State {
     /**
      * Default constructor
      */
-    public RequestStateDeliveryPoint() {
+
+
+    public AddDeliveryState() {
+    }
+
+    public Intersection getpreceding(){
+        return precedingPoint;
     }
 
     @Override
@@ -37,13 +40,25 @@ public class RequestStateDeliveryPoint implements State {
     }
 
     @Override
-    public void addDuration(int duration, Controller controller){
+    public void addDuration(int duration, Controller controller) {
         request.getDeliveryPoint().setDeliveryDuration(duration);
         controller.Gview.disableSelection();
 
-        controller.requestStateConfirmation.entryAction(request, controller);
-        controller.setCurrentState(controller.requestStateConfirmation);
+        controller.confirmRequestState.entryAction(request, controller);
+        controller.setCurrentState(controller.confirmRequestState);
 
+    }
+
+    @Override
+    public void undo(ListOfCommand listOfCommand, Controller controller) {
+        controller.setCurrentState(controller.addPickupState);
+        controller.Gview.refreshMap();
+    }
+
+    @Override
+    public void redo(ListOfCommand listOfCommand, Controller controller) {
+        if(precedingPoint != null && request.getDeliveryPoint() != null && request.getDeliveryPoint().getDeliveryDuration() != 0)
+        controller.setCurrentState(controller.confirmRequestState);
     }
 
     protected void entryAction(Controller controller, Request r) {
