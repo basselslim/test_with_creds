@@ -133,5 +133,8 @@ public class TextualView implements observer.Observer {
     @Override
     public void update(observer.Observable observed, Object arg) {
         createRequestList();
+        if (!map.getTour().getListPaths().isEmpty()) {
+            sortRequestsTable();
+        }
     }
 }

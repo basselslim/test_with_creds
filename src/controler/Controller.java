@@ -98,10 +98,6 @@ public class Controller {
         System.out.println(exportLocation);
     }
 
-    protected void setCurrentState(State state){
-        currentState = state;
-    }
-
     public void leftClick(long idIntersection){
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
