@@ -12,7 +12,7 @@ public class Map extends observer.Observable {
      */
     protected List<Request> listRequests;
 
-    protected HashMap<Long,Intersection> listIntersections;
+    protected HashMap<Long, Intersection> listIntersections;
 
     protected Tour deliveryTour;
     protected Depot depot;
@@ -121,17 +121,19 @@ public class Map extends observer.Observable {
         listRequests = l;
         notifyObservers();
     }
+    public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
+        this.listRequests.add(newRequest);
+        this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId,this);
+    }
+
+    public void removeRequest(Request request) {
+        this.listRequests.remove(request);
+        //this.deliveryTour.removeRequestFrowTour(request);
+    }
+
 
     //INTERSECTIONS
-    public void addRequest(Request r) {
-        this.listRequests.add(r);
-    }
-
-    public void removeRequest(Request r) {
-        this.listRequests.remove(r);
-    }
-
-    public HashMap<Long,Intersection> getListIntersections() {
+    public HashMap<Long, Intersection> getListIntersections() {
         return listIntersections;
     }
 
@@ -159,8 +161,6 @@ public class Map extends observer.Observable {
         this.deliveryTour = newTour;
         notifyObservers();
     }
-
-
 
 
     @Override

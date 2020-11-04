@@ -13,7 +13,7 @@ public class ComputeSmallestPath {
         this.map = map;
     }
 
-    public List<Intersection> computeSmallestPath(Intersection from, Intersection to) {
+    public List<Segment> computeSmallestPath(Intersection from, Intersection to) {
         List<Intersection> computedPath;
         Queue<Intersection> openSet = new PriorityQueue<>();
         Intersection start = new Intersection(from, null, 0, computeCost(from, to));
@@ -31,7 +31,20 @@ public class ComputeSmallestPath {
                         current = closedMap.get(current.getPrevious().getId());
                     }
                 } while (current != null && current.getPrevious() != null);
-                return computedPath;
+
+                List<Segment> listSegments = new ArrayList<>();
+                Intersection step = from;
+                for (Intersection i: computedPath) {
+                    if (i.getId() != step.getId()) {
+                        for (Segment s: step.getListSegments()) {
+                            if (s.getDestination() == i.getId()) {
+                                listSegments.add(s);
+                            }
+                        }
+                    }
+                    step = i;
+                }
+                return listSegments;
             }
             List<Segment> listNeighbours = next.getListSegments();
             for (Segment s: listNeighbours) {
