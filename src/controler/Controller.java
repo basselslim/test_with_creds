@@ -87,6 +87,7 @@ public class Controller {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
+
     }
 
     public void ExportRoadMap (ActionEvent event) {
