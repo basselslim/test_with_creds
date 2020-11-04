@@ -2,12 +2,14 @@ package controler;
 
 import model.Intersection;
 import model.Map;
+import model.Request;
 
 /**
  * 
  */
 public class InitialState implements State {
 
+    Request request = new Request();
     /**
      * Default constructor
      */
@@ -16,7 +18,7 @@ public class InitialState implements State {
 
     @Override
     public void addRequest(Controller controller){
-        controller.addPickupState.entryAction(controller);
+        controller.addPickupState.entryAction(controller, request);
         controller.setCurrentState(controller.addPickupState);
 
     }

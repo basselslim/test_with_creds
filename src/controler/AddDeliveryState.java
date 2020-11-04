@@ -62,7 +62,7 @@ public class AddDeliveryState implements State {
     }
 
     protected void entryAction(Controller controller, Request r) {
-        request = r;
+        request = new Request(r);
         controller.Gview.enableSelection();
         controller.TextMessage.setText(("Select the preceding point to the delivery point"));
     }

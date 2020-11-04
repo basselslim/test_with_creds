@@ -40,7 +40,7 @@ public class ConfirmRequestState implements State {
 
     protected void entryAction(Request r, Controller controller) {
         controller.Gview.disableSelection();
-        request = r;
+        request = new Request(r);
         controller.TextMessage.setText("Confirm adding the request ?");
 
     }

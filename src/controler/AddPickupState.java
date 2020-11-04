@@ -24,12 +24,12 @@ public class AddPickupState implements State {
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         if (precedingPoint == null) {
-            if(map.getRequestByTourStopId(i.getId()) == null) {
+            if(map.getRequestByTourStopId(i.getId()) != null) {
                 precedingPoint = new Intersection(i);
                 controller.TextMessage.setText("Select the pickup point");
             }
         } else {
-            if(map.getRequestByTourStopId(i.getId()) != null) {
+            if(map.getRequestByTourStopId(i.getId()) == null) {
                 PickUpPoint pickup = new PickUpPoint(i, 0);
                 request.setPickUpPoint(pickup);
 
@@ -63,9 +63,9 @@ public class AddPickupState implements State {
 
     }
 
-    protected void entryAction(Controller controller) {
+    protected void entryAction(Controller controller, Request r) {
+        request = new Request(r);
         controller.Gview.enableSelection();
-        request = new Request();
         precedingPoint = null;
         controller.TextMessage.setText("Select the preceding point to the pickup point");
     }
