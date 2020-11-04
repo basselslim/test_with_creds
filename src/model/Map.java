@@ -123,6 +123,17 @@ public class Map extends observer.Observable {
         return res;
     }
 
+    public Request getRequestByTourStopId(long id) {
+        Request res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id || listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i);
+                break;
+            }
+        }
+        return res;
+    }
+
     /**
      * Getters - Setters
      */
