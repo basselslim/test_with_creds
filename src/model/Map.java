@@ -151,6 +151,7 @@ public class Map extends observer.Observable {
     //INTERSECTIONS
     public void addRequest(Request r) {
         this.listRequests.add(r);
+        notifyObservers();
     }
 
     public void removeRequest(Request r) {

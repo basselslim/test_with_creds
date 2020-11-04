@@ -21,6 +21,7 @@ public class MouseGestures {
     List<Arrow> arrows;
     Controller controller;
     Color currentcolor;
+    Circle currentSelection;
 
     protected double newTranslateX;
     protected double newTranslateY;
@@ -47,10 +48,15 @@ public class MouseGestures {
         @Override
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
+                if(currentSelection != null) {
+                    currentSelection.setStroke(Color.BLACK);
+                    currentSelection.setStrokeWidth(currentSelection.getStrokeWidth() / 2);
+                }
                 Circle circle = ((Circle) (t.getSource()));
                 circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
                 circle.setStrokeWidth(circle.getStrokeWidth() * 2);
                 circle.setStroke(Color.RED);
+                currentSelection = circle;
                 System.out.println(circle.getUserData());
                 controller.leftClick((long) circle.getUserData());
             }
@@ -68,7 +74,7 @@ public class MouseGestures {
                 Circle p = ((Circle) (t.getSource()));
                 currentcolor = (Color) p.getFill();
                 p.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
-
+                controller.mouseOn((long)p.getUserData());
             }
         }
     };

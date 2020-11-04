@@ -24,6 +24,7 @@ import model.Map;
 import model.Path;
 
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +97,7 @@ public class Window extends Application {
     public void LoadRequests(ActionEvent event) {
         map.addObserver(Tview);
         controller.LoadRequests(event);
+        Gview.enableSelection();
     }
 
     public void addRequest(ActionEvent event) {

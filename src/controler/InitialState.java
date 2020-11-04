@@ -22,9 +22,13 @@ public class InitialState implements State {
     }
 
     @Override
-    public void leftclick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i){
-        controller.Tview
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i){
 
+    }
+
+    @Override
+    public void mouseOn(long idIntersection, Controller controller){
+        controller.Tview.selectRequest(idIntersection);
     }
 
     @Override
@@ -37,8 +41,9 @@ public class InitialState implements State {
         listOfCommand.redo();
     }
 
+
+
     public void entryAction(Controller controller) {
-        controller.Gview.disableSelection();
         controller.TextMessage.setText(("Compute Tour, add request or load new request or map."));
     }
 

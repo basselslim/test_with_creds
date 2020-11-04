@@ -19,4 +19,6 @@ public interface State {
     public default void undo(ListOfCommand listOfCommand, Controller controller){};
 
     public default void redo(ListOfCommand listOfCommand, Controller controller){};
+
+    public default void mouseOn(long idIntersection, Controller controller){};
 }

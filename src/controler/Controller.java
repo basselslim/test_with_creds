@@ -105,6 +105,10 @@ public class Controller {
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
+    public void mouseOn(long idIntersection) {
+        currentState.mouseOn(idIntersection, this);
+    }
+
     public void addDuration(int duration) {
         currentState.addDuration(duration, this);
     }

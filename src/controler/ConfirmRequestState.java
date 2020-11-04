@@ -17,11 +17,10 @@ public class ConfirmRequestState implements State {
  *
  */
         if(request != null) {
-            AddCommand addRequestCommand = new AddCommand(controller.map, request);
-            controller.getListOfCommand().add(addRequestCommand);
             long precedingDeliveryId = controller.addDeliveryState.getpreceding().getId();
             long precedingPickupId = controller.addPickupState.getpreceding().getId();
-            //map.addtoTour(request,precedingPickupId,precedingDeliveryId);
+            AddCommand addRequestCommand = new AddCommand(controller.map, request, precedingPickupId, precedingDeliveryId);
+            controller.getListOfCommand().add(addRequestCommand);
             controller.setCurrentState(controller.initialState);
             controller.TextMessage.setText("Request added");
             controller.Gview.disableSelection();
