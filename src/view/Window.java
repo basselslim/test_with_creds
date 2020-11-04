@@ -1,6 +1,6 @@
 package view;
 
-import controler.Algorithme;
+import controler.Algorithm;
 import controler.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -58,13 +58,9 @@ public class Window extends Application {
 
         var scene = new Scene(root, 1650, 1050, Color.WHITE);
 
-
-
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);
         stage.show();
-
-
     }
 
     public static void main(String[] args) {
@@ -82,9 +78,12 @@ public class Window extends Application {
     }
 
     public void LoadMap(ActionEvent event) {
-
-
-        Gview = new GraphicalView(map, overlay, mg); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+        Gview = new GraphicalView(map, overlay, mg);
+        Tview = new TextualView(map, myPane);
+        controller.setTextArea(TextArea);
+        controller.setGview(Gview);
+        controller.setTview(Tview);
+        map.addObserver(Gview);
 
         //Load the map
         controller.LoadMap(event);
@@ -92,24 +91,24 @@ public class Window extends Application {
         //Draw the map
         Gview.refreshMap();
 
-        Gview.enableSelection();
         //reactivate Requests button
         btn_load_requests.setDisable(false);
         TextArea.setText("Please load a request list");
     }
 
     public void LoadRequests(ActionEvent event) {
+        map.addObserver(Tview);
         controller.LoadRequests(event);
+    }
 
-        Gview.refreshMap();
+    public void addRequest(ActionEvent event) {
+        controller.addRequest();
+        controller.confirmRequest(); //TEMPORAIRE
 
-        Tview = new TextualView(map, myPane);
     }
 
     public void Compute(ActionEvent event) {
         controller.computeOptimalTour();
-        Gview.refreshMap();
-        Tview.refreshTable();
     }
 
     public void Export(ActionEvent event) {

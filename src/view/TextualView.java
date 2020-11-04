@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import model.*;
 import model.Map;
@@ -15,7 +16,7 @@ import model.Map;
 import static java.lang.String.valueOf;
 
 
-public class TextualView implements Observer {
+public class TextualView implements observer.Observer {
 
     Map map;
     Pane pane;
@@ -95,7 +96,7 @@ public class TextualView implements Observer {
         requestsTable.getColumns().add(durationColumn);
         requestsTable.getColumns().add(typeColumn);
 
-        for (Request item:map.getListRequests()) {
+        for (Request item : map.getListRequests()) {
             requestsTable.getItems().add(item.getPickUpPoint());
             requestsTable.getItems().add(item.getDeliveryPoint());
             //requestsTable.getItems().indexOf()
@@ -106,21 +107,31 @@ public class TextualView implements Observer {
 
     public void sortRequestsTable() {
         int newTableIndex = 0;
-        for (Path path: map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
+        for (Path path : map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
             long id = path.getIdDeparture();
             int tableIndex = 0;
-            while (((Intersection)requestsTable.getItems().get(tableIndex)).getId() != id) {
+            while (((Intersection) requestsTable.getItems().get(tableIndex)).getId() != id) {
                 tableIndex++;
             }
-            Intersection point = (Intersection)requestsTable.getItems().remove(tableIndex);
+            Intersection point = (Intersection) requestsTable.getItems().remove(tableIndex);
             requestsTable.getItems().add(newTableIndex, point);
             newTableIndex++;
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
+    public int durationPopup() {
+        TextInputDialog popup = new TextInputDialog();
+        popup.initStyle(StageStyle.UNDECORATED);
+        popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+        popup.setTitle("Duration");
+        popup.setHeaderText("");
+        popup.setContentText("Please enter the duration:");
+        Optional<String> result = popup.showAndWait();
+        return Integer.valueOf(result.get());
     }
 
+    @Override
+    public void update(observer.Observable observed, Object arg) {
+        createRequestList();
+    }
 }

@@ -8,7 +8,7 @@ public class ReverseCommand implements Command {
      * Create the command reverse to cmd (so that cmd.doCommand corresponds to this.undoCommand, and vice-versa)
      * @param cmd the command to reverse
      */
-    public ReverseCommand(Command cmd){
+    public ReverseCommand(Command cmd) {
         this.cmd = cmd;
     }
 
