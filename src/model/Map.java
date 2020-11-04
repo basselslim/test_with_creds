@@ -16,8 +16,6 @@ public class Map extends observer.Observable {
 
     protected Tour deliveryTour;
 
-    protected HashMap<Long,Intersection> listRequestsIntersection;
-
     protected Depot depot;
 
 
@@ -66,6 +64,8 @@ public class Map extends observer.Observable {
         listIntersections.clear();
         deliveryTour.getListPaths().clear();
     }
+
+    public void removeRequest(Request request){}
 
     public void clearRequests() {
         listRequests.clear();

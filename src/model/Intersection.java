@@ -18,6 +18,7 @@ public class Intersection extends observer.Observable implements Comparable<Inte
     protected Intersection previous;
     protected double routeScore;
     protected double estimatedScore;
+    protected String type;
 
     /**
      * Default constructor

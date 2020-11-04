@@ -20,10 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.Map;
-import model.Path;
-import model.Segment;
-import model.Tour;
+import model.*;
 
 
 import java.io.IOException;
@@ -89,9 +86,11 @@ public class Window extends Application {
         long destination4 = 4;
         Segment s4 = new Segment(length4,streetName4,destination4);
 
+        ArrayList<Segment> listSegments0 = new ArrayList<>();
         ArrayList<Segment> listSegments1 = new ArrayList<>();
         ArrayList<Segment> listSegments2 = new ArrayList<>();
 
+        listSegments0.add(s1);
         listSegments1.add(s1);
         listSegments1.add(s2);
         listSegments2.add(s3);
@@ -102,15 +101,44 @@ public class Window extends Application {
         long idDeparture2 = 2;
         long idArrival2 = 4;
 
-        Path p1 = new Path(listSegments1,idDeparture1,idArrival1);
+        Path p0 = new Path(listSegments0,idDeparture1,1);
+        Path p1 = new Path(listSegments1,1,idArrival1);
         Path p2 = new Path(listSegments2,idDeparture2,idArrival2);
 
         ArrayList<Path> listPath = new ArrayList<>();
 
+        listPath.add(p0);
         listPath.add(p1);
         listPath.add(p2);
 
-        Tour t = new Tour(listPath);
+
+        PickUpPoint i1 = new PickUpPoint(1,0.0,0.0,10);
+        PickUpPoint i2 = new PickUpPoint(2,0.0,0.0,10);
+        DeliveryPoint i3 = new DeliveryPoint(3,0.0,0.0,10);
+        DeliveryPoint i4 = new DeliveryPoint(4,0.0,0.0,10);
+        Intersection i0 = new Intersection(0,0.0,0.0);
+        Depot d = new Depot(0,"09:00");
+
+        Request r1 = new Request(i1,i3);
+        Request r2 = new Request(i2,i4);
+        ArrayList<Request> listRequest = new ArrayList<Request>();
+        listRequest.add(r1);
+        listRequest.add(r2);
+
+        HashMap<Long, Intersection> listIntersec = new HashMap<Long, Intersection>();
+        listIntersec.put(0l,i0);
+        listIntersec.put(1l,i1);
+        listIntersec.put(2l,i2);
+        listIntersec.put(3l,i3);
+        listIntersec.put(4l,i4);
+
+
+        Map map = new Map(listIntersec);
+        map.setListRequest(listRequest);
+        map.setDepot(d);
+
+        Tour t = new Tour(map,listPath);
+        t.groupRequestIntersections();
         t.generateRoadMap("/Users/lucastissier/Desktop/Roadmap");
 
     }

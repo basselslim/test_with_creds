@@ -1,5 +1,8 @@
 package model;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -14,15 +17,21 @@ public class Tour extends Observable {
     protected List<int[]> listTimes;
     protected Map map;
     protected String roadMapFilePath;
-
+    protected HashMap<Long,Intersection> listRequestsIntersection;
     /**
      * Default constructor
+     *
      */
+    public Tour(){
+
+    }
+
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
         this.listTimes = new LinkedList<int[]>();
         this.tourLength = 0;
         this.map = map;
+        this.listRequestsIntersection = new HashMap<Long,Intersection>();
     }
 
     public Tour(Map map, List<Path> listPaths) {
@@ -33,6 +42,7 @@ public class Tour extends Observable {
         for(Path p: listPaths) {
             this.tourLength += p.getPathLength();
         }
+        this.listRequestsIntersection = new HashMap<Long,Intersection>();
         populateListTimes();
     }
     /**
@@ -47,6 +57,29 @@ public class Tour extends Observable {
     }
 
     public List<int[]> getListTimes() { return listTimes; }
+
+    public void groupRequestIntersections(){
+        Intersection point;
+
+        point = map.getListIntersections().get(map.getDepot().getId());
+        if (point != null) {
+            this.listRequestsIntersection.put(map.getDepot().getId(),point);
+        }
+
+        for (Request r: this.map.getListRequests()) {
+            point = map.getListIntersections().get(r.getDeliveryPoint().getId());
+            if (!this.listRequestsIntersection.containsValue(point) && point != null) {
+                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),point);
+            }
+            point = map.getListIntersections().get(r.getPickUpPoint().getId());
+            if (!this.listRequestsIntersection.containsValue(point) && point != null) {
+                this.listRequestsIntersection.put(r.getPickUpPoint().getId(),point);
+            }
+        }
+
+        for (long i : this.listRequestsIntersection.keySet())
+            System.out.println(this.listRequestsIntersection.get(i));
+    }
 
     public String generateTextForRoadMap() {
         String totalText = "Roadmap \n\n\n";
