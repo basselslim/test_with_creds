@@ -47,21 +47,7 @@ public class Algorithm {
             HashMap<Long,Path> mapSmallestPathPerPoint = new HashMap<>();
             for (Intersection p2: listPoints) {
                 if (p1.getId() != p2.getId()) {
-                    List<Intersection> listIntersections = algorithmSmallestPath.computeSmallestPath(p1, p2);
-
-                    List<Segment> listSegments = new ArrayList<>();
-                    Intersection step = p1;
-
-                    for (Intersection i: listIntersections) {
-                        if (i.getId() != step.getId()) {
-                            for (Segment s: step.getListSegments()) {
-                                if (s.getDestination() == i.getId()) {
-                                    listSegments.add(s);
-                                }
-                            }
-                        }
-                        step = i;
-                    }
+                    List<Segment> listSegments = algorithmSmallestPath.computeSmallestPath(p1, p2);
                     mapSmallestPathPerPoint.put(p2.getId(), new Path(listSegments, p1.getId(), p2.getId()));
                 }
             }
