@@ -4,37 +4,41 @@ import model.*;
 import model.Map;
 
 /**
- * 
+ *
  */
 public class AddDeliveryState implements State {
 
-    private Request request;
-    private Intersection precedingPoint;
+    protected Request request;
+    protected Intersection PickupPrecedingPoint;
+    protected Intersection DeliveryPrecedingPoint;
 
     /**
      * Default constructor
      */
 
-
     public AddDeliveryState() {
     }
 
-    public Intersection getpreceding(){
-        return precedingPoint;
+    public Intersection getpreceding() {
+        return DeliveryPrecedingPoint;
     }
 
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
-        if (precedingPoint == null) {
-            precedingPoint = i;
-            controller.TextMessage.setText("Select the delivery point");
+        if (DeliveryPrecedingPoint == null) {
+            if (map.getRequestByTourStopId(i.getId()) != null) {
+                DeliveryPrecedingPoint = i;
+                controller.TextMessage.setText("Select the delivery point");
+            }
         } else {
-            DeliveryPoint delivery = new DeliveryPoint(i,0);
-            request.setDeliveryPoint(delivery);
+            if (map.getRequestByTourStopId(i.getId()) == null) {
+                DeliveryPoint delivery = new DeliveryPoint(i, 0);
+                request.setDeliveryPoint(delivery);
 
-            controller.TextMessage.setText(("Enter duration"));
-            controller.addDuration(controller.Tview.durationPopup());
+                controller.TextMessage.setText(("Enter duration"));
+                controller.addDuration(controller.Tview.durationPopup());
+            }
 
         }
     }
@@ -51,19 +55,30 @@ public class AddDeliveryState implements State {
 
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
+        controller.addPickupState.reverseAction(controller);
         controller.setCurrentState(controller.addPickupState);
-        controller.Gview.refreshMap();
     }
 
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
-        if(precedingPoint != null && request.getDeliveryPoint() != null && request.getDeliveryPoint().getDeliveryDuration() != 0)
-        controller.setCurrentState(controller.confirmRequestState);
+        Request nextReq = controller.confirmRequestState.request;
+        if (controller.confirmRequestState.DeliveryPrecedingPoint != null && nextReq.getDeliveryPoint() != null && nextReq.getDeliveryPoint().getDeliveryDuration() != 0) {
+            controller.confirmRequestState.reverseAction(controller);
+            controller.setCurrentState(controller.confirmRequestState);
+        }
     }
 
-    protected void entryAction(Controller controller, Request r) {
+    protected void entryAction(Controller controller, Request r, Intersection pickuppredecingPoint) {
         request = new Request(r);
+        PickupPrecedingPoint = new Intersection(pickuppredecingPoint);
+        DeliveryPrecedingPoint = null;
         controller.Gview.enableSelection();
+        controller.TextMessage.setText(("Select the preceding point to the delivery point"));
+    }
+
+    protected void reverseAction(Controller controller) {
+        controller.Gview.enableSelection();
+        DeliveryPrecedingPoint = null;
         controller.TextMessage.setText(("Select the preceding point to the delivery point"));
     }
 

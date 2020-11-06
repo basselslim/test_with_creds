@@ -3,14 +3,12 @@ package view;
 import controler.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
-import javax.sound.midi.SysexMessage;
 import java.util.List;
 
 public class MouseGestures {
@@ -19,9 +17,11 @@ public class MouseGestures {
     List<Circle> circles;
     List<Line> lines;
     List<Arrow> arrows;
+    List<Rectangle> rectangles;
     Controller controller;
     Color currentcolor;
-    Circle currentSelection;
+    Circle currentCircle;
+    Rectangle currentRectangle;
 
     protected double newTranslateX;
     protected double newTranslateY;
@@ -31,15 +31,16 @@ public class MouseGestures {
     }
 
     public void makeClickable(Node node) {
-        node.setOnMouseEntered(circleOnMouseEnteredEventHandler);
-        node.setOnMouseExited(circleOnMouseExitedEventHandler);
+        node.setOnMouseEntered(nodeOnMouseEnteredEventHandler);
+        node.setOnMouseExited(nodeOnMouseExitedEventHandler);
         node.setOnMouseClicked(circleOnMouseClickedEventHandler);
     }
 
-    public void makeMovable(Node node, List<Circle> circles, List<Line> lines, List<Arrow> arrows) {
+    public void makeMovable(Node node, List<Circle> circles, List<Line> lines, List<Arrow> arrows, List<Rectangle> rectangles) {
         this.lines = lines;
         this.circles = circles;
         this.arrows = arrows;
+        this.rectangles = rectangles;
         node.setOnMouseDragged(circleOnMouseDraggedEventHandler);
         node.setOnMousePressed(circleOnMousePressedEventHandler);
     }
@@ -48,22 +49,28 @@ public class MouseGestures {
         @Override
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
-                if(currentSelection != null) {
-                    currentSelection.setStroke(Color.BLACK);
-                    currentSelection.setStrokeWidth(currentSelection.getStrokeWidth() / 2);
-                }
+                deselectCurrent();
                 Circle circle = ((Circle) (t.getSource()));
                 circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
                 circle.setStrokeWidth(circle.getStrokeWidth() * 2);
                 circle.setStroke(Color.RED);
-                currentSelection = circle;
-                System.out.println(circle.getUserData());
-                controller.leftClick((long) circle.getUserData());
+                currentCircle = circle;
+                controller.leftClick((long)circle.getUserData());
+            }
+
+            else if(t.getSource() instanceof Rectangle) {
+                deselectCurrent();
+                Rectangle rectangle = ((Rectangle) (t.getSource()));
+                rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
+                rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 2);
+                rectangle.setStroke(Color.RED);
+                currentRectangle = rectangle;
+                controller.leftClick((long)rectangle.getUserData());
             }
         }
     };
 
-    EventHandler<MouseEvent> circleOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> nodeOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent t) {
@@ -71,25 +78,35 @@ public class MouseGestures {
 
             if (t.getSource() instanceof Circle) {
 
-                Circle p = ((Circle) (t.getSource()));
-                currentcolor = (Color) p.getFill();
-                p.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
-                controller.mouseOn((long)p.getUserData());
+                Circle circle = ((Circle) (t.getSource()));
+                currentcolor = (Color) circle.getFill();
+                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
+                controller.mouseOn((long) circle.getUserData());
+            } else if (t.getSource() instanceof Rectangle) {
+
+                Rectangle rectangle = ((Rectangle) (t.getSource()));
+                currentcolor = (Color) rectangle.getFill();
+                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
+                controller.mouseOn((long) rectangle.getUserData());
             }
         }
     };
 
-    EventHandler<MouseEvent> circleOnMouseExitedEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> nodeOnMouseExitedEventHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent t) {
-
-
             if (t.getSource() instanceof Circle) {
 
-                Circle p = ((Circle) (t.getSource()));
-                if (p.getRotate() != 1.0)
-                    p.setFill(currentcolor);
+                Circle circle = ((Circle) (t.getSource()));
+                if (circle.getRotate() != 1.0)
+                    circle.setFill(currentcolor);
+
+            } else if (t.getSource() instanceof Rectangle) {
+
+                Rectangle rectangle = ((Rectangle) (t.getSource()));
+                if (rectangle.getRotate() != 1.0)
+                    rectangle.setFill(currentcolor);
 
             }
         }
@@ -135,8 +152,27 @@ public class MouseGestures {
                     arrow.setTranslateY(newTranslateY);
 
                 }
+                for (Rectangle rectangle : rectangles) {
+                    rectangle.setTranslateX(newTranslateX);
+                    rectangle.setTranslateY(newTranslateY);
+
+                }
             }
         }
     };
+
+    private void deselectCurrent() {
+        if (currentRectangle != null) {
+            currentRectangle.setStroke(Color.BLACK);
+            currentRectangle.setStrokeWidth(currentRectangle.getStrokeWidth() / 2);
+            currentRectangle = null;
+        }
+        if (currentCircle != null) {
+            currentCircle.setStroke(Color.BLACK);
+            currentCircle.setStrokeWidth(currentCircle.getStrokeWidth() / 2);
+            currentCircle = null;
+        }
+
+    }
 
 }

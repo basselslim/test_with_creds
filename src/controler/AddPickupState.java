@@ -11,8 +11,6 @@ public class AddPickupState implements State {
     private Request request;
     private Intersection precedingPoint;
 
-
-
     public AddPickupState() {
     }
 
@@ -45,7 +43,7 @@ public class AddPickupState implements State {
         request.getPickUpPoint().setPickUpDuration(duration);
         //controller.Gview.disableSelection();
 
-        controller.addDeliveryState.entryAction(controller, request);
+        controller.addDeliveryState.entryAction(controller, request, precedingPoint);
         controller.setCurrentState(controller.addDeliveryState);
     }
 
@@ -58,13 +56,23 @@ public class AddPickupState implements State {
 
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
-        if( precedingPoint != null && request.getPickUpPoint() != null && request.getPickUpPoint().getPickUpDuration() != 0)
+        Request nextReq = controller.addDeliveryState.request;
+        if (controller.addDeliveryState.PickupPrecedingPoint != null && nextReq.getPickUpPoint() != null && nextReq.getPickUpPoint().getPickUpDuration() != 0){
+            controller.addDeliveryState.reverseAction(controller);
             controller.setCurrentState(controller.addDeliveryState);
+    }
 
     }
 
     protected void entryAction(Controller controller, Request r) {
         request = new Request(r);
+        controller.Gview.enableSelection();
+        precedingPoint = null;
+        controller.TextMessage.setText("Select the preceding point to the pickup point");
+
+    }
+
+    protected void reverseAction(Controller controller) {
         controller.Gview.enableSelection();
         precedingPoint = null;
         controller.TextMessage.setText("Select the preceding point to the pickup point");
