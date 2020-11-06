@@ -276,6 +276,7 @@ public class GraphicalView implements observer.Observer {
 
         Circle circle = new Circle(size);
         circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(StrokeSize);
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(intersection.getId());
@@ -289,6 +290,7 @@ public class GraphicalView implements observer.Observer {
 
         Rectangle rectangle = new Rectangle(pointX-size,pickupY-size, size*2, size*2);
         rectangle.setStroke(Color.BLACK);
+        rectangle.setStrokeWidth(StrokeSize);
         rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
         rectangle.setUserData(intersection.getId());
         rectangles.add(rectangle);
