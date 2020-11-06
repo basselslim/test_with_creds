@@ -24,11 +24,6 @@ public class Controller {
 
     protected GraphicalView Gview;
     protected TextualView Tview;
-    protected TextArea TextMessage;
-
-    public void setTextArea(TextArea textArea) {
-        TextMessage = textArea;
-    }
 
     public void setGview(GraphicalView gview) {
         this.Gview = gview;
@@ -36,6 +31,10 @@ public class Controller {
 
     public void setTview(TextualView tview) {
         this.Tview = tview;
+    }
+
+    public Map getMap(){
+        return map;
     }
 
     public ListOfCommand getListOfCommand() {
@@ -62,33 +61,14 @@ public class Controller {
         currentState = newState;
     }
 
-    public void LoadMap(ActionEvent event) {
-        //Chargement map
-        FileChooser mapFileChooser = new FileChooser();
-        mapFileChooser.setTitle("Load Map");
-        mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
-        File mapFile = mapFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
-
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
-
-    }
-
     public void LoadRequests(ActionEvent event) {
-        FileChooser requestsFileChooser = new FileChooser();
-        requestsFileChooser.setTitle("Load Requests");
-        requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
-        File requestsFile = requestsFileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
-
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        currentState.LoadRequests(event,this,map);
     }
 
-    public void computeOptimalTour () {
+    public void computeTour() {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
-
     }
 
     public void ExportRoadMap (ActionEvent event) {
@@ -105,6 +85,9 @@ public class Controller {
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
+    public void LoadMap(ActionEvent event) {
+        currentState.LoadMap(event, this, map);
+    }
     public void mouseOn(long idIntersection) {
         currentState.mouseOn(idIntersection, this);
     }

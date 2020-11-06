@@ -29,14 +29,14 @@ public class AddDeliveryState implements State {
         if (DeliveryPrecedingPoint == null) {
             if (map.getRequestByTourStopId(i.getId()) != null) {
                 DeliveryPrecedingPoint = i;
-                controller.TextMessage.setText("Select the delivery point");
+                controller.Tview.setMessage("Select the delivery point");
             }
         } else {
             if (map.getRequestByTourStopId(i.getId()) == null) {
                 DeliveryPoint delivery = new DeliveryPoint(i, 0);
                 request.setDeliveryPoint(delivery);
 
-                controller.TextMessage.setText(("Enter duration"));
+                controller.Tview.setMessage("Enter duration");
                 controller.addDuration(controller.Tview.durationPopup());
             }
 
@@ -73,13 +73,13 @@ public class AddDeliveryState implements State {
         PickupPrecedingPoint = new Intersection(pickuppredecingPoint);
         DeliveryPrecedingPoint = null;
         controller.Gview.enableSelection();
-        controller.TextMessage.setText(("Select the preceding point to the delivery point"));
+        controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
 
     protected void reverseAction(Controller controller) {
         controller.Gview.enableSelection();
         DeliveryPrecedingPoint = null;
-        controller.TextMessage.setText(("Select the preceding point to the delivery point"));
+        controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
 
 }

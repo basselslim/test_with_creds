@@ -23,7 +23,7 @@ public class GraphicalView implements observer.Observer {
     int screenX = 1000;
     int screenY = 800;
     double zoomVal = 1.0;
-    double zoomStep = 0.1;
+    double zoomStep = 0.2;
     double zoomTranslateX = 0;
     double zoomTranslateY = 0;
     double coeffX;
@@ -98,6 +98,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     public void zoom() {
+
         if (zoomVal < 3.5) {
             zoomVal += zoomStep;
             updateCoeff();
@@ -110,7 +111,9 @@ public class GraphicalView implements observer.Observer {
     }
 
     public void unZoom() {
-        if (zoomVal > 0.5) {
+        double width = latToPix(m_map.findMinLat())-latToPix(m_map.findMaxLat());
+        System.out.println(width);
+        if (width > screenY) {
             zoomVal -= zoomStep;
             updateCoeff();
             zoomTranslateX = screenX * zoomStep;
@@ -155,7 +158,7 @@ public class GraphicalView implements observer.Observer {
                 if (depart != null) {
                     for (Segment segment : path.getListSegments()) {
                         Intersection step = m_map.getListIntersections().get(segment.getDestination());
-                        drawLine(depart, step, StrokeSize * 1.5);
+                        drawArrow(depart, step, pointSize);
                         depart = step;
                     }
                 }
@@ -238,13 +241,13 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
-    private void drawLine(Intersection origin, Intersection destination, double size) {
+    private void drawArrow(Intersection origin, Intersection destination, double size) {
 
         double originX = longToPix(origin.getLongitude());
         double originY = latToPix(origin.getLatitude());
         double destinationX = longToPix(destination.getLongitude());
         double destinationY = latToPix(destination.getLatitude());
-        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, pointSize/1.5);
+        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, size);
         arrow.setFill(Color.RED);
         arrow.setStrokeWidth(StrokeSize);
         arrows.add(arrow);

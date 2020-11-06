@@ -25,7 +25,7 @@ public class ConfirmRequestState implements State {
             AddCommand addRequestCommand = new AddCommand(controller. map, request, precedingPickupId, precedingDeliveryId);
             controller.getListOfCommand().add(addRequestCommand);
             controller.setCurrentState(controller.initialState);
-            controller.TextMessage.setText("Request added");
+            controller.Tview.setMessage("Request added");
             controller.Gview.disableSelection();
         }
     }
@@ -47,11 +47,11 @@ public class ConfirmRequestState implements State {
         request = new Request(r);
         PickupPrecedingPoint = new Intersection(controller.addDeliveryState.PickupPrecedingPoint);
         DeliveryPrecedingPoint = new Intersection(controller.addDeliveryState.DeliveryPrecedingPoint);
-        controller.TextMessage.setText("Confirm adding the request ?");
+        controller.Tview.setMessage("Confirm adding the request ?");
     }
 
     protected void reverseAction(Controller controller) {
         controller.Gview.disableSelection();
-        controller.TextMessage.setText("Confirm adding the request ?");
+        controller.Tview.setMessage("Confirm adding the request ?");
     }
 }

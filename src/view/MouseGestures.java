@@ -136,30 +136,39 @@ public class MouseGestures {
             newTranslateX = orgTranslateX + offsetX;
             newTranslateY = orgTranslateY + offsetY;
 
-            if (circles.get(1).getCenterX() < 100) {
-                for (Circle circle : circles) {
-                    circle.setTranslateX(newTranslateX);
-                    circle.setTranslateY(newTranslateY);
-                }
+            //Boolean XBlocking = newTranslateX+controller.getMap().findMinLat() > 1200 ;
+            //Boolean YBlocking = newTranslateY+controller.getMap().findMinLong() > 800 ;
 
-                for (Line line : lines) {
-                    line.setTranslateX(newTranslateX);
-                    line.setTranslateY(newTranslateY);
+            //if(XBlocking && YBlocking){
+                if (circles.get(1).getCenterX() < 100) {
+                    for (Circle circle : circles) {
+                        circle.setTranslateX(newTranslateX);
+                        circle.setTranslateY(newTranslateY);
+                    }
 
-                }
-                for (Arrow arrow : arrows) {
-                    arrow.setTranslateX(newTranslateX);
-                    arrow.setTranslateY(newTranslateY);
+                    for (Line line : lines) {
+                        line.setTranslateX(newTranslateX);
+                        line.setTranslateY(newTranslateY);
 
-                }
-                for (Rectangle rectangle : rectangles) {
-                    rectangle.setTranslateX(newTranslateX);
-                    rectangle.setTranslateY(newTranslateY);
+                    }
+                    for (Arrow arrow : arrows) {
+                        arrow.setTranslateX(newTranslateX);
+                        arrow.setTranslateY(newTranslateY);
 
-                }
+                    }
+                    for (Rectangle rectangle : rectangles) {
+                        rectangle.setTranslateX(newTranslateX);
+                        rectangle.setTranslateY(newTranslateY);
+
+                    }
             }
+
+
+            //}
         }
     };
+
+
 
     private void deselectCurrent() {
         if (currentRectangle != null) {

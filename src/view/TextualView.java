@@ -20,15 +20,17 @@ public class TextualView implements observer.Observer {
 
     Map map;
     Pane pane;
+    TextArea textArea;
     TableView requestsTable;
     TableColumn<Intersection, Long> intersectionColumn;
     TableColumn<Intersection, Integer> durationColumn;
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
 
-    public TextualView(Map map, Pane pane) {
+    public TextualView(Map map, Pane pane, TextArea textArea) {
         this.map = map;
         this.pane = pane;
+        this.textArea = textArea;
         createRequestList();
     }
 
@@ -136,6 +138,10 @@ public class TextualView implements observer.Observer {
         popup.setContentText("Please enter the duration:");
         Optional<String> result = popup.showAndWait();
         return Integer.valueOf(result.get());
+    }
+
+    public void setMessage(String message){
+        textArea.setText(message);
     }
 
     @Override

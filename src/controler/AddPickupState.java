@@ -24,14 +24,14 @@ public class AddPickupState implements State {
         if (precedingPoint == null) {
             if(map.getRequestByTourStopId(i.getId()) != null) {
                 precedingPoint = new Intersection(i);
-                controller.TextMessage.setText("Select the pickup point");
+                controller.Tview.setMessage("Select the pickup point");
             }
         } else {
             if(map.getRequestByTourStopId(i.getId()) == null) {
                 PickUpPoint pickup = new PickUpPoint(i, 0);
                 request.setPickUpPoint(pickup);
 
-                controller.TextMessage.setText(("Enter duration"));
+                controller.Tview.setMessage("Enter duration");
                 controller.addDuration(controller.Tview.durationPopup());
             }
 
@@ -68,13 +68,13 @@ public class AddPickupState implements State {
         request = new Request(r);
         controller.Gview.enableSelection();
         precedingPoint = null;
-        controller.TextMessage.setText("Select the preceding point to the pickup point");
+        controller.Tview.setMessage("Select the preceding point to the pickup point");
 
     }
 
     protected void reverseAction(Controller controller) {
         controller.Gview.enableSelection();
         precedingPoint = null;
-        controller.TextMessage.setText("Select the preceding point to the pickup point");
+        controller.Tview.setMessage("Select the preceding point to the pickup point");
     }
 }

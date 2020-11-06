@@ -1,34 +1,20 @@
 package view;
 
-import controler.Algorithm;
 import controler.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.Border;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.Map;
-import model.Path;
 
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 public class Window extends Application {
 
@@ -51,6 +37,7 @@ public class Window extends Application {
     @Override
     public void start(Stage MainFrame) throws Exception {
         initUI(MainFrame);
+
 
     }
 
@@ -80,8 +67,7 @@ public class Window extends Application {
 
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg);
-        Tview = new TextualView(map, myPane);
-        controller.setTextArea(TextArea);
+        Tview = new TextualView(map, myPane, TextArea);
         controller.setGview(Gview);
         controller.setTview(Tview);
         map.addObserver(Gview);
@@ -115,7 +101,7 @@ public class Window extends Application {
     }
 
     public void Compute(ActionEvent event) {
-        controller.computeOptimalTour();
+        controller.computeTour();
     }
 
     public void Export(ActionEvent event) {
