@@ -18,7 +18,10 @@ public class MouseGestures {
     List<Line> lines;
     List<Arrow> arrows;
     List<Rectangle> rectangles;
+
     Controller controller;
+    GraphicalView Gview;
+
     Color currentcolor;
     Circle currentCircle;
     Rectangle currentRectangle;
@@ -33,7 +36,7 @@ public class MouseGestures {
     public void makeClickable(Node node) {
         node.setOnMouseEntered(nodeOnMouseEnteredEventHandler);
         node.setOnMouseExited(nodeOnMouseExitedEventHandler);
-        node.setOnMouseClicked(circleOnMouseClickedEventHandler);
+        node.setOnMouseClicked(nodeOnMouseClickedEventHandler);
     }
 
     public void makeMovable(Node node, List<Circle> circles, List<Line> lines, List<Arrow> arrows, List<Rectangle> rectangles) {
@@ -45,15 +48,13 @@ public class MouseGestures {
         node.setOnMousePressed(circleOnMousePressedEventHandler);
     }
 
-    EventHandler<MouseEvent> circleOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> nodeOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
                 deselectCurrent();
                 Circle circle = ((Circle) (t.getSource()));
-                circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-                circle.setStrokeWidth(circle.getStrokeWidth() * 2);
-                circle.setStroke(Color.RED);
+                Gview.drawMouseSelection(circle);
                 currentCircle = circle;
                 controller.leftClick((long)circle.getUserData());
             }
@@ -61,9 +62,7 @@ public class MouseGestures {
             else if(t.getSource() instanceof Rectangle) {
                 deselectCurrent();
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
-                rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-                rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 2);
-                rectangle.setStroke(Color.RED);
+                Gview.drawMouseSelection(rectangle);
                 currentRectangle = rectangle;
                 controller.leftClick((long)rectangle.getUserData());
             }
@@ -74,7 +73,6 @@ public class MouseGestures {
 
         @Override
         public void handle(MouseEvent t) {
-
 
             if (t.getSource() instanceof Circle) {
 
@@ -162,13 +160,9 @@ public class MouseGestures {
 
                     }
             }
-
-
             //}
         }
     };
-
-
 
     private void deselectCurrent() {
         if (currentRectangle != null) {
@@ -184,4 +178,7 @@ public class MouseGestures {
 
     }
 
+    public void setGview(GraphicalView graphicalView) {
+        Gview = graphicalView;
+    }
 }

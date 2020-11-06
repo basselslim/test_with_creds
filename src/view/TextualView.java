@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.Time;
 import java.util.*;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -78,7 +77,7 @@ public class TextualView implements observer.Observer {
         requestIndexColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Intersection, Integer> p) {
-                Request req = map.getRequestByTourStopId(p.getValue().getId());
+                Request req = map.getRequestByIntersectionId(p.getValue().getId());
                 int index = map.getListRequests().indexOf(req) + 1;
                 return new ReadOnlyObjectWrapper(index);
             }
@@ -118,7 +117,7 @@ public class TextualView implements observer.Observer {
     }
 
     public void selectRequest(long tourStopId) {
-        Request req = map.getRequestByTourStopId(tourStopId);
+        Request req = map.getRequestByIntersectionId(tourStopId);
         if (!requestsTable.getSelectionModel().getSelectedItems().contains(req.getPickUpPoint())) {
             int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
             requestsTable.getSelectionModel().select(index);

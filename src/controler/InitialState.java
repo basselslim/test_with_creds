@@ -36,7 +36,7 @@ public class InitialState implements State {
 
     @Override
     public void mouseOn(long idIntersection, Controller controller) {
-        if (controller.map.getRequestByTourStopId(idIntersection) != null)
+        if (controller.map.getRequestByIntersectionId(idIntersection) != null)
             controller.Tview.selectRequest(idIntersection);
     }
 

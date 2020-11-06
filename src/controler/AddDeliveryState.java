@@ -27,12 +27,12 @@ public class AddDeliveryState implements State {
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         if (DeliveryPrecedingPoint == null) {
-            if (map.getRequestByTourStopId(i.getId()) != null) {
+            if (map.getRequestByIntersectionId(i.getId()) != null) {
                 DeliveryPrecedingPoint = i;
                 controller.Tview.setMessage("Select the delivery point");
             }
         } else {
-            if (map.getRequestByTourStopId(i.getId()) == null) {
+            if (map.getRequestByIntersectionId(i.getId()) == null) {
                 DeliveryPoint delivery = new DeliveryPoint(i, 0);
                 request.setDeliveryPoint(delivery);
 

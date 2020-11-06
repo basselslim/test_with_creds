@@ -38,6 +38,7 @@ public class GraphicalView implements observer.Observer {
     public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
         mouseGestures = mg;
+        mouseGestures.setGview(this);
         mg.newTranslateX = 0;
         mg.newTranslateY = 0;
         m_overlay = overlay;
@@ -54,11 +55,11 @@ public class GraphicalView implements observer.Observer {
     public static List<Rectangle> rectangles = new ArrayList<Rectangle>();
 
     private void updateCoeff() {
-        double maxHeigth = ((-1 * m_map.findMaxLat()) + 90) * (screenY / 180);
-        double minHeigth = ((-1 * m_map.findMinLat()) + 90) * (screenY / 180);
+        double maxHeigth = ((-1 * m_map.getMaxLat()) + 90) * (screenY / 180);
+        double minHeigth = ((-1 * m_map.getMinLat()) + 90) * (screenY / 180);
 
-        double maxWidth = (m_map.findMaxLong() + 180) * (screenX / 360);
-        double minWidth = (m_map.findMinLong() + 180) * (screenX / 360);
+        double maxWidth = (m_map.getMaxLong() + 180) * (screenX / 360);
+        double minWidth = (m_map.getMinLong() + 180) * (screenX / 360);
 
         coeffX = (double) screenX / (maxWidth - minWidth) * zoomVal;
         coeffY = -(double) screenY / (maxHeigth - minHeigth) * zoomVal;
@@ -111,7 +112,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     public void unZoom() {
-        double width = latToPix(m_map.findMinLat())-latToPix(m_map.findMaxLat());
+        double width = latToPix(m_map.getMinLat())-latToPix(m_map.getMaxLat());
         System.out.println(width);
         if (width > screenY) {
             zoomVal -= zoomStep;
@@ -224,6 +225,21 @@ public class GraphicalView implements observer.Observer {
         refreshMap();
     }
 
+    public void drawMouseSelection(Node node){
+        if(node instanceof Circle){
+            Circle circle = (Circle)node;
+            circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
+            circle.setStrokeWidth(circle.getStrokeWidth() * 2);
+            circle.setStroke(Color.RED);
+        }
+        if(node instanceof Rectangle){
+            Rectangle rectangle = (Rectangle) node;
+            rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
+            rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 2);
+            rectangle.setStroke(Color.RED);
+        }
+    }
+
 
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
@@ -277,7 +293,6 @@ public class GraphicalView implements observer.Observer {
         rectangle.setUserData(intersection.getId());
         rectangles.add(rectangle);
     }
-
 
     private double latToPix(double lat) {
         return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;
