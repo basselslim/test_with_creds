@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import model.*;
 import model.Map;
 
@@ -50,6 +51,8 @@ public class GraphicalView implements observer.Observer {
 
     public static List<Arrow> arrows = new ArrayList<Arrow>();
 
+    public static List<Rectangle> rectangles = new ArrayList<Rectangle>();
+
     private void updateCoeff() {
         double maxHeigth = ((-1 * m_map.findMaxLat()) + 90) * (screenY / 180);
         double minHeigth = ((-1 * m_map.findMinLat()) + 90) * (screenY / 180);
@@ -83,6 +86,12 @@ public class GraphicalView implements observer.Observer {
             for (Arrow arrow : arrows) {
                 arrow.setTranslateX(XValue);
                 arrow.setTranslateY(YValue);
+
+            }
+
+            for (Rectangle rectangle : rectangles) {
+                rectangle.setTranslateX(XValue);
+                rectangle.setTranslateY(YValue);
 
             }
         }
@@ -133,7 +142,7 @@ public class GraphicalView implements observer.Observer {
             int rand2 = generator.nextInt(150);
             int rand3 = generator.nextInt(150);
             Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
-            drawPoint(pickup, color, ReqpointSize);
+            drawRectangle(pickup, color, ReqpointSize);
             drawPoint(delivery, color, ReqpointSize);
 
         }
@@ -154,7 +163,7 @@ public class GraphicalView implements observer.Observer {
         }
 
         //allow for objects to be moved
-        mouseGestures.makeMovable(m_overlay, circles, lines, arrows);
+        mouseGestures.makeMovable(m_overlay, circles, lines, arrows, rectangles);
 
         updateTranslation(mouseGestures.newTranslateX + zoomTranslateX, mouseGestures.newTranslateY + zoomTranslateY);
         mouseGestures.newTranslateX += zoomTranslateX / 2;
@@ -181,6 +190,10 @@ public class GraphicalView implements observer.Observer {
             m_overlay.getChildren().add(arrow);
         }
 
+        for (Rectangle rectangle : rectangles) {
+            m_overlay.getChildren().add(rectangle);
+        }
+
         if(isMapClickable = true)
             enableSelection();
 
@@ -189,7 +202,7 @@ public class GraphicalView implements observer.Observer {
     public void enableSelection() {
         isMapClickable = true;
         for (Node node : m_overlay.getChildren()) {
-            if (node instanceof Circle)
+            if (node instanceof Circle || node instanceof Rectangle)
                 mouseGestures.makeClickable(node);
         }
     }
@@ -199,16 +212,13 @@ public class GraphicalView implements observer.Observer {
         lines.clear();
         circles.clear();
         arrows.clear();
+        rectangles.clear();
         drawMap();
     }
 
     public void disableSelection() {
         isMapClickable = false;
-        m_overlay.getChildren().clear();
-        lines.clear();
-        circles.clear();
-        arrows.clear();
-        drawMap();
+        refreshMap();
     }
 
 
@@ -221,6 +231,7 @@ public class GraphicalView implements observer.Observer {
             Intersection destination = m_map.getListIntersections().get(segment.getDestination());
             double destinationX = longToPix(destination.getLongitude());
             double destinationY = latToPix(destination.getLatitude());
+            double length = Math.sqrt(Math.pow(destinationX-originX,2)+Math.pow(destinationY-originY,2));
             Line line = new Line(originX, originY, destinationX, destinationY);
             line.setStrokeWidth(StrokeSize);
             lines.add(line);
@@ -248,20 +259,22 @@ public class GraphicalView implements observer.Observer {
         circle.setStroke(Color.BLACK);
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
-        circle.setRotate(0.0);
         circle.setUserData(intersection.getId());
         circles.add(circle);
     }
 
-    public List<Intersection> getSelectedIntersection() {
-        List<Intersection> listIntersections = new ArrayList<Intersection>();
-        for (Circle circle : circles) {
-            if (circle.getRotate() == 1.0)
-                listIntersections.add(m_map.getListIntersections().get(circle.getUserData()));
+    private void drawRectangle(Intersection intersection, Color color, double size) {
 
-        }
-        return listIntersections;
+        double pointX = longToPix(intersection.getLongitude());
+        double pickupY = latToPix(intersection.getLatitude());
+
+        Rectangle rectangle = new Rectangle(pointX-size,pickupY-size, size*2, size*2);
+        rectangle.setStroke(Color.BLACK);
+        rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
+        rectangle.setUserData(intersection.getId());
+        rectangles.add(rectangle);
     }
+
 
     private double latToPix(double lat) {
         return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;

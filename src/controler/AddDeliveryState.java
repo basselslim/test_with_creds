@@ -4,7 +4,7 @@ import model.*;
 import model.Map;
 
 /**
- * 
+ *
  */
 public class AddDeliveryState implements State {
 
@@ -16,11 +16,10 @@ public class AddDeliveryState implements State {
      * Default constructor
      */
 
-
     public AddDeliveryState() {
     }
 
-    public Intersection getpreceding(){
+    public Intersection getpreceding() {
         return DeliveryPrecedingPoint;
     }
 
@@ -28,12 +27,12 @@ public class AddDeliveryState implements State {
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         if (DeliveryPrecedingPoint == null) {
-            if(map.getRequestByTourStopId(i.getId()) != null) {
+            if (map.getRequestByTourStopId(i.getId()) != null) {
                 DeliveryPrecedingPoint = i;
                 controller.TextMessage.setText("Select the delivery point");
             }
         } else {
-            if(map.getRequestByTourStopId(i.getId()) == null) {
+            if (map.getRequestByTourStopId(i.getId()) == null) {
                 DeliveryPoint delivery = new DeliveryPoint(i, 0);
                 request.setDeliveryPoint(delivery);
 
@@ -63,10 +62,10 @@ public class AddDeliveryState implements State {
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
         Request nextReq = controller.confirmRequestState.request;
-        if (controller.confirmRequestState.DeliveryPrecedingPoint != null && nextReq.getDeliveryPoint() != null && nextReq.getDeliveryPoint().getDeliveryDuration() != 0){
+        if (controller.confirmRequestState.DeliveryPrecedingPoint != null && nextReq.getDeliveryPoint() != null && nextReq.getDeliveryPoint().getDeliveryDuration() != 0) {
             controller.confirmRequestState.reverseAction(controller);
             controller.setCurrentState(controller.confirmRequestState);
-    }
+        }
     }
 
     protected void entryAction(Controller controller, Request r, Intersection pickuppredecingPoint) {
