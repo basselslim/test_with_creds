@@ -22,22 +22,7 @@ import java.io.IOException;
 public class Window extends Application {
 
     Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-    TextualView Tview;
-    Map map = new Map();
-    GraphicalView Gview;
-    Controller controller = new Controller(map);
-    MouseGestures mg = new MouseGestures(controller);
-
-    @FXML
-    private Pane overlay;
-    @FXML
-    private Pane myPane;
-    @FXML
-    private Button btn_load_requests;
-    @FXML
-    private javafx.scene.control.TextArea TextArea;
-    @FXML
-    private Label TextTour;
+    Controller controller = new Controller();
 
     @Override
     public void start(Stage MainFrame) throws Exception {
@@ -58,58 +43,5 @@ public class Window extends Application {
         launch(args);
     }
 
-    public void Zoom(ActionEvent event) {
-        Gview.zoom();
-
-    }
-
-    public void UnZoom(ActionEvent event) {
-        Gview.unZoom();
-    }
-
-    public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg,screenBounds);
-        Tview = new TextualView(map, myPane, TextArea, TextTour);
-        controller.setGview(Gview);
-        controller.setTview(Tview);
-        map.addObserver(Gview);
-
-        //Load the map
-        controller.LoadMap(event);
-
-        //reactivate Requests button
-        btn_load_requests.setDisable(false);
-        Tview.setMessage("Please load a request list");
-
-    }
-
-    public void LoadRequests(ActionEvent event) {
-        map.addObserver(Tview);
-        controller.LoadRequests(event);
-        Gview.enableSelection();
-    }
-
-    public void addRequest(ActionEvent event) {
-        controller.addRequest();
-        controller.confirmRequest(); //TEMPORAIRE
-
-    }
-
-    public void undo(ActionEvent event){
-        controller.undo();
-    }
-
-    public void redo(ActionEvent event){
-        controller.redo();
-    }
-
-    public void Compute(ActionEvent event) {
-        controller.computeTour();
-    }
-
-    public void Export(ActionEvent event) {
-
-        controller.ExportRoadMap(event);
-    }
 
 }
