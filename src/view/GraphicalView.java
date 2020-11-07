@@ -49,13 +49,13 @@ public class GraphicalView implements observer.Observer {
         m_overlay.setPrefHeight(screenY);
     }
 
-    public static List<Circle> circles = new ArrayList<Circle>();
+    public static HashMap<Long,Circle> circles = new HashMap<Long,Circle>();
 
     public static List<Line> lines = new ArrayList<Line>();
 
     public static List<Arrow> arrows = new ArrayList<Arrow>();
 
-    public static List<Rectangle> rectangles = new ArrayList<Rectangle>();
+    public static HashMap<Long,Rectangle> rectangles = new HashMap<Long,Rectangle>();
 
     private void updateCoeff() {
         double maxHeigth = ((-1 * m_map.getMaxLat()) + 90) * (screenY / 180);
@@ -76,30 +76,32 @@ public class GraphicalView implements observer.Observer {
     }
 
     private void updateTranslation(double XValue, double YValue) {
-        if (circles.get(1).getCenterX() < 100) {
-            for (Circle circle : circles) {
-                circle.setTranslateX(XValue);
-                circle.setTranslateY(YValue);
-            }
 
-            for (Line line : lines) {
-                line.setTranslateX(XValue);
-                line.setTranslateY(YValue);
+        for (HashMap.Entry mapentry : circles.entrySet()) {
+            Circle circle = (Circle) mapentry.getValue();
+            circle.setTranslateX(XValue);
+            circle.setTranslateY(YValue);
+        }
 
-            }
-            for (Arrow arrow : arrows) {
-                arrow.setTranslateX(XValue);
-                arrow.setTranslateY(YValue);
+        for (Line line : lines) {
+            line.setTranslateX(XValue);
+            line.setTranslateY(YValue);
 
-            }
+        }
+        for (Arrow arrow : arrows) {
+            arrow.setTranslateX(XValue);
+            arrow.setTranslateY(YValue);
 
-            for (Rectangle rectangle : rectangles) {
-                rectangle.setTranslateX(XValue);
-                rectangle.setTranslateY(YValue);
+        }
 
-            }
+        for (HashMap.Entry mapentry : rectangles.entrySet()) {
+            Rectangle rectangle = (Rectangle) mapentry.getValue();
+            rectangle.setTranslateX(XValue);
+            rectangle.setTranslateY(YValue);
+
         }
     }
+
 
     public void zoom() {
 
@@ -180,8 +182,9 @@ public class GraphicalView implements observer.Observer {
         }
 
         Circle depot = new Circle();
-        for (Circle circle : circles) {
-            if ((long) circle.getUserData() == m_map.getDepot().getId()) {
+        for (HashMap.Entry mapentry : circles.entrySet()) {
+            Circle circle = (Circle)mapentry.getValue();
+            if ((long)mapentry.getKey() == m_map.getDepot().getId()) {
                 depot = circle;
                 depot.setRadius(pointSize * 2);
                 depot.setFill(Color.RED);
@@ -196,7 +199,8 @@ public class GraphicalView implements observer.Observer {
             m_overlay.getChildren().add(arrow);
         }
 
-        for (Rectangle rectangle : rectangles) {
+        for (HashMap.Entry mapentry : rectangles.entrySet()) {
+            Rectangle rectangle = (Rectangle) mapentry.getValue();
             m_overlay.getChildren().add(rectangle);
         }
 
@@ -242,6 +246,21 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    public void undrawMouseSelection(Node node) {
+        if(node instanceof Circle){
+            Circle circle = (Circle)node;
+            circle.setFill(Color.BLACK);
+            circle.setStrokeWidth(circle.getStrokeWidth() / 2);
+            circle.setStroke(Color.BLACK);
+        }
+        if(node instanceof Rectangle){
+            Rectangle rectangle = (Rectangle) node;
+            rectangle.setFill(Color.BLACK);
+            rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 2);
+            rectangle.setStroke(Color.BLACK);
+        }
+    }
+
 
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
@@ -282,7 +301,7 @@ public class GraphicalView implements observer.Observer {
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(intersection.getId());
-        circles.add(circle);
+        circles.put(intersection.getId(),circle);
     }
 
     private void drawRectangle(Intersection intersection, Color color, double size) {
@@ -295,7 +314,7 @@ public class GraphicalView implements observer.Observer {
         rectangle.setStrokeWidth(StrokeSize);
         rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
         rectangle.setUserData(intersection.getId());
-        rectangles.add(rectangle);
+        rectangles.put(intersection.getId(),rectangle);
     }
 
     private double latToPix(double lat) {
