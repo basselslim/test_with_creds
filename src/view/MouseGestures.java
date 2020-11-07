@@ -71,13 +71,13 @@ public class MouseGestures {
 
                 Circle circle = ((Circle) (t.getSource()));
                 currentcolor = (Color) circle.getFill();
-                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
+                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
                 controller.mouseOn((long) circle.getUserData());
             } else if (t.getSource() instanceof Rectangle) {
 
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
                 currentcolor = (Color) rectangle.getFill();
-                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
+                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
                 controller.mouseOn((long) rectangle.getUserData());
             }
         }

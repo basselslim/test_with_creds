@@ -72,7 +72,7 @@ public class GraphicalView implements observer.Observer {
 
         pointSize = 0.00030 * coeffX;
         ReqpointSize = 0.0007 * coeffX;
-        StrokeSize = 0.00015 * coeffX;
+        StrokeSize = 0.00016 * coeffX;
     }
 
     private void updateTranslation(double XValue, double YValue) {
@@ -230,32 +230,33 @@ public class GraphicalView implements observer.Observer {
         refreshMap();
     }
 
-    public void drawMouseSelection(Node node){
-        if(node instanceof Circle){
-            Circle circle = (Circle)node;
-            circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            circle.setStrokeWidth(circle.getStrokeWidth() * 2);
+    public void drawMouseSelection(long NodeId) {
+        Circle circle = circles.get(NodeId);
+        Rectangle rectangle = rectangles.get(NodeId);
+        if (circle != null) {
+            //circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
+            //circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
             circle.setStroke(Color.RED);
         }
-        if(node instanceof Rectangle){
-            Rectangle rectangle = (Rectangle) node;
-            rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 2);
+        if (rectangle != null) {
+            //rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
+            //rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
             rectangle.setStroke(Color.RED);
         }
+
     }
 
-    public void undrawMouseSelection(Node node) {
-        if(node instanceof Circle){
-            Circle circle = (Circle)node;
-            circle.setFill(Color.BLACK);
-            circle.setStrokeWidth(circle.getStrokeWidth() / 2);
+    public void undrawMouseSelection(long NodeId) {
+        Circle circle = circles.get(NodeId);
+        Rectangle rectangle = rectangles.get(NodeId);
+        if (circle != null) {
+            //circle.setFill(Color.BLACK);
+            //circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
             circle.setStroke(Color.BLACK);
         }
-        if(node instanceof Rectangle){
-            Rectangle rectangle = (Rectangle) node;
-            rectangle.setFill(Color.BLACK);
-            rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 2);
+        if (rectangle != null) {
+            //rectangle.setFill(Color.BLACK);
+            //rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
             rectangle.setStroke(Color.BLACK);
         }
     }

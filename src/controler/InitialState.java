@@ -28,28 +28,22 @@ public class InitialState implements State {
 
     @Override
     public void addRequest(Controller controller) {
-        controller.addPickupState.entryAction(controller, request);
-        controller.setCurrentState(controller.addPickupState);
+        if(!controller.map.getListRequests().isEmpty()) {
+            controller.addPickupState.entryAction(controller, request);
+            controller.setCurrentState(controller.addPickupState);
+        }
     }
 
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         //Unselect preceding point
-        Circle circle = controller.Gview.circles.get(CurrentId);
-        Rectangle rectangle = controller.Gview.rectangles.get(CurrentId);
-        if(circle!=null)
-            controller.Gview.undrawMouseSelection(circle);
-        if(rectangle!=null)
-            controller.Gview.undrawMouseSelection(rectangle);
+        controller.Gview.undrawMouseSelection(CurrentId);
+        controller.Gview.undrawMouseSelection(CurrentId);
 
         //Select preceding point
-        circle = controller.Gview.circles.get(i.getId());
-        rectangle = controller.Gview.rectangles.get(i.getId());
-        if(circle!=null)
-            controller.Gview.drawMouseSelection(circle);
-        if(rectangle!=null)
-            controller.Gview.drawMouseSelection(rectangle);
+        controller.Gview.drawMouseSelection(i.getId());
+        controller.Gview.drawMouseSelection(i.getId());
 
         CurrentId = i.getId();
 
@@ -96,6 +90,7 @@ public class InitialState implements State {
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         controller.Gview.enableSelection();
+        entryAction(controller);
     }
 
     public void entryAction(Controller controller) {
