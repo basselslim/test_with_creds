@@ -55,7 +55,7 @@
                <Font size="17.0" />
             </font>
          </Button>
-         <Label fx:id="TextTour" text="Tour length :" translateX="380.0" translateY="20.0" />
+         <Label fx:id="tour" text="Tour length :" translateX="380.0" translateY="20.0" />
       </children>
    </HBox>
    <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="30.0" translateY="-130.0" />

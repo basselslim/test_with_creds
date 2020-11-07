@@ -19,9 +19,6 @@ public class AddDeliveryState implements State {
     public AddDeliveryState() {
     }
 
-    public Intersection getpreceding() {
-        return DeliveryPrecedingPoint;
-    }
 
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {

@@ -113,7 +113,6 @@ public class GraphicalView implements observer.Observer {
             zoomTranslateY = 0;
         }
     }
-
     public void unZoom() {
         double width = latToPix(m_map.getMinLat())-latToPix(m_map.getMaxLat());
         if (width > screenY) {
