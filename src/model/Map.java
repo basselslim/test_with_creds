@@ -3,25 +3,21 @@ package model;
 import java.util.*;
 
 /**
- * check for java beans for Observable
+ * A set of intersections connected by segments forming an oriented graph representing the different possible
+ * delivery/pickup points, and the distance between each point.
+ *
+ * @author T-REXANOME
  */
 public class Map extends observer.Observable {
 
-    /**
-     *
-     */
     protected List<Request> listRequests;
-
-    protected HashMap<Long,Intersection> listIntersections;
-
+    protected HashMap<Long, Intersection> listIntersections;
     protected Tour deliveryTour;
     protected Depot depot;
-
 
     /**
      * Default constructor
      */
-
     public Map() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
@@ -29,15 +25,21 @@ public class Map extends observer.Observable {
         deliveryTour = new Tour();
     }
 
-
+    /**
+     * Constructor
+     *
+     * @param listIntersection list of intersections of the map
+     */
     public Map(HashMap<Long, Intersection> listIntersection) {
         this.listIntersections = listIntersection;
         listRequests = new ArrayList<>();
         depot = new Depot();
     }
 
+    /**
+     * Display.
+     */
     public void display() {
-
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
             System.out.println(intersection);
@@ -45,7 +47,6 @@ public class Map extends observer.Observable {
             for (Segment segment : intersection.getListSegments()) {
                 System.out.println(segment);
             }
-
         }
 
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -59,15 +60,26 @@ public class Map extends observer.Observable {
         System.out.println(this.depot);
     }
 
+    /**
+     * Clear the map.
+     */
     public void clearMap() {
         listIntersections.clear();
         deliveryTour.getListPaths().clear();
     }
 
+    /**
+     * Clear the request list.
+     */
     public void clearRequests() {
         listRequests.clear();
     }
 
+    /**
+     * Find the minimum latitude.
+     *
+     * @return the minimum latitude
+     */
     public double findMinLat() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -78,6 +90,11 @@ public class Map extends observer.Observable {
         return min;
     }
 
+    /**
+     * Fine the maximum latitude.
+     *
+     * @return the maximum latitude
+     */
     public double findMaxLat() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -88,6 +105,11 @@ public class Map extends observer.Observable {
         return max;
     }
 
+    /**
+     * Find the minimum longitude.
+     *
+     * @return the minimum longitude
+     */
     public double findMinLong() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -98,6 +120,11 @@ public class Map extends observer.Observable {
         return min;
     }
 
+    /**
+     * Find the maximum longitude.
+     *
+     * @return the maximum longitude
+     */
     public double findMaxLong() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -108,7 +135,7 @@ public class Map extends observer.Observable {
         return max;
     }
 
-    /**
+    /*
      * Getters - Setters
      */
 
@@ -123,15 +150,26 @@ public class Map extends observer.Observable {
     }
 
     //INTERSECTIONS
+
+    /**
+     * Add a request to the request list.
+     *
+     * @param r request to add
+     */
     public void addRequest(Request r) {
         this.listRequests.add(r);
     }
 
+    /**
+     * Remove a request from the request list.
+     *
+     * @param r request to remove
+     */
     public void removeRequest(Request r) {
         this.listRequests.remove(r);
     }
 
-    public HashMap<Long,Intersection> getListIntersections() {
+    public HashMap<Long, Intersection> getListIntersections() {
         return listIntersections;
     }
 
@@ -159,9 +197,6 @@ public class Map extends observer.Observable {
         this.deliveryTour = newTour;
         notifyObservers();
     }
-
-
-
 
     @Override
     public String toString() {

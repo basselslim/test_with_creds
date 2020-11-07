@@ -1,9 +1,9 @@
 package view;
 
-import java.util.*;
-
 /**
- * 
+ * Button listener
+ *
+ * @author T-REXANOME
  */
 public class ButtonListener {
 

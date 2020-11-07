@@ -6,13 +6,30 @@ import model.Segment;
 
 import java.util.*;
 
+/**
+ * Algorithm that compute the smallest path between two intersections.
+ *
+ * @author T-REXANOME
+ */
 public class ComputeSmallestPath {
     protected Map map;
 
+    /**
+     * Constructor
+     *
+     * @param map map
+     */
     public ComputeSmallestPath(Map map) {
         this.map = map;
     }
 
+    /**
+     * Compute the smallest path between two intersections.
+     *
+     * @param from departure intersection
+     * @param to   arrival intersection
+     * @return shortest path
+     */
     public List<Intersection> computeSmallestPath(Intersection from, Intersection to) {
         List<Intersection> computedPath;
         Queue<Intersection> openSet = new PriorityQueue<>();
@@ -50,8 +67,15 @@ public class ComputeSmallestPath {
         return null;
     }
 
+    /**
+     * calculate the geometric distance between two intersections.
+     *
+     * @param from first intersection
+     * @param to   second intersection
+     * @return distance between the two intersections
+     */
     protected double computeCost(Intersection from, Intersection to) {
-        double R = 6372.8; // Earth's Radius, in kilometers
+        double R = 6372.8; /* Earth's Radius, in kilometers */
 
         double dLat = Math.toRadians(to.getLatitude() - from.getLatitude());
         double dLon = Math.toRadians(to.getLongitude() - from.getLongitude());

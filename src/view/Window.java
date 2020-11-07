@@ -23,15 +23,17 @@ import javafx.stage.StageStyle;
 import model.Map;
 import model.Path;
 
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Window
+ *
+ * @author T-REXANOME
+ */
 public class Window extends Application {
-
-
     TextualView Tview;
     Map map = new Map();
     GraphicalView Gview;
@@ -47,12 +49,24 @@ public class Window extends Application {
     @FXML
     private javafx.scene.control.TextArea TextArea;
 
+    /**
+     * Start.
+     *
+     * @param MainFrame
+     * @throws Exception
+     */
     @Override
     public void start(Stage MainFrame) throws Exception {
         initUI(MainFrame);
 
     }
 
+    /**
+     * Initialisation.
+     *
+     * @param stage
+     * @throws IOException
+     */
     private void initUI(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 
@@ -63,20 +77,40 @@ public class Window extends Application {
         stage.show();
     }
 
+    /**
+     * Main
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
 
     }
 
+    /**
+     * Zoom.
+     *
+     * @param event
+     */
     public void Zoom(ActionEvent event) {
         Gview.zoom();
 
     }
 
+    /**
+     * Unzoom.
+     *
+     * @param event
+     */
     public void UnZoom(ActionEvent event) {
         Gview.unZoom();
     }
 
+    /**
+     * Load map.
+     *
+     * @param event
+     */
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg);
         Tview = new TextualView(map, myPane);
@@ -96,23 +130,42 @@ public class Window extends Application {
         TextArea.setText("Please load a request list");
     }
 
+    /**
+     * Load requests.
+     *
+     * @param event
+     */
     public void LoadRequests(ActionEvent event) {
         map.addObserver(Tview);
         controller.LoadRequests(event);
     }
 
+    /**
+     * Add requests.
+     *
+     * @param event
+     */
     public void addRequest(ActionEvent event) {
         controller.addRequest();
         controller.confirmRequest(); //TEMPORAIRE
 
     }
 
+    /**
+     * Compute.
+     *
+     * @param event
+     */
     public void Compute(ActionEvent event) {
         controller.computeOptimalTour();
     }
 
+    /**
+     * Export.
+     *
+     * @param event
+     */
     public void Export(ActionEvent event) {
-
     }
 
 }

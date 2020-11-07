@@ -3,12 +3,12 @@ package model;
 import java.util.*;
 
 /**
- * 
+ * Consisting of a pickup point and a delivery point, the deliverer must first collect the package before delivering it.
+ *
+ * @author T-REXANOME
  */
 public class Request extends Observable {
-    /**
-     *
-     */
+
     protected int order;
     protected PickUpPoint pickUpPoint;
     protected DeliveryPoint deliveryPoint;
@@ -19,14 +19,21 @@ public class Request extends Observable {
     public Request() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param pickUpPoint   intersection for which a package must be picked up
+     * @param deliveryPoint intersection for which a package must be delivered
+     */
     public Request(PickUpPoint pickUpPoint, DeliveryPoint deliveryPoint) {
         this.pickUpPoint = pickUpPoint;
         this.deliveryPoint = deliveryPoint;
     }
 
-    /**
+    /*
      * Getters - Setters
      */
+
     public int getOrder() {
         return order;
     }

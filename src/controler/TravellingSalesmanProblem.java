@@ -1,28 +1,31 @@
 package controler;
 
-import javafx.util.Pair;
 import model.*;
 
 import java.util.*;
-import java.util.Map;
 
+/**
+ * Algorithm that solve Traveling Salesman Problem.
+ *
+ * @author T-REXANOME
+ */
 public class TravellingSalesmanProblem {
-    // Java program to solve Traveling Salesman Problem
+
     protected int numberOfStep = 0;
     protected model.Map map;
     protected HashMap<Long, HashMap<Long, Path>> adjacencyMatrixOfShortestPath;
-    protected HashMap<Long,Long> precedenceOrderMatrix;
-    // final_path stores the final solution ie, the
-    // path of the salesman.
-    protected Tour final_tour;
+    protected HashMap<Long, Long> precedenceOrderMatrix;
 
-    // visited[] keeps track of the already visited nodes
-    // in a particular path
-    protected HashMap<Long, Boolean> visited;
+    protected Tour final_tour; /* stores the final solution ie, the path of the salesman. */
+    protected HashMap<Long, Boolean> visited; /* keeps track of the already visited nodes in a particular path */
+    protected int final_res = Integer.MAX_VALUE; /* stores the final minimum weight of shortest tour */
 
-    // Stores the final minimum weight of shortest tour.
-    protected int final_res = Integer.MAX_VALUE;
-
+    /**
+     * Constructor
+     *
+     * @param newMap
+     * @param mapSmallestPaths
+     */
     public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths) {
         numberOfStep = mapSmallestPaths.size();
         map = newMap;
@@ -32,15 +35,21 @@ public class TravellingSalesmanProblem {
         initialisePrecedenceMatrix();
     }
 
+    /**
+     *
+     */
     private void initialisePrecedenceMatrix() {
-        precedenceOrderMatrix = new HashMap<Long,Long>();
+        precedenceOrderMatrix = new HashMap<Long, Long>();
         for (Request r : map.getListRequests()) {
-            precedenceOrderMatrix.put(r.getDeliveryPoint().getId(),r.getPickUpPoint().getId());
+            precedenceOrderMatrix.put(r.getDeliveryPoint().getId(), r.getPickUpPoint().getId());
         }
     }
 
-    // Function to copy temporary solution to
-    // the final solution
+    /**
+     * Function to copy temporary solution to the final solution.
+     *
+     * @param curr_path current path
+     */
     protected void copyToFinal(Tour curr_path) {
         final_tour.getListPaths().clear();
         for (Path path : curr_path.getListPaths()) {
@@ -52,8 +61,12 @@ public class TravellingSalesmanProblem {
         final_tour.addPath(adjacencyMatrixOfShortestPath.get(lastStepId).get(firstStepId));
     }
 
-    // Function to find the minimum edge cost
-    // having an end at the vertex i
+    /**
+     * Function to find the minimum edge cost having an end at the vertex i.
+     *
+     * @param id
+     * @return
+     */
     protected int firstMin(long id) {
         int min = Integer.MAX_VALUE;
         for (java.util.Map.Entry<Long, Path> pathsStartingAtId : adjacencyMatrixOfShortestPath.get(id).entrySet()) {
@@ -65,8 +78,12 @@ public class TravellingSalesmanProblem {
         return min;
     }
 
-    // function to find the second minimum edge cost
-    // having an end at the vertex i
+    /**
+     * Function to find the second minimum edge cost having an end at the vertex i.
+     *
+     * @param id
+     * @return
+     */
     protected int secondMin(long id) {
         int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
         for (java.util.Map.Entry<Long, Path> pathsStartingAtId : adjacencyMatrixOfShortestPath.get(id).entrySet()) {
@@ -82,8 +99,9 @@ public class TravellingSalesmanProblem {
         return second;
     }
 
-
-    // This function sets up final_tour
+    /**
+     * Set up final_tour.
+     */
     public void TSP() {
         Tour curr_tour = new Tour();
 
@@ -112,14 +130,14 @@ public class TravellingSalesmanProblem {
         map.setDeliveryTour(final_tour);
     }
 
-
-    // function that takes as arguments:
-    // curr_bound -> lower bound of the root node
-    // curr_weight-> stores the weight of the path so far
-    // level-> current level while moving in the search
-    //         space tree
-    // curr_path[] -> where the solution is being stored which
-    //             would later be copied to final_tour
+    /**
+     * Function that takes as arguments:
+     *
+     * @param curr_bound lower bound of the root node
+     * @param curr_weight stores the weight of the path so far
+     * @param level current level while moving in the search space tree
+     * @param curr_tour where the solution is being stored which would later be copied to final_tour
+     */
     protected void TSPRec(int curr_bound, int curr_weight, int level, Tour curr_tour) {
 
         // base case is when we have reached level N which
@@ -156,7 +174,7 @@ public class TravellingSalesmanProblem {
         for (java.util.Map.Entry<Long, Path> pathStartingAtCurrentStep : adjacencyMatrixOfShortestPath.get(currentStepId).entrySet()) {
             // check if not visited already
             boolean precedenceRespected = false;
-            if (precedenceOrderMatrix.containsKey(pathStartingAtCurrentStep.getKey()) ) {
+            if (precedenceOrderMatrix.containsKey(pathStartingAtCurrentStep.getKey())) {
                 if (visited.containsKey(precedenceOrderMatrix.get(pathStartingAtCurrentStep.getKey()))) {
                     precedenceRespected = true;
                 }
@@ -187,7 +205,7 @@ public class TravellingSalesmanProblem {
                 }
 
                 if (curr_tour.getListPaths().size() == level) {
-                    curr_tour.getListPaths().remove(level-1);
+                    curr_tour.getListPaths().remove(level - 1);
                 }
                 // Else we have to prune the node by resetting
                 // all changes to curr_weight and curr_bound
@@ -196,9 +214,9 @@ public class TravellingSalesmanProblem {
 
                 // Also reset the visited array
                 visited.clear();
-                visited.put(map.getDepot().getId(),true);
-                for (Path p :curr_tour.getListPaths()) {
-                    visited.put(p.getIdArrival(),true);
+                visited.put(map.getDepot().getId(), true);
+                for (Path p : curr_tour.getListPaths()) {
+                    visited.put(p.getIdArrival(), true);
                 }
             }
         }

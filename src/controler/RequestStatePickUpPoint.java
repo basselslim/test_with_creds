@@ -7,16 +7,27 @@ import view.Window;
 import java.util.*;
 
 /**
- *
+ * @author T-REXANOME
  */
 public class RequestStatePickUpPoint implements State {
 
     private Request request;
     private Intersection precedingPoint;
 
+    /**
+     * Default constructor
+     */
     public RequestStatePickUpPoint() {
     }
 
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map
+     * @param listOfCommand
+     * @param i intersection
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
@@ -33,6 +44,11 @@ public class RequestStatePickUpPoint implements State {
         }
     }
 
+    /**
+     *
+     * @param duration   duration to add
+     * @param controller
+     */
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getPickUpPoint().setPickUpDuration(duration);
@@ -42,6 +58,10 @@ public class RequestStatePickUpPoint implements State {
         controller.setCurrentState(controller.requestStateDeliveryPoint);
     }
 
+    /**
+     *
+     * @param controller
+     */
     protected void entryAction(Controller controller) {
         controller.Gview.enableSelection();
         request = new Request();

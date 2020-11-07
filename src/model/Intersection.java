@@ -3,12 +3,12 @@ package model;
 import java.util.*;
 
 /**
- * 
+ * Point characterized by a longitude and a latitude, which can be the origin or destination point of one or more
+ * segments.
+ *
+ * @author T-REXANOME
  */
-public class Intersection extends observer.Observable implements Comparable<Intersection>{
-    /**
-     *
-     */
+public class Intersection extends observer.Observable implements Comparable<Intersection> {
 
     protected long id;
     protected double latitude;
@@ -25,6 +25,13 @@ public class Intersection extends observer.Observable implements Comparable<Inte
     public Intersection() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param id        id of the intersection
+     * @param latitude  x coordinates
+     * @param longitude y coordinates
+     */
     public Intersection(long id, double latitude, double longitude) {
         this.longitude = longitude;
         this.latitude = latitude;
@@ -32,6 +39,14 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         this.listSegments = new ArrayList<Segment>();
     }
 
+    /**
+     * Constructor
+     *
+     * @param id           id of the intersection
+     * @param latitude     x coordinates
+     * @param longitude    y coordinates
+     * @param listSegments list of segments which start from the intersection
+     */
     public Intersection(long id, double latitude, double longitude, List<Segment> listSegments) {
         this.longitude = longitude;
         this.latitude = latitude;
@@ -39,6 +54,11 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         this.listSegments = listSegments;
     }
 
+    /**
+     * Constructor used in the algorithm of smallest paths
+     *
+     * @param current intersection
+     */
     public Intersection(Intersection current) {
         this.previous = null;
         this.routeScore = Double.POSITIVE_INFINITY;
@@ -50,6 +70,14 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         this.listSegments = current.listSegments;
     }
 
+    /**
+     * Constructor used in the algorithm of smallest paths
+     *
+     * @param current        intersection
+     * @param previous       intersection
+     * @param routeScore     score that represents the cheapest path from start
+     * @param estimatedScore score that represents the estimated distance from start to the end
+     */
     public Intersection(Intersection current, Intersection previous, double routeScore, double estimatedScore) {
         this.previous = previous;
         this.routeScore = routeScore;
@@ -61,9 +89,10 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         this.listSegments = current.listSegments;
     }
 
-    /**
+    /*
      * Getters - Setters
      */
+
     public long getId() {
         return id;
     }
@@ -92,11 +121,6 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         return listSegments;
     }
 
-    public void addSegment(Segment s) {
-        listSegments.add(s);
-        notifyObservers();
-    }
-
     public Intersection getPrevious() {
         return previous;
     }
@@ -121,6 +145,23 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         this.estimatedScore = estimatedScore;
     }
 
+    /**
+     * Add a segment to the list of segments of the intersection.
+     *
+     * @param s segment to add
+     */
+    public void addSegment(Segment s) {
+        listSegments.add(s);
+        notifyObservers();
+    }
+
+    /**
+     * Compare the estimated score of two intersections.
+     *
+     * @param other the intersection to compare to
+     * @return 1 if the other intersection has a lower estimated score, -1 if it has a higher estimated score, or 0 if
+     * they are equal.
+     */
     @Override
     public int compareTo(Intersection other) {
         if (this.estimatedScore > other.estimatedScore) {

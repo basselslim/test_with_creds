@@ -5,13 +5,24 @@ import model.Map;
 import model.Request;
 import view.Window;
 
+/**
+ * State of AGILEPLD when receiving the message delete() from InitialState
+ * -> Wait for a leftClick
+ * -> Return back to initialState when receiving the message rightClick()
+ *
+ * @author T-REXANOME
+ */
 public class DeleteState implements State {
-    // State of AGILEPLD when receiving the message delete() from InitialState
-    // -> Wait for a leftClick
-    // -> Return back to initialState when receiving the message rightClick()
 
+    /**
+     *
+     * @param controller
+     * @param map
+     * @param listOfCommands
+     * @param i
+     */
     @Override
-    public void leftClick(Controller controler, Map map, ListOfCommand listOfCommands, Intersection i) {
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommands, Intersection i) {
        /* Shape shape = plan.search(p);
         if (shape != null)
             listOfCommands.add(new ReverseCommand(new AddCommand(plan, shape))); */

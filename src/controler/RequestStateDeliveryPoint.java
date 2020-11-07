@@ -7,7 +7,7 @@ import view.Window;
 import java.util.*;
 
 /**
- * 
+ * @author T-REXANOME
  */
 public class RequestStateDeliveryPoint implements State {
 
@@ -20,6 +20,14 @@ public class RequestStateDeliveryPoint implements State {
     public RequestStateDeliveryPoint() {
     }
 
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map
+     * @param listOfCommand
+     * @param i
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
@@ -36,6 +44,11 @@ public class RequestStateDeliveryPoint implements State {
         }
     }
 
+    /**
+     *
+     * @param duration duration to add
+     * @param controller
+     */
     @Override
     public void addDuration(int duration, Controller controller){
         request.getDeliveryPoint().setDeliveryDuration(duration);
@@ -46,6 +59,11 @@ public class RequestStateDeliveryPoint implements State {
 
     }
 
+    /**
+     *
+     * @param controller
+     * @param r request
+     */
     protected void entryAction(Controller controller, Request r) {
         request = r;
         controller.Gview.enableSelection();

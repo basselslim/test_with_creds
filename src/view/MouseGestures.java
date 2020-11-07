@@ -13,6 +13,11 @@ import javafx.scene.shape.Line;
 import javax.sound.midi.SysexMessage;
 import java.util.List;
 
+/**
+ * Mouse gestures
+ *
+ * @author T-REXANOME
+ */
 public class MouseGestures {
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
@@ -25,16 +30,30 @@ public class MouseGestures {
     protected double newTranslateX;
     protected double newTranslateY;
 
+    /**
+     * Constructor
+     *
+     * @param c controller
+     */
     MouseGestures(Controller c) {
         controller = c;
     }
 
+    /**
+     * @param node
+     */
     public void makeClickable(Node node) {
         node.setOnMouseEntered(circleOnMouseEnteredEventHandler);
         node.setOnMouseExited(circleOnMouseExitedEventHandler);
         node.setOnMouseClicked(circleOnMouseClickedEventHandler);
     }
 
+    /**
+     * @param node
+     * @param circles
+     * @param lines
+     * @param arrows
+     */
     public void makeMovable(Node node, List<Circle> circles, List<Line> lines, List<Arrow> arrows) {
         this.lines = lines;
         this.circles = circles;
@@ -44,6 +63,10 @@ public class MouseGestures {
     }
 
     EventHandler<MouseEvent> circleOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+        /**
+         *
+         * @param t
+         */
         @Override
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
@@ -58,38 +81,44 @@ public class MouseGestures {
     };
 
     EventHandler<MouseEvent> circleOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
-
+        /**
+         *
+         * @param t
+         */
         @Override
         public void handle(MouseEvent t) {
-
 
             if (t.getSource() instanceof Circle) {
 
                 Circle p = ((Circle) (t.getSource()));
                 currentcolor = (Color) p.getFill();
                 p.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
-
             }
         }
     };
 
     EventHandler<MouseEvent> circleOnMouseExitedEventHandler = new EventHandler<MouseEvent>() {
-
+        /**
+         *
+         * @param t
+         */
         @Override
         public void handle(MouseEvent t) {
-
 
             if (t.getSource() instanceof Circle) {
 
                 Circle p = ((Circle) (t.getSource()));
                 if (p.getRotate() != 1.0)
                     p.setFill(currentcolor);
-
             }
         }
     };
 
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
+        /**
+         *
+         * @param t
+         */
         @Override
         public void handle(MouseEvent t) {
             orgSceneX = t.getSceneX();
@@ -103,10 +132,12 @@ public class MouseGestures {
     };
 
     EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
-
+        /**
+         *
+         * @param t
+         */
         @Override
         public void handle(MouseEvent t) {
-
             double offsetX = t.getSceneX() - orgSceneX;
             double offsetY = t.getSceneY() - orgSceneY;
 
@@ -122,15 +153,12 @@ public class MouseGestures {
                 for (Line line : lines) {
                     line.setTranslateX(newTranslateX);
                     line.setTranslateY(newTranslateY);
-
                 }
                 for (Arrow arrow : arrows) {
                     arrow.setTranslateX(newTranslateX);
                     arrow.setTranslateY(newTranslateY);
-
                 }
             }
         }
     };
-
 }

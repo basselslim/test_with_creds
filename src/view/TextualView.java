@@ -15,7 +15,11 @@ import model.Map;
 
 import static java.lang.String.valueOf;
 
-
+/**
+ * Textual view
+ *
+ * @author T-REXANOME
+ */
 public class TextualView implements observer.Observer {
 
     Map map;
@@ -26,12 +30,21 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
 
+    /**
+     * Constructor
+     *
+     * @param map
+     * @param pane
+     */
     public TextualView(Map map, Pane pane) {
         this.map = map;
         this.pane = pane;
         createRequestList();
     }
 
+    /**
+     *
+     */
     public void refreshTable() {
         if (!map.getTour().getListPaths().isEmpty()) {
             sortRequestsTable();
@@ -39,8 +52,10 @@ public class TextualView implements observer.Observer {
         System.out.println(map.getTour().getListPaths());
     }
 
+    /**
+     *
+     */
     public void createRequestList() {
-
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
         requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -71,6 +86,11 @@ public class TextualView implements observer.Observer {
 
         typeColumn = new TableColumn<>("Type");
         typeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+            /**
+             *
+             * @param p
+             * @return
+             */
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
                 if (p.getValue() instanceof DeliveryPoint) {
@@ -105,6 +125,9 @@ public class TextualView implements observer.Observer {
         pane.getChildren().add(requestsTable);
     }
 
+    /**
+     *
+     */
     public void sortRequestsTable() {
         int newTableIndex = 0;
         for (Path path : map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
@@ -119,6 +142,9 @@ public class TextualView implements observer.Observer {
         }
     }
 
+    /**
+     * @return
+     */
     public int durationPopup() {
         TextInputDialog popup = new TextInputDialog();
         popup.initStyle(StageStyle.UNDECORATED);
@@ -130,6 +156,12 @@ public class TextualView implements observer.Observer {
         return Integer.valueOf(result.get());
     }
 
+    /**
+     * Update
+     *
+     * @param observed
+     * @param arg      argument
+     */
     @Override
     public void update(observer.Observable observed, Object arg) {
         createRequestList();

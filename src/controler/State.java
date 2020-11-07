@@ -8,7 +8,9 @@ import view.Window;
 import java.util.*;
 
 /**
- * 
+ * State
+ *
+ * @author T-REXANOME
  */
 public interface State {
 

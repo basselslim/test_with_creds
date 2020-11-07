@@ -9,15 +9,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Load XML files.
  *
+ * @author T-REXANOME
  */
 public class XMLLoader {
 
@@ -27,6 +26,12 @@ public class XMLLoader {
     public XMLLoader() {
     }
 
+    /**
+     * Read the map file and update map data.
+     *
+     * @param pathNameXMLFile path name of the map file
+     * @param map
+     */
     public void parseMapXML(String pathNameXMLFile, Map map) {
         HashMap<Long,Intersection> listIntersection = new HashMap<Long,Intersection>();
         map.clearMap();
@@ -95,6 +100,12 @@ public class XMLLoader {
         map.setListIntersections(listIntersection);
     }
 
+    /**
+     * Read the request file and update map data.
+     *
+     * @param pathNameXMLFile path name of the request file
+     * @param map
+     */
     public void parseRequestXML(String pathNameXMLFile, Map map) {
 
         map.clearRequests();

@@ -6,13 +6,23 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 /**
+ * Arrow
  *
- * @author kn
+ * @author T-REXANOME
  */
-public class Arrow extends Path{
+public class Arrow extends Path {
     private static final double defaultArrowHeadSize = 5.0;
 
-    public Arrow(double startX, double startY, double endX, double endY, double arrowHeadSize){
+    /**
+     * Constructor
+     *
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     * @param arrowHeadSize
+     */
+    public Arrow(double startX, double startY, double endX, double endY, double arrowHeadSize) {
         super();
         strokeProperty().bind(fillProperty());
         setFill(Color.BLACK);
@@ -26,8 +36,8 @@ public class Arrow extends Path{
         double sin = Math.sin(angle);
         double cos = Math.cos(angle);
         //point1
-        double x1 = (- 1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + endX;
-        double y1 = (- 1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * arrowHeadSize + endY;
+        double x1 = (-1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + endX;
+        double y1 = (-1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * arrowHeadSize + endY;
         //point2
         double x2 = (1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + endX;
         double y2 = (1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * arrowHeadSize + endY;
@@ -37,7 +47,15 @@ public class Arrow extends Path{
         getElements().add(new LineTo(endX, endY));
     }
 
-    public Arrow(double startX, double startY, double endX, double endY){
+    /**
+     * Constructor
+     *
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
+    public Arrow(double startX, double startY, double endX, double endY) {
         this(startX, startY, endX, endY, defaultArrowHeadSize);
     }
 }

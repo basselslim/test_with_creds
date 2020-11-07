@@ -1,15 +1,12 @@
 package model;
 
-import java.sql.Time;
-import java.util.*;
-
 /**
- * 
+ * Intersection for which a package must be delivered.
+ *
+ * @author T-REXANOME
  */
 public class DeliveryPoint extends Intersection {
-    /**
-     *
-     */
+
     public int deliveryDuration;
 
     /**
@@ -18,6 +15,12 @@ public class DeliveryPoint extends Intersection {
     public DeliveryPoint() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param intersection     intersection where the delivery point is
+     * @param deliveryDuration estimated time for the deliverer to deliver the package
+     */
     public DeliveryPoint(Intersection intersection, int deliveryDuration) {
         this.longitude = intersection.getLongitude();
         this.latitude = intersection.getLatitude();
@@ -25,14 +28,23 @@ public class DeliveryPoint extends Intersection {
         this.deliveryDuration = deliveryDuration;
     }
 
-    public DeliveryPoint(long id, double latitude,double longitude,  int deliveryDuration) {
+    /**
+     * Constructor
+     *
+     * @param id               id of the intersection
+     * @param latitude         x coordinates
+     * @param longitude        y coordinates
+     * @param deliveryDuration estimated time for the deliverer to deliver the package
+     */
+    public DeliveryPoint(long id, double latitude, double longitude, int deliveryDuration) {
         super(id, latitude, longitude);
         this.deliveryDuration = deliveryDuration;
     }
 
-    /**
+    /*
      * Getters - Setters
      */
+
     public int getDeliveryDuration() {
         return deliveryDuration;
     }

@@ -1,5 +1,10 @@
 package controler;
 
+/**
+ * Command
+ *
+ * @author T-REXANOME
+ */
 public interface Command {
 
     /**

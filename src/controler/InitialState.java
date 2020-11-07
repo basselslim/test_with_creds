@@ -8,7 +8,7 @@ import view.Window;
 import java.util.*;
 
 /**
- * 
+ * @author T-REXANOME
  */
 public class InitialState implements State {
 
@@ -18,6 +18,10 @@ public class InitialState implements State {
     public InitialState() {
     }
 
+    /**
+     *
+     * @param controller
+     */
     @Override
     public void addRequest(Controller controller){
         controller.requestStatePickUpPoint.entryAction(controller);

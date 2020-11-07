@@ -1,17 +1,25 @@
 package controler;
+
 import java.util.LinkedList;
 
+/**
+ * @author T-REXANOME
+ */
 public class ListOfCommand {
     protected LinkedList<Command> list;
     protected int currentIndex;
 
+    /**
+     * Default constructor
+     */
     public ListOfCommand(){
         currentIndex = -1;
         list = new LinkedList<Command>();
     }
 
     /**
-     * Add command c to this
+     * Add command c to this.
+     *
      * @param c the command to add
      */
     public void add(Command c){
@@ -25,7 +33,7 @@ public class ListOfCommand {
     }
 
     /**
-     * Temporary remove the last added command (this command may be reinserted again with redo)
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      */
     public void undo(){
         if (currentIndex >= 0){
@@ -36,7 +44,7 @@ public class ListOfCommand {
     }
 
     /**
-     * Permanently remove the last added command (this command cannot be reinserted again with redo)
+     * Permanently remove the last added command (this command cannot be reinserted again with redo).
      */
     public void cancel(){
         if (currentIndex >= 0){
@@ -48,7 +56,7 @@ public class ListOfCommand {
     }
 
     /**
-     * Reinsert the last command removed by undo
+     * Reinsert the last command removed by undo.
      */
     public void redo(){
         if (currentIndex < list.size()-1){
@@ -59,7 +67,7 @@ public class ListOfCommand {
     }
 
     /**
-     * Permanently remove all commands from the list
+     * Permanently remove all commands from the list.
      */
     public void reset(){
         currentIndex = -1;

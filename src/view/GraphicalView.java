@@ -11,9 +11,10 @@ import model.Map;
 import java.util.*;
 
 /**
+ * Graphical view
  *
+ * @author T-REXANOME
  */
-
 public class GraphicalView implements observer.Observer {
 
     MouseGestures mouseGestures;
@@ -33,6 +34,13 @@ public class GraphicalView implements observer.Observer {
     double ReqpointSize;
     double StrokeSize;
 
+    /**
+     * Constructor
+     *
+     * @param map
+     * @param overlay
+     * @param mg
+     */
     public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
         mouseGestures = mg;
@@ -49,6 +57,9 @@ public class GraphicalView implements observer.Observer {
 
     public static List<Arrow> arrows = new ArrayList<Arrow>();
 
+    /**
+     *
+     */
     private void updateCoeff() {
         double maxHeigth = ((-1 * m_map.findMaxLat()) + 90) * (screenY / 180);
         double minHeigth = ((-1 * m_map.findMinLat()) + 90) * (screenY / 180);
@@ -67,6 +78,10 @@ public class GraphicalView implements observer.Observer {
         StrokeSize = 0.00015 * coeffX;
     }
 
+    /**
+     * @param XValue
+     * @param YValue
+     */
     private void updateTranslation(double XValue, double YValue) {
         if (circles.get(1).getCenterX() < 100) {
             for (Circle circle : circles) {
@@ -87,6 +102,9 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * Zoom in the map.
+     */
     public void zoom() {
         if (zoomVal < 3.5) {
             zoomVal += zoomStep;
@@ -99,6 +117,9 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * Unzoom in the map.
+     */
     public void unZoom() {
         if (zoomVal > 0.5) {
             zoomVal -= zoomStep;
@@ -111,8 +132,10 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * Draw the map.
+     */
     public void drawMap() {
-
         updateCoeff();
 
         //Drawing all map intersections
@@ -131,7 +154,7 @@ public class GraphicalView implements observer.Observer {
             int rand = generator.nextInt(150);
             int rand2 = generator.nextInt(150);
             int rand3 = generator.nextInt(150);
-            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+            Color color = Color.rgb(rand + 100, (rand2 + 100), (rand3 + 100));
             drawPoint(pickup, color, ReqpointSize);
             drawPoint(delivery, color, ReqpointSize);
 
@@ -182,6 +205,9 @@ public class GraphicalView implements observer.Observer {
 
     }
 
+    /**
+     * Enable selection.
+     */
     public void enableSelection() {
         for (Node node : m_overlay.getChildren()) {
             if (node instanceof Circle)
@@ -189,6 +215,9 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * Refresh map.
+     */
     public void refreshMap() {
         m_overlay.getChildren().clear();
         lines.clear();
@@ -197,6 +226,9 @@ public class GraphicalView implements observer.Observer {
         drawMap();
     }
 
+    /**
+     *
+     */
     public void disableSelection() {
         m_overlay.getChildren().clear();
         lines.clear();
@@ -205,7 +237,10 @@ public class GraphicalView implements observer.Observer {
         drawMap();
     }
 
-
+    /**
+     * @param origin      origin intersection
+     * @param segmentList
+     */
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
         double originX = longToPix(origin.getLongitude());
@@ -221,6 +256,11 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * @param origin      origin intersection
+     * @param destination destination intersection
+     * @param size        size of the line
+     */
     private void drawLine(Intersection origin, Intersection destination, double size) {
 
         double originX = longToPix(origin.getLongitude());
@@ -229,10 +269,15 @@ public class GraphicalView implements observer.Observer {
         double destinationY = latToPix(destination.getLatitude());
         Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, pointSize);
         arrow.setFill(Color.RED);
-        arrow.setStrokeWidth(StrokeSize/2);
+        arrow.setStrokeWidth(StrokeSize / 2);
         arrows.add(arrow);
     }
 
+    /**
+     * @param intersection the intersection to draw
+     * @param color        color of the point
+     * @param size         size of the point
+     */
     private void drawPoint(Intersection intersection, Color color, double size) {
 
         double pointX = longToPix(intersection.getLongitude());
@@ -247,6 +292,9 @@ public class GraphicalView implements observer.Observer {
         circles.add(circle);
     }
 
+    /**
+     * @return list of selected intersections
+     */
     public List<Intersection> getSelectedIntersection() {
         List<Intersection> listIntersections = new ArrayList<Intersection>();
         for (Circle circle : circles) {
@@ -257,14 +305,32 @@ public class GraphicalView implements observer.Observer {
         return listIntersections;
     }
 
+    /**
+     * Convert latitude into pixels.
+     *
+     * @param lat latitude
+     * @return y coordinates in pixels
+     */
     private double latToPix(double lat) {
         return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;
     }
 
+    /**
+     * Convert longitude into pixels.
+     *
+     * @param lon longitude
+     * @return x coordinates in pixels
+     */
     private double longToPix(double lon) {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
     }
 
+    /**
+     * Update.
+     *
+     * @param observed
+     * @param arg      argument
+     */
     @Override
     public void update(observer.Observable observed, Object arg) {
         refreshMap();
