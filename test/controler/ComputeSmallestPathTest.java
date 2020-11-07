@@ -82,15 +82,15 @@ class ComputeSmallestPathTest {
         Intersection from = map.getListIntersections().get(1l);
         Intersection to = map.getListIntersections().get(8l);
         ComputeSmallestPath CSP = new ComputeSmallestPath(map);
-        List<Intersection> listIntersection = new ArrayList();
+        List<Segment> listSegment = new ArrayList();
 
         // Act
-        listIntersection = CSP.computeSmallestPath(from, to);
+        listSegment = CSP.computeSmallestPath(from, to);
 
         // Assert
-        assert(listIntersection.get(0).getId() == 2l &&
-                listIntersection.get(1).getId() == 4l &&
-                listIntersection.get(2).getId() == 6l &&
-                listIntersection.get(3).getId() == 8l);
+        assert(listSegment.get(0).getDestination() == 2l &&
+                listSegment.get(1).getDestination() == 4l &&
+                listSegment.get(2).getDestination() == 6l &&
+                listSegment.get(3).getDestination() == 8l);
     }
 }
