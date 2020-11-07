@@ -210,6 +210,9 @@ public class Tour extends Observable {
     }
 
     public String generateTextForRoadMap() {
+
+        this.groupRequestIntersections();
+
         String totalText = "Roadmap \n\n";
         int i = 0;
         for(Path p: listPaths) {

@@ -77,7 +77,8 @@ public class Controller {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         exportFileChooser.getExtensionFilters().add(extFilter);
         File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
-        System.out.println(exportLocation);
+
+        map.getTour().generateRoadMap(exportLocation.getPath());
     }
 
     public void leftClick(long idIntersection){

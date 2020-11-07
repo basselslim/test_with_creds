@@ -64,8 +64,7 @@ public class Map extends observer.Observable {
         listIntersections.clear();
         deliveryTour.getListPaths().clear();
     }
-
-    public void removeRequest(Request request){}
+    
 
     public void clearRequests() {
         listRequests.clear();
