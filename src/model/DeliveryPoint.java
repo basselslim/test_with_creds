@@ -25,6 +25,7 @@ public class DeliveryPoint extends Intersection {
         this.longitude = intersection.getLongitude();
         this.latitude = intersection.getLatitude();
         this.id = intersection.getId();
+        this.listSegments = intersection.listSegments;
         this.deliveryDuration = deliveryDuration;
     }
 

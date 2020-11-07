@@ -35,6 +35,8 @@ public class Depot {
         return id;
     }
 
+    public String getDepartureTime() { return departureTime; }
+
     @Override
     public String toString() {
         return "Depot{" +

@@ -1,41 +1,27 @@
 package controler;
-
 import model.*;
 import model.Map;
-
 import java.util.*;
 
-/**
- * Algorithm that compute the optimal tour.
- *
- * @author T-REXANOME
- */
 public class Algorithm {
 
     protected Map map;
     protected List<Request> listRequests;
     protected final long timeZero;
 
-    /**
-     * Constructor
-     *
-     * @param map map
-     */
     public Algorithm(Map map) {
         this.map = map;
         this.listRequests = map.getListRequests();
         this.timeZero = System.currentTimeMillis();
     }
 
-    /**
-     * Compute smallest paths.
-     *
-     * @return HashMap of every shortest paths between every intersections of the request
+    /*
+     * Compute smallest path
      */
-    public HashMap<Long, HashMap<Long, Path>> computeSmallestPaths() {
+    public HashMap<Long, HashMap<Long,Path>> computeSmallestPaths() {
         System.out.println("Computing the smallest paths...");
         ComputeSmallestPath algorithmSmallestPath = new ComputeSmallestPath(this.map);
-        HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = new HashMap<>();
+        HashMap<Long, HashMap<Long,Path>> mapSmallestPaths = new HashMap<>();
 
         List<Intersection> listPoints = new ArrayList<>();
         Intersection point;
@@ -45,7 +31,7 @@ public class Algorithm {
             listPoints.add(point);
         }
 
-        for (Request r : this.listRequests) {
+        for (Request r: this.listRequests) {
             point = map.getListIntersections().get(r.getDeliveryPoint().getId());
             if (!listPoints.contains(point) && point != null) {
                 listPoints.add(point);
@@ -56,43 +42,28 @@ public class Algorithm {
             }
         }
 
-        for (Intersection p1 : listPoints) {
-            HashMap<Long, Path> mapSmallestPathPerPoint = new HashMap<>();
-            for (Intersection p2 : listPoints) {
+        for (Intersection p1: listPoints) {
+            HashMap<Long,Path> mapSmallestPathPerPoint = new HashMap<>();
+            for (Intersection p2: listPoints) {
                 if (p1.getId() != p2.getId()) {
-                    List<Intersection> listIntersections = algorithmSmallestPath.computeSmallestPath(p1, p2);
-
-                    List<Segment> listSegments = new ArrayList<>();
-                    Intersection step = p1;
-
-                    for (Intersection i : listIntersections) {
-                        if (i.getId() != step.getId()) {
-                            for (Segment s : step.getListSegments()) {
-                                if (s.getDestination() == i.getId()) {
-                                    listSegments.add(s);
-                                }
-                            }
-                        }
-                        step = i;
-                    }
+                    List<Segment> listSegments = algorithmSmallestPath.computeSmallestPath(p1, p2);
                     mapSmallestPathPerPoint.put(p2.getId(), new Path(listSegments, p1.getId(), p2.getId()));
                 }
             }
             mapSmallestPaths.put(p1.getId(), mapSmallestPathPerPoint);
         }
-        System.out.println("Smallest paths computed in " + (System.currentTimeMillis() - this.timeZero) / 1000.0 + "s.");
+        System.out.println("Smallest paths computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
         return mapSmallestPaths;
     }
 
-    /**
-     * Compute optimal tour.
-     *
-     * @param mapSmallestPaths HashMap of every shortest paths between every intersections of the request
+    /*
+     * Compute optimal tour
      */
-    public void computeOptimalTour(HashMap<Long, HashMap<Long, Path>> mapSmallestPaths) {
+    public void computeOptimalTour(HashMap<Long, HashMap<Long,Path>> mapSmallestPaths) {
         System.out.println("Computing the optimal tour...");
-        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map, mapSmallestPaths);
+
+        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths);
         travellingSalesmanProblem.TSP();
-        System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero) / 1000.0 + "s.");
+        System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
     }
 }

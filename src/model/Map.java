@@ -3,43 +3,42 @@ package model;
 import java.util.*;
 
 /**
- * A set of intersections connected by segments forming an oriented graph representing the different possible
- * delivery/pickup points, and the distance between each point.
- *
- * @author T-REXANOME
+ * check for java beans for Observable
  */
 public class Map extends observer.Observable {
 
+    /**
+     *
+     */
     protected List<Request> listRequests;
+
     protected HashMap<Long, Intersection> listIntersections;
+
     protected Tour deliveryTour;
+
     protected Depot depot;
+
 
     /**
      * Default constructor
      */
+
     public Map() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
-        depot = new Depot();
-        deliveryTour = new Tour();
+        depot= new Depot();
+        deliveryTour = new Tour(this);
     }
 
-    /**
-     * Constructor
-     *
-     * @param listIntersection list of intersections of the map
-     */
+
     public Map(HashMap<Long, Intersection> listIntersection) {
         this.listIntersections = listIntersection;
         listRequests = new ArrayList<>();
         depot = new Depot();
     }
 
-    /**
-     * Display.
-     */
     public void display() {
+
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
             System.out.println(intersection);
@@ -47,6 +46,7 @@ public class Map extends observer.Observable {
             for (Segment segment : intersection.getListSegments()) {
                 System.out.println(segment);
             }
+
         }
 
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -60,27 +60,17 @@ public class Map extends observer.Observable {
         System.out.println(this.depot);
     }
 
-    /**
-     * Clear the map.
-     */
     public void clearMap() {
         listIntersections.clear();
         deliveryTour.getListPaths().clear();
     }
+    
 
-    /**
-     * Clear the request list.
-     */
     public void clearRequests() {
         listRequests.clear();
     }
 
-    /**
-     * Find the minimum latitude.
-     *
-     * @return the minimum latitude
-     */
-    public double findMinLat() {
+    public double getMinLat() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -90,12 +80,7 @@ public class Map extends observer.Observable {
         return min;
     }
 
-    /**
-     * Fine the maximum latitude.
-     *
-     * @return the maximum latitude
-     */
-    public double findMaxLat() {
+    public double getMaxLat() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -105,12 +90,7 @@ public class Map extends observer.Observable {
         return max;
     }
 
-    /**
-     * Find the minimum longitude.
-     *
-     * @return the minimum longitude
-     */
-    public double findMinLong() {
+    public double getMinLong() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -120,12 +100,7 @@ public class Map extends observer.Observable {
         return min;
     }
 
-    /**
-     * Find the maximum longitude.
-     *
-     * @return the maximum longitude
-     */
-    public double findMaxLong() {
+    public double getMaxLong() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -135,7 +110,33 @@ public class Map extends observer.Observable {
         return max;
     }
 
-    /*
+    public Intersection getTourStopById(long id) {
+        Intersection res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id) {
+                res = listRequests.get(i).getPickUpPoint();
+                break;
+            }
+            if (listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i).getDeliveryPoint();
+                break;
+            }
+        }
+        return res;
+    }
+
+    public Request getRequestByIntersectionId(long id) {
+        Request res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id || listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i);
+                break;
+            }
+        }
+        return res;
+    }
+
+    /**
      * Getters - Setters
      */
 
@@ -149,26 +150,25 @@ public class Map extends observer.Observable {
         notifyObservers();
     }
 
+
     //INTERSECTIONS
+    public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
+        this.listRequests.add(newRequest);
+        this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+        notifyObservers();
 
-    /**
-     * Add a request to the request list.
-     *
-     * @param r request to add
-     */
-    public void addRequest(Request r) {
-        this.listRequests.add(r);
     }
 
-    /**
-     * Remove a request from the request list.
-     *
-     * @param r request to remove
-     */
-    public void removeRequest(Request r) {
-        this.listRequests.remove(r);
+
+    public void removeRequest(Request request) {
+        this.deliveryTour.removeRequestFromTour(request);
+        this.listRequests.remove(request);
+        this.notifyObservers();
     }
 
+
+
+    //INTERSECTIONS
     public HashMap<Long, Intersection> getListIntersections() {
         return listIntersections;
     }
@@ -197,6 +197,7 @@ public class Map extends observer.Observable {
         this.deliveryTour = newTour;
         notifyObservers();
     }
+
 
     @Override
     public String toString() {
