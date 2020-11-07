@@ -160,7 +160,7 @@ public class Tour extends Observable {
         }
 
         for (Request r: this.map.getListRequests()) {
-            point = map.getListIntersections().get(r.getDeliveryPoint().getId());
+            point = r.getDeliveryPoint();
             if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getDeliveryPoint().getId());
                 if (intermediateList == null) {
@@ -169,7 +169,7 @@ public class Tour extends Observable {
                 intermediateList.add(point);
                 this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
             }
-            point = map.getListIntersections().get(r.getPickUpPoint().getId());
+            point = r.getPickUpPoint();
             if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getPickUpPoint().getId());
                 if (intermediateList == null) {
@@ -196,8 +196,6 @@ public class Tour extends Observable {
             } else if (interestPoint instanceof DeliveryPoint) {
                 nbDe++;
                 deTime += ((DeliveryPoint) interestPoint).getDeliveryDuration();
-            } else {
-                text +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
             }
         }
         if (nbPu>0) {
@@ -215,16 +213,17 @@ public class Tour extends Observable {
 
         String totalText = "Roadmap \n\n";
         int i = 0;
+        totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
         for(Path p: listPaths) {
-            String PathTitle = "Step n°" + (i+1) + ":\n\n";
+            String PathTitle = "Step n°" + (i+1) + ":  Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
             totalText+=PathTitle;
             int j = 0;
-            totalText+=this.writeTextForInterestPoint(p.idDeparture);
             for(Segment s: p.getListSegments()) {
-                String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m. Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
+                String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m.\n\n";
                 totalText+=SegmentDescription;
                 j++;
             }
+            totalText+=this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
         totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
@@ -233,9 +232,6 @@ public class Tour extends Observable {
 
     public void generateRoadMap(String path)
     {
-        System.out.println("Tableau des heures\n");
-        for (int[] i : this.listTimes)
-            System.out.println(i[0]+" "+i[1]);
         try {
             File roadMap = new File(path);
             if (roadMap.createNewFile()) {

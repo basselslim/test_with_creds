@@ -85,7 +85,7 @@ class ComputeSmallestPathTest {
         List<Intersection> listIntersection = new ArrayList();
 
         // Act
-        listIntersection = CSP.computeSmallestPath(from, to);
+        //listIntersection = CSP.computeSmallestPath(from, to);
 
         // Assert
         assert(listIntersection.get(0).getId() == 2l &&
