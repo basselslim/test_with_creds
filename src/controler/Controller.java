@@ -69,6 +69,7 @@ public class Controller {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
+        Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
     }
 
     public void ExportRoadMap (ActionEvent event) {

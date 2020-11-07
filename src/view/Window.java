@@ -5,29 +5,23 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Map;
 
-
 import java.io.IOException;
-import javafx.stage.StageStyle;
-import model.*;
 
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 public class Window extends Application {
 
-
+    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     TextualView Tview;
     Map map = new Map();
     GraphicalView Gview;
@@ -42,18 +36,18 @@ public class Window extends Application {
     private Button btn_load_requests;
     @FXML
     private javafx.scene.control.TextArea TextArea;
+    @FXML
+    private Label TextTour;
 
     @Override
     public void start(Stage MainFrame) throws Exception {
         initUI(MainFrame);
 
-
     }
 
     private void initUI(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-
-        var scene = new Scene(root, 1650, 1050, Color.WHITE);
+        var scene = new Scene(root, screenBounds.getMaxX()-100, screenBounds.getMaxY()-100, Color.WHITE);
 
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);
@@ -74,8 +68,8 @@ public class Window extends Application {
     }
 
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg);
-        Tview = new TextualView(map, myPane, TextArea);
+        Gview = new GraphicalView(map, overlay, mg,screenBounds);
+        Tview = new TextualView(map, myPane, TextArea, TextTour);
         controller.setGview(Gview);
         controller.setTview(Tview);
         map.addObserver(Gview);
@@ -85,7 +79,8 @@ public class Window extends Application {
 
         //reactivate Requests button
         btn_load_requests.setDisable(false);
-        TextArea.setText("Please load a request list");
+        Tview.setMessage("Please load a request list");
+
     }
 
     public void LoadRequests(ActionEvent event) {

@@ -31,13 +31,12 @@ public class InitialState implements State {
 
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
-
+        if (controller.map.getRequestByIntersectionId(i.getId()) != null)
+            controller.Tview.selectRequest(i.getId());
     }
 
     @Override
     public void mouseOn(long idIntersection, Controller controller) {
-        if (controller.map.getRequestByIntersectionId(idIntersection) != null)
-            controller.Tview.selectRequest(idIntersection);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package view;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,8 +21,8 @@ public class GraphicalView implements observer.Observer {
     MouseGestures mouseGestures;
     Map m_map;
     Pane m_overlay;
-    int screenX = 1000;
-    int screenY = 800;
+    int screenX;
+    int screenY;
     double zoomVal = 1.0;
     double zoomStep = 0.2;
     double zoomTranslateX = 0;
@@ -35,13 +36,15 @@ public class GraphicalView implements observer.Observer {
     double StrokeSize;
     Boolean isMapClickable = false;
 
-    public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
+    public GraphicalView(Map map, Pane overlay, MouseGestures mg, Rectangle2D screenBounds) {
         m_map = map;
         mouseGestures = mg;
         mouseGestures.setGview(this);
         mg.newTranslateX = 0;
         mg.newTranslateY = 0;
         m_overlay = overlay;
+        screenX = (int)((screenBounds.getMaxX()-100)*0.595);
+        screenY = (int)((screenBounds.getMaxY()-100)*0.762);
         m_overlay.setPrefWidth(screenX);
         m_overlay.setPrefHeight(screenY);
     }
@@ -113,7 +116,6 @@ public class GraphicalView implements observer.Observer {
 
     public void unZoom() {
         double width = latToPix(m_map.getMinLat())-latToPix(m_map.getMaxLat());
-        System.out.println(width);
         if (width > screenY) {
             zoomVal -= zoomStep;
             updateCoeff();

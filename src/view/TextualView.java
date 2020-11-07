@@ -19,17 +19,19 @@ public class TextualView implements observer.Observer {
 
     Map map;
     Pane pane;
-    TextArea textArea;
+    TextArea TextArea;
+    Label TourInfos;
     TableView requestsTable;
     TableColumn<Intersection, Long> intersectionColumn;
     TableColumn<Intersection, Integer> durationColumn;
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
 
-    public TextualView(Map map, Pane pane, TextArea textArea) {
+    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos) {
         this.map = map;
         this.pane = pane;
-        this.textArea = textArea;
+        this.TextArea = textArea;
+        this.TourInfos = tourInfos;
         createRequestList();
     }
 
@@ -140,8 +142,10 @@ public class TextualView implements observer.Observer {
     }
 
     public void setMessage(String message){
-        textArea.setText(message);
+        TextArea.setText(message);
     }
+
+    public void setTourInfo(String info){TourInfos.setText(info);}
 
     @Override
     public void update(observer.Observable observed, Object arg) {
