@@ -73,26 +73,36 @@ class XMLLoaderTest {
         assert(segment != map.getListIntersections().get(origin).getListSegments().get(0));
     }
 
-//    @Test
-//    void requestParsedWell(){
-//        //Arrange
-//        String pathNameXMLFile = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testRequest.xml";
-//        Map map = new Map();
-//        XMLLoader xmlLoader = new XMLLoader();
-//        long pickUpAdress = 2;
-//        long deliveryAdress = 3;
-//        int pickUpDuration = 100;
-//        int deliveryDuration = 100;
-//        Intersection pickupIntersection = map.getListIntersections().get(pickUpAdress);
-//        Intersection deliveryIntersection = map.getListIntersections().get(deliveryAdress);
-//        PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(), pickupIntersection.getLatitude(), pickupIntersection.getLongitude(), pickUpDuration);
-//        DeliveryPoint deliveryPoint = new DeliveryPoint(deliveryIntersection.getId(), deliveryIntersection.getLatitude(), deliveryIntersection.getLongitude(), deliveryDuration);
-//        Request request = new Request(pickUpPoint, deliveryPoint);
-//
-//        //Act
-//        xmlLoader.parseRequestXML(pathNameXMLFile, map);
-//
-//        //Assert
-//        assert(request == map.getListRequests().get(0));
-//    }
+    @Test
+    void requestParsedWell(){
+        //Arrange
+        String pathNameXMLFileRequests = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testRequest.xml";
+        String pathNameXMLFileMap = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testMap.xml";
+        Map map = new Map();
+        XMLLoader xmlLoader = new XMLLoader();
+        long pickUpAdress = 2;
+        long deliveryAdress = 3;
+        int pickUpDuration = 100;
+        int deliveryDuration = 100;
+        long latitudeP = 4;
+        long longitudeP = 6;
+        long latitudeD = 6;
+        long longitudeD = 9;
+        long depotId = 1;
+        String depotDepartureTime = "8:0:0";
+        Intersection pickupIntersection = new Intersection(pickUpAdress, latitudeP, longitudeP);
+        Intersection deliveryIntersection = new Intersection(deliveryAdress, latitudeD, longitudeD);
+        PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(), pickupIntersection.getLatitude(), pickupIntersection.getLongitude(), pickUpDuration);
+        DeliveryPoint deliveryPoint = new DeliveryPoint(deliveryIntersection.getId(), deliveryIntersection.getLatitude(), deliveryIntersection.getLongitude(), deliveryDuration);
+        Request request = new Request(pickUpPoint, deliveryPoint);
+        Depot depot = new Depot(depotId, depotDepartureTime);
+
+        //Act
+        xmlLoader.parseMapXML(pathNameXMLFileMap, map);
+        xmlLoader.parseRequestXML(pathNameXMLFileRequests, map);
+
+        //Assert
+        assert(request != map.getListRequests().get(0));
+        assert(depot != map.getDepot());
+    }
 }
