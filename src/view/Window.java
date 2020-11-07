@@ -91,7 +91,6 @@ public class Window extends Application {
         ArrayList<Segment> listSegments2 = new ArrayList<>();
 
         listSegments0.add(s1);
-        listSegments1.add(s1);
         listSegments1.add(s2);
         listSegments2.add(s3);
         listSegments2.add(s4);
