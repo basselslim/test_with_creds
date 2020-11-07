@@ -29,7 +29,7 @@ public class MouseGestures {
     protected double newTranslateX;
     protected double newTranslateY;
 
-    MouseGestures(Controller c) {
+    public MouseGestures(Controller c) {
         controller = c;
     }
 

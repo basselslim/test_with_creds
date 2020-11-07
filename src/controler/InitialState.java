@@ -59,6 +59,8 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
+
+        controller.Tview.setMessage("Please load a request list");
     }
 
     @Override
@@ -70,6 +72,7 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        controller.Gview.enableSelection();
     }
 
     public void entryAction(Controller controller) {
