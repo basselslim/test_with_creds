@@ -15,6 +15,15 @@ import model.Map;
 
 
 import java.io.IOException;
+import javafx.stage.StageStyle;
+import model.*;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 public class Window extends Application {
 
@@ -53,7 +62,6 @@ public class Window extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     public void Zoom(ActionEvent event) {

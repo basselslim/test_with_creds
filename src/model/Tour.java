@@ -1,6 +1,10 @@
 package model;
 
+
 import controler.ComputeSmallestPath;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.util.*;
 
@@ -15,15 +19,21 @@ public class Tour extends Observable {
     protected List<Path> listPaths;
     protected List<int[]> listTimes;
     protected Map map;
-
+    protected String roadMapFilePath;
+    protected HashMap<Long,ArrayList<Intersection>> listRequestsIntersection;
     /**
      * Default constructor
+     *
      */
+    public Tour(){
+    }
+
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
         this.listTimes = new LinkedList<int[]>();
         this.tourLength = 0;
         this.map = map;
+        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
     }
 
     public Tour(Map map, List<Path> listPaths) {
@@ -34,9 +44,9 @@ public class Tour extends Observable {
         for (Path p : listPaths) {
             this.tourLength += p.getPathLength();
         }
+        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
         populateListTimes();
     }
-
     /**
      * addRequestToTour
      **/
@@ -133,6 +143,118 @@ public class Tour extends Observable {
 
     public List<int[]> getListTimes() {
         return listTimes;
+    }
+
+    public void groupRequestIntersections(){
+        Intersection point;
+
+        point = map.getListIntersections().get(map.getDepot().getId());
+        if (point != null) {
+
+            ArrayList intermediateList = this.listRequestsIntersection.get(map.getDepot().getId());
+            if (intermediateList == null) {
+                intermediateList= new ArrayList<Intersection>();
+            }
+            intermediateList.add(point);
+            this.listRequestsIntersection.put(map.getDepot().getId(),intermediateList);
+        }
+
+        for (Request r: this.map.getListRequests()) {
+            point = map.getListIntersections().get(r.getDeliveryPoint().getId());
+            if (point != null) {
+                ArrayList intermediateList = this.listRequestsIntersection.get(r.getDeliveryPoint().getId());
+                if (intermediateList == null) {
+                    intermediateList= new ArrayList<Intersection>();
+                }
+                intermediateList.add(point);
+                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
+            }
+            point = map.getListIntersections().get(r.getPickUpPoint().getId());
+            if (point != null) {
+                ArrayList intermediateList = this.listRequestsIntersection.get(r.getPickUpPoint().getId());
+                if (intermediateList == null) {
+                    intermediateList= new ArrayList<Intersection>();
+                }
+                intermediateList.add(point);
+                this.listRequestsIntersection.put(r.getPickUpPoint().getId(),intermediateList);
+            }
+        }
+    }
+
+    public String writeTextForInterestPoint(long id)
+    {
+        String text = "";
+        int nbPu = 0;
+        int nbDe=0;
+        int puTime=0;
+        int deTime = 0;
+        for (Intersection i : this.listRequestsIntersection.get(id)) {
+            Intersection interestPoint = i;
+            if (interestPoint instanceof PickUpPoint) {
+                nbPu++;
+                puTime += ((PickUpPoint) interestPoint).getPickUpDuration();
+            } else if (interestPoint instanceof DeliveryPoint) {
+                nbDe++;
+                deTime += ((DeliveryPoint) interestPoint).getDeliveryDuration();
+            } else {
+                text +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
+            }
+        }
+        if (nbPu>0) {
+            text+= "   - You have to pick up "+nbPu+" packages at this intersection. This may take "+ puTime +" seconds\n\n";
+        }
+        if (nbDe>0) {
+            text+= "   - You have to deliver "+nbDe+" packages at this intersection. This may take "+ deTime +" seconds\n\n";
+        }
+        return text;
+    }
+
+    public String generateTextForRoadMap() {
+        String totalText = "Roadmap \n\n";
+        int i = 0;
+        for(Path p: listPaths) {
+            String PathTitle = "Step n°" + (i+1) + ":\n\n";
+            totalText+=PathTitle;
+            int j = 0;
+            totalText+=this.writeTextForInterestPoint(p.idDeparture);
+            for(Segment s: p.getListSegments()) {
+                String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m. Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
+                totalText+=SegmentDescription;
+                j++;
+            }
+            i++;
+        }
+        totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
+        return totalText;
+    }
+
+    public void generateRoadMap(String path)
+    {
+        System.out.println("Tableau des heures\n");
+        for (int[] i : this.listTimes)
+            System.out.println(i[0]+" "+i[1]);
+        try {
+            File roadMap = new File(path);
+            if (roadMap.createNewFile()) {
+                System.out.println("File created: " + roadMap.getName());
+                System.out.println("Absolute path: " + roadMap.getAbsolutePath());
+                this.roadMapFilePath = roadMap.getAbsolutePath();
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter myWriter = new FileWriter(this.roadMapFilePath);
+            myWriter.write(this.generateTextForRoadMap());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     public void addPath(Path newPath) {
