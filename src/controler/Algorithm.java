@@ -8,7 +8,6 @@ public class Algorithm {
     protected Map map;
     protected List<Request> listRequests;
     protected final long timeZero;
-    protected final long TIMEOUT = 20000;
 
     public Algorithm(Map map) {
         this.map = map;
@@ -47,21 +46,7 @@ public class Algorithm {
             HashMap<Long,Path> mapSmallestPathPerPoint = new HashMap<>();
             for (Intersection p2: listPoints) {
                 if (p1.getId() != p2.getId()) {
-                    List<Intersection> listIntersections = algorithmSmallestPath.computeSmallestPath(p1, p2);
-
-                    List<Segment> listSegments = new ArrayList<>();
-                    Intersection step = p1;
-
-                    for (Intersection i: listIntersections) {
-                        if (i.getId() != step.getId()) {
-                            for (Segment s: step.getListSegments()) {
-                                if (s.getDestination() == i.getId()) {
-                                    listSegments.add(s);
-                                }
-                            }
-                        }
-                        step = i;
-                    }
+                    List<Segment> listSegments = algorithmSmallestPath.computeSmallestPath(p1, p2);
                     mapSmallestPathPerPoint.put(p2.getId(), new Path(listSegments, p1.getId(), p2.getId()));
                 }
             }
@@ -76,10 +61,7 @@ public class Algorithm {
      */
     public void computeOptimalTour(HashMap<Long, HashMap<Long,Path>> mapSmallestPaths) {
         System.out.println("Computing the optimal tour...");
-        LinkedList<Path> optimalTour = new LinkedList<>();
-        /*while (System.currentTimeMillis() - this.timeZero < this.TIMEOUT) {
 
-        }*/
         TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths);
         travellingSalesmanProblem.TSP();
         System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");

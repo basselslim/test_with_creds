@@ -23,6 +23,7 @@ import javafx.stage.StageStyle;
 import model.*;
 
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,19 +78,15 @@ public class Window extends Application {
     }
 
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+        Gview = new GraphicalView(map, overlay, mg);
+        Tview = new TextualView(map, myPane);
+        controller.setTextArea(TextArea);
+        controller.setGview(Gview);
+        controller.setTview(Tview);
         map.addObserver(Gview);
 
         //Load the map
         controller.LoadMap(event);
-
-        controller.setTextArea(TextArea);
-        controller.setGview(Gview);
-
-        //Draw the map
-        Gview.refreshMap();
-
-
 
         //reactivate Requests button
         btn_load_requests.setDisable(false);
@@ -97,9 +94,9 @@ public class Window extends Application {
     }
 
     public void LoadRequests(ActionEvent event) {
-        Tview = new TextualView(map, myPane);
         map.addObserver(Tview);
         controller.LoadRequests(event);
+        Gview.enableSelection();
     }
 
     public void addRequest(ActionEvent event) {
@@ -108,20 +105,28 @@ public class Window extends Application {
 
     }
 
+    public void undo(ActionEvent event){
+        controller.undo();
+    }
+
+    public void redo(ActionEvent event){
+        controller.redo();
+    }
+
     public void Compute(ActionEvent event) {
         controller.computeOptimalTour();
     }
 
     public void Export(ActionEvent event) {
-        TextInputDialog popup = new TextInputDialog();
+        /*TextInputDialog popup = new TextInputDialog();
         popup.initStyle(StageStyle.UNDECORATED);
         popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
         popup.setTitle("Duration");
         popup.setHeaderText("");
         popup.setContentText("Please enter the duration:");
         Optional<String> result = popup.showAndWait();
-        controller.addDuration(Integer.valueOf(result.get()));
-
+        result.ifPresent(duration -> System.out.println("Duration: " + duration));*/
+        controller.ExportRoadMap(event);
     }
 
 }

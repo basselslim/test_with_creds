@@ -11,11 +11,13 @@ class AddCommandTest {
     AddCommand addCommand;
     Map m;
     Request r;
+    Long idPickUp;
+    Long idDelivery;
     @BeforeEach
     void setUp() {
         m = new Map();
         r = new Request();
-        addCommand = new AddCommand(m,r);
+        addCommand = new AddCommand(m,r,idPickUp,idDelivery);
     }
 
     @Test
