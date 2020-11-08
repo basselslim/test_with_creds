@@ -31,14 +31,6 @@ public class Controller {
     protected Map map;
     protected Rectangle2D screenBounds;
 
-    public GraphicalView getGview() {
-        return Gview;
-    }
-
-    public TextualView getTview() {
-        return Tview;
-    }
-
     protected GraphicalView Gview;
     protected TextualView Tview;
 
@@ -54,6 +46,18 @@ public class Controller {
     private Label TextTour;
     @FXML
     protected Button confirmAction;
+    @FXML
+    protected Button LoadMap;
+    @FXML
+    protected Button LoadRequests;
+    @FXML
+    protected Button ComputeTour;
+    @FXML
+    protected Button ExportTour;
+    @FXML
+    protected Button addRequest;
+    @FXML
+    protected Button deleteRequest;
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
@@ -65,7 +69,6 @@ public class Controller {
      * Default constructor
      */
     public Controller() {
-        screenBounds  = Screen.getPrimary().getBounds();
 
         mg = new MouseGestures(this);
         map = new Map();
@@ -86,16 +89,21 @@ public class Controller {
         currentState = newState;
     }
 
+    protected void disableButtons(Boolean bool){
+        LoadMap.setDisable(bool);
+        LoadRequests.setDisable(bool);
+        ComputeTour.setDisable(bool);
+        ExportTour.setDisable(bool);
+    }
+
     //Public Methods
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
+        deleteRequest.setDisable(false);
     }
 
     public void computeTour(ActionEvent event) {
-        Algorithm algo = new Algorithm(map);
-        HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
-        algo.computeOptimalTour(mapSmallestPaths);
-        Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        currentState.computeTour(this,map);
     }
 
     public void ExportRoadMap (ActionEvent event) {
@@ -114,12 +122,14 @@ public class Controller {
     }
 
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg,screenBounds);
+        Gview = new GraphicalView(map, overlay, mg);
         Tview = new TextualView(map, myPane, TextArea, TextTour, this);
         map.addObserver(Gview);
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);
-        btn_load_requests.setDisable(false);
+        LoadRequests.setDisable(false);
+        addRequest.setDisable(true);
+        deleteRequest.setDisable(true);
     }
 
     public void Zoom(ActionEvent event) { Gview.zoom(); }

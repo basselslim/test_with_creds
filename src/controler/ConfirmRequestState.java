@@ -4,6 +4,8 @@ import model.Intersection;
 import model.Map;
 import model.Request;
 
+import javax.naming.ldap.Control;
+
 
 public class ConfirmRequestState implements State {
 
@@ -24,12 +26,12 @@ public class ConfirmRequestState implements State {
             long precedingPickupId = PickupPrecedingPoint.getId();
             AddCommand addRequestCommand = new AddCommand(controller. map, request, precedingPickupId, precedingDeliveryId);
             controller.getListOfCommand().add(addRequestCommand);
+
+            controller.initialState.entryAction(controller);
             controller.setCurrentState(controller.initialState);
+            unDrawSelection(controller);
+
             controller.Tview.setMessage("Request added");
-            controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
-            controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
-            controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
-            controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
             controller.confirmAction.setVisible(false);
             controller.Gview.disableSelection();
         }
@@ -61,11 +63,22 @@ public class ConfirmRequestState implements State {
     protected void reverseAction(Controller controller) {
         controller.confirmAction.setVisible(true);
         controller.Gview.disableSelection();
+        drawSelection(controller);
+        controller.Tview.setMessage("Confirm adding the request ?");
+    }
+
+    private void drawSelection(Controller controller){
         controller.Gview.drawMouseSelection(DeliveryPrecedingPoint.getId());
         controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
         controller.Gview.drawMouseSelection(PickupPrecedingPoint.getId());
         controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
-        controller.Tview.setMessage("Confirm adding the request ?");
+    }
+
+    private void unDrawSelection(Controller controller){
+        controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
+        controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
+        controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
     }
 
 

@@ -167,7 +167,6 @@ public class Map extends observer.Observable {
         this.listRequests.add(newRequest);
         this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
         notifyObservers();
-
     }
 
     public void addRequest(Request newRequest) {
