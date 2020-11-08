@@ -88,6 +88,8 @@ public class Tour extends Observable {
             }
             pathIndexToInsertDelivery++;
         }
+
+        populateListTimes();
     }
 
     /**
@@ -128,6 +130,7 @@ public class Tour extends Observable {
             }
             pathIndexToDeleteDelivery++;
         }
+        populateListTimes();
     }
 
     /**
