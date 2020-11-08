@@ -8,7 +8,7 @@ package observer;
 public interface Observer {
 
     /**
-     * Update
+     * Update.
      *
      * @param observed
      * @param arg argument

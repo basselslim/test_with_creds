@@ -15,7 +15,6 @@ import java.util.*;
  */
 public class Tour extends Observable {
 
-    protected int tourLength;
     protected List<Path> listPaths;
     protected List<int[]> listTimes;
     protected Map map;
@@ -36,7 +35,6 @@ public class Tour extends Observable {
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
         this.listTimes = new LinkedList<int[]>();
-        this.tourLength = 0;
         this.map = map;
         this.listRequestsIntersection = new HashMap<Long, ArrayList<Intersection>>();
     }
@@ -45,16 +43,12 @@ public class Tour extends Observable {
      * Constructor.
      *
      * @param map
-     * @param listPaths
+     * @param listPaths list of paths
      */
     public Tour(Map map, List<Path> listPaths) {
         this.listPaths = listPaths;
         this.listTimes = new LinkedList<int[]>();
-        this.tourLength = 0;
         this.map = map;
-        for (Path p : listPaths) {
-            this.tourLength += p.getPathLength();
-        }
         this.listRequestsIntersection = new HashMap<Long, ArrayList<Intersection>>();
         populateListTimes();
     }
@@ -152,7 +146,16 @@ public class Tour extends Observable {
      * Getters - Setters
      */
 
+    /**
+     * Compute tour length.
+     *
+     * @return tour length
+     */
     public int getTourLength() {
+        int tourLength = 0;
+        for (Path p : this.listPaths) {
+            tourLength += p.getPathLength();
+        }
         return tourLength;
     }
 
@@ -204,8 +207,10 @@ public class Tour extends Observable {
     }
 
     /**
-     * @param id
-     * @return
+     * Generate description of a pick up or delivery point for the road map
+     *
+     * @param id id of an intersection
+     * @return text
      */
     public String writeTextForInterestPoint(long id) {
         String text = "";
@@ -297,13 +302,14 @@ public class Tour extends Observable {
      */
     public void addPath(Path newPath) {
         listPaths.add(newPath);
-        tourLength += newPath.pathLength;
         if (map.getDepot().getId() == listPaths.get(listPaths.size() - 1).getIdArrival()) {
             populateListTimes();
         }
     }
 
     /**
+     * Convert a string describing a time into an integer.
+     *
      * @param s string to convert
      * @return time
      */
@@ -323,6 +329,8 @@ public class Tour extends Observable {
     }
 
     /**
+     * Convert an integer describing a time into a string.
+     *
      * @param t time to convert
      * @return string
      */

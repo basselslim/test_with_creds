@@ -14,13 +14,13 @@ public class Arrow extends Path {
     private static final double defaultArrowHeadSize = 5.0;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param startX
-     * @param startY
-     * @param endX
-     * @param endY
-     * @param arrowHeadSize
+     * @param startX        x coordinate of the start
+     * @param startY        y coordinate of the start
+     * @param endX          x coordinate of the end
+     * @param endY          y coordinate of the end
+     * @param arrowHeadSize size of the arrow head
      */
     public Arrow(double startX, double startY, double endX, double endY, double arrowHeadSize) {
         super();
@@ -48,12 +48,12 @@ public class Arrow extends Path {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param startX
-     * @param startY
-     * @param endX
-     * @param endY
+     * @param startX x coordinate of the start
+     * @param startY y coordinate of the start
+     * @param endX   x coordinate of the end
+     * @param endY   y coordinate of the end
      */
     public Arrow(double startX, double startY, double endX, double endY) {
         this(startX, startY, endX, endY, defaultArrowHeadSize);

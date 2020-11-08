@@ -18,30 +18,44 @@ import model.Map;
 
 import java.io.IOException;
 
-
+/**
+ * Window.
+ *
+ * @author T-REXANOME
+ */
 public class Window extends Application {
 
     Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     Controller controller = new Controller();
 
+    /**
+     * @param MainFrame
+     * @throws Exception
+     */
     @Override
     public void start(Stage MainFrame) throws Exception {
         initUI(MainFrame);
-
     }
 
+    /**
+     * @param stage
+     * @throws IOException
+     */
     private void initUI(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        var scene = new Scene(root, screenBounds.getMaxX()-100, screenBounds.getMaxY()-100, Color.WHITE);
+        var scene = new Scene(root, screenBounds.getMaxX() - 100, screenBounds.getMaxY() - 100, Color.WHITE);
 
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * Main
+     *
+     * @param args arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
-
-
 }

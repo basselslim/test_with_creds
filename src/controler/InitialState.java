@@ -12,28 +12,40 @@ import model.Request;
 import java.io.File;
 
 /**
- *
+ * @author T-REXANOME
  */
 public class InitialState implements State {
 
     long CurrentId;
-
     Request request = new Request();
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public InitialState() {
     }
 
+    /**
+     * Add a request.
+     *
+     * @param controller
+     */
     @Override
     public void addRequest(Controller controller) {
-        if(!controller.map.getListRequests().isEmpty()) {
+        if (!controller.map.getListRequests().isEmpty()) {
             controller.addPickupState.entryAction(controller, request);
             controller.setCurrentState(controller.addPickupState);
         }
     }
 
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map
+     * @param listOfCommand
+     * @param i
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
@@ -52,23 +64,45 @@ public class InitialState implements State {
             controller.Tview.selectRequest(i.getId());
     }
 
+    /**
+     * @param idIntersection
+     * @param controller
+     */
     @Override
     public void mouseOn(long idIntersection, Controller controller) {
     }
 
+    /**
+     * Undo.
+     *
+     * @param listOfCommand
+     * @param controller
+     */
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         listOfCommand.undo();
     }
 
+    /**
+     * Redo.
+     *
+     * @param listOfCommand
+     * @param controller
+     */
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
         listOfCommand.redo();
     }
 
+    /**
+     * Load the map.
+     *
+     * @param event
+     * @param controller
+     * @param map
+     */
     @Override
     public void LoadMap(ActionEvent event, Controller controller, Map map) {
-
         FileChooser mapFileChooser = new FileChooser();
         mapFileChooser.setTitle("Load Map");
         mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
@@ -80,6 +114,13 @@ public class InitialState implements State {
         controller.Tview.setMessage("Please load a request list");
     }
 
+    /**
+     * Load requests.
+     *
+     * @param event
+     * @param controller
+     * @param map
+     */
     @Override
     public void LoadRequests(ActionEvent event, Controller controller, Map map) {
         FileChooser requestsFileChooser = new FileChooser();
@@ -93,9 +134,10 @@ public class InitialState implements State {
         entryAction(controller);
     }
 
+    /**
+     * @param controller
+     */
     public void entryAction(Controller controller) {
         controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
     }
-
-
 }

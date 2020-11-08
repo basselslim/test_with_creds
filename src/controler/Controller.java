@@ -21,7 +21,9 @@ import java.io.File;
 import java.util.*;
 
 /**
- * 
+ * Controller.
+ *
+ * @author T-REXANOME
  */
 public class Controller {
     
@@ -51,7 +53,7 @@ public class Controller {
     protected final DeleteState deleteState = new DeleteState();
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Controller() {
         screenBounds  = Screen.getPrimary().getBounds();
@@ -61,7 +63,10 @@ public class Controller {
         currentState = initialState;
     }
 
-    //Getters and setters
+    /*
+     * Getters - Setters
+     */
+
     public ListOfCommand getListOfCommand() {
         return listOfCommand;
     }
@@ -74,12 +79,20 @@ public class Controller {
         currentState = newState;
     }
 
-
-    //Public Methods
+    /**
+     * Load requests.
+     *
+     * @param event
+     */
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
     }
 
+    /**
+     * Compute optimal tour.
+     *
+     * @param event
+     */
     public void computeTour(ActionEvent event) {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
@@ -87,6 +100,11 @@ public class Controller {
         Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
     }
 
+    /**
+     * Export road map.
+     *
+     * @param event
+     */
     public void ExportRoadMap (ActionEvent event) {
         FileChooser exportFileChooser = new FileChooser();
         exportFileChooser.setTitle("Export RoadMap");
@@ -97,11 +115,21 @@ public class Controller {
         map.getTour().generateRoadMap(exportLocation.getPath());
     }
 
+    /**
+     * Left click.
+     *
+     * @param idIntersection id of an intersection
+     */
     public void leftClick(long idIntersection){
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
+    /**
+     * Load the map.
+     *
+     * @param event
+     */
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg,screenBounds);
         Tview = new TextualView(map, myPane, TextArea, TextTour);
@@ -111,33 +139,70 @@ public class Controller {
         btn_load_requests.setDisable(false);
     }
 
+    /**
+     * Zoom.
+     *
+     * @param event
+     */
     public void Zoom(ActionEvent event) { Gview.zoom(); }
 
+    /**
+     * Unzoom.
+     *
+     * @param event
+     */
     public void UnZoom(ActionEvent event) {
         Gview.unZoom();
     }
 
+    /**
+     *
+     * @param idIntersection
+     */
     public void mouseOn(long idIntersection) {
         currentState.mouseOn(idIntersection, this);
     }
 
+    /**
+     * Add duration.
+     *
+     * @param duration duration to add
+     */
     public void addDuration(int duration) {
         currentState.addDuration(duration, this);
     }
 
+    /**
+     * Add a request.
+     *
+     * @param event
+     */
     public void addRequest(ActionEvent event) {
         currentState.addRequest(this);
         confirmRequest();
     }
 
+    /**
+     *
+     */
     public void confirmRequest() {
         currentState.confirmRequest(this, map);
     }
 
+    /**
+     * Undo.
+     *
+     * @param event
+     */
     public void undo(ActionEvent event) {
         currentState.undo(listOfCommand, this);
     }
 
+    /**
+     * Redo.
+     *
+     * @param event
+     */
     public void redo(ActionEvent event) {
         currentState.redo(listOfCommand,this);
     }

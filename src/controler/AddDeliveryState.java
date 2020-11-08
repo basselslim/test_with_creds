@@ -117,6 +117,10 @@ public class AddDeliveryState implements State {
         controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
 
+    /**
+     *
+     * @param controller
+     */
     private void unDrawSelections(Controller controller){
         if(DeliveryPrecedingPoint !=null)
             controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());

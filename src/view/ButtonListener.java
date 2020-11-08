@@ -1,14 +1,14 @@
 package view;
 
 /**
- * Button listener
+ * Button listener.
  *
  * @author T-REXANOME
  */
 public class ButtonListener {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public ButtonListener() {
     }

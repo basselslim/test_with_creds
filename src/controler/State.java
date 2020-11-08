@@ -5,7 +5,7 @@ import model.Intersection;
 import model.Map;
 
 /**
- * State
+ * State.
  *
  * @author T-REXANOME
  */

@@ -3,7 +3,8 @@ package model;
 import java.util.*;
 
 /**
- * Intersection for which a package must be picked up.
+ * A set of intersections connected by segments forming an oriented graph representing the different possible
+ * delivery/pickup points, and the distance between each point.
  *
  * @author T-REXANOME
  */
@@ -20,14 +21,14 @@ public class Map extends observer.Observable {
     public Map() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
-        depot= new Depot();
+        depot = new Depot();
         deliveryTour = new Tour(this);
     }
 
     /**
      * Constructor.
      *
-     * @param listIntersection
+     * @param listIntersection map of all the intersections
      */
     public Map(HashMap<Long, Intersection> listIntersection) {
         this.listIntersections = listIntersection;
@@ -58,7 +59,7 @@ public class Map extends observer.Observable {
     }
 
     /**
-     *
+     * Clear map.
      */
     public void clearMap() {
         listIntersections.clear();
@@ -66,15 +67,16 @@ public class Map extends observer.Observable {
     }
 
     /**
-     *
+     * Clear requests list.
      */
     public void clearRequests() {
         listRequests.clear();
     }
 
     /**
+     * Get the minimum latitude.
      *
-     * @return
+     * @return the minimum latitude
      */
     public double getMinLat() {
         double min = 100;
@@ -87,8 +89,9 @@ public class Map extends observer.Observable {
     }
 
     /**
+     * Get the maximum latitude.
      *
-     * @return
+     * @return the maximum latitude
      */
     public double getMaxLat() {
         double max = 0;
@@ -101,8 +104,9 @@ public class Map extends observer.Observable {
     }
 
     /**
+     * Get the minimum longitude.
      *
-     * @return
+     * @return the minimum longitude
      */
     public double getMinLong() {
         double min = 100;
@@ -115,8 +119,9 @@ public class Map extends observer.Observable {
     }
 
     /**
+     * Get the maximum longitude.
      *
-     * @return
+     * @return the maximum longitude
      */
     public double getMaxLong() {
         double max = 0;
@@ -129,8 +134,7 @@ public class Map extends observer.Observable {
     }
 
     /**
-     *
-     * @param id
+     * @param id id of a pick up or delivery point
      * @return
      */
     public Intersection getTourStopById(long id) {
@@ -149,9 +153,8 @@ public class Map extends observer.Observable {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * @param id id of an intersection
+     * @return request
      */
     public Request getRequestByIntersectionId(long id) {
         Request res = null;
@@ -181,21 +184,23 @@ public class Map extends observer.Observable {
     //INTERSECTIONS
 
     /**
+     * Add a request.
      *
-     * @param newRequest
-     * @param precedingPickUpId
-     * @param precedingDeliveryId
+     * @param newRequest          request to add
+     * @param precedingPickUpId   id of the preceding pick up point
+     * @param precedingDeliveryId id of the preceding delivery point
      */
-    public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
+    public void addRequest(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
         this.listRequests.add(newRequest);
-        this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+        this.deliveryTour.addRequestToTour(newRequest, precedingPickUpId, precedingDeliveryId);
         notifyObservers();
 
     }
 
     /**
+     * Remove a request.
      *
-     * @param request
+     * @param request request to remove
      */
     public void removeRequest(Request request) {
         this.deliveryTour.removeRequestFromTour(request);
@@ -232,7 +237,6 @@ public class Map extends observer.Observable {
         this.deliveryTour = newTour;
         notifyObservers();
     }
-
 
     @Override
     public String toString() {

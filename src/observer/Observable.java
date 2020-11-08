@@ -13,14 +13,14 @@ public class Observable {
     private Collection<Observer> obs;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Observable() {
         obs = new ArrayList<Observer>();
     }
 
     /**
-     * Add an observer to the observer collection
+     * Add an observer to the observer collection.
      *
      * @param o observer to add
      */
@@ -29,7 +29,7 @@ public class Observable {
     }
 
     /**
-     * Notify observers with an argument
+     * Notify observers with an argument.
      *
      * @param arg argument
      */
@@ -39,7 +39,7 @@ public class Observable {
     }
 
     /**
-     * Notify observers without arguments
+     * Notify observers without arguments.
      */
     public void notifyObservers() {
         notifyObservers(null);

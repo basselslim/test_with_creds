@@ -14,7 +14,11 @@ import model.Map;
 
 import static java.lang.String.valueOf;
 
-
+/**
+ * Textual view
+ *
+ * @author T-REXANOME
+ */
 public class TextualView implements observer.Observer {
 
     Map map;
@@ -27,7 +31,15 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
 
-    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos) {
+    /**
+     * Constructor.
+     *
+     * @param map
+     * @param pane
+     * @param textArea
+     * @param tourInfos
+     */
+    public TextualView(Map map, Pane pane, TextArea textArea, Label tourInfos) {
         this.map = map;
         this.pane = pane;
         this.TextArea = textArea;
@@ -35,6 +47,9 @@ public class TextualView implements observer.Observer {
         createRequestList();
     }
 
+    /**
+     *
+     */
     public void createRequestList() {
 
         requestsTable = new TableView();
@@ -104,6 +119,9 @@ public class TextualView implements observer.Observer {
         pane.getChildren().add(requestsTable);
     }
 
+    /**
+     *
+     */
     public void sortRequestsTable() {
         int newTableIndex = 0;
         for (Path path : map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
@@ -118,6 +136,9 @@ public class TextualView implements observer.Observer {
         }
     }
 
+    /**
+     * @param tourStopId
+     */
     public void selectRequest(long tourStopId) {
         Request req = map.getRequestByIntersectionId(tourStopId);
         if (!requestsTable.getSelectionModel().getSelectedItems().contains(req.getPickUpPoint())) {
@@ -130,6 +151,11 @@ public class TextualView implements observer.Observer {
         }
     }
 
+    /**
+     * Ask for a duration.
+     *
+     * @return duration
+     */
     public int durationPopup() {
         TextInputDialog popup = new TextInputDialog();
         popup.initStyle(StageStyle.UNDECORATED);
@@ -141,12 +167,21 @@ public class TextualView implements observer.Observer {
         return Integer.valueOf(result.get());
     }
 
-    public void setMessage(String message){
+
+    public void setMessage(String message) {
         TextArea.setText(message);
     }
 
-    public void setTourInfo(String info){TourInfos.setText(info);}
+    public void setTourInfo(String info) {
+        TourInfos.setText(info);
+    }
 
+    /**
+     * Update.
+     *
+     * @param observed
+     * @param arg      argument
+     */
     @Override
     public void update(observer.Observable observed, Object arg) {
         createRequestList();

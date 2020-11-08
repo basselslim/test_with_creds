@@ -40,9 +40,10 @@ public class Request extends Observable {
         this.deliveryPoint = deliveryPoint;
     }
 
-    /**
+    /*
      * Getters - Setters
      */
+
     public int getOrder() {
         return order;
     }

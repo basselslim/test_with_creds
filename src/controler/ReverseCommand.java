@@ -17,14 +17,19 @@ public class ReverseCommand implements Command {
         this.cmd = cmd;
     }
 
+    /**
+     * Do.
+     */
     @Override
     public void doCommand() {
         cmd.undoCommand();
     }
 
+    /**
+     * Undo.
+     */
     @Override
     public void undoCommand() {
         cmd.doCommand();
     }
-
 }

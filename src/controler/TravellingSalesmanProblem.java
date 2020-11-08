@@ -1,7 +1,6 @@
 package controler;
 
 import model.*;
-
 import java.util.*;
 
 /**
@@ -21,7 +20,7 @@ public class TravellingSalesmanProblem {
     protected int final_res = Integer.MAX_VALUE; /* stores the final minimum weight of shortest tour */
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param newMap
      * @param mapSmallestPaths
@@ -133,10 +132,10 @@ public class TravellingSalesmanProblem {
     /**
      * Function that takes as arguments:
      *
-     * @param curr_bound lower bound of the root node
+     * @param curr_bound  lower bound of the root node
      * @param curr_weight stores the weight of the path so far
-     * @param level current level while moving in the search space tree
-     * @param curr_tour where the solution is being stored which would later be copied to final_tour
+     * @param level       current level while moving in the search space tree
+     * @param curr_tour   where the solution is being stored which would later be copied to final_tour
      */
     protected void TSPRec(int curr_bound, int curr_weight, int level, Tour curr_tour) {
 

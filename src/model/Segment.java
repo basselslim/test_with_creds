@@ -20,7 +20,7 @@ public class Segment {
     /**
      * Constructor
      *
-     * @param length      length in meters of the street
+     * @param length      length of the street in meters
      * @param streetName  street name
      * @param destination id of the destination intersection
      */

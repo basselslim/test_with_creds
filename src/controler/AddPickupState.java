@@ -99,7 +99,7 @@ public class AddPickupState implements State {
     /**
      *
      * @param controller
-     * @param r
+     * @param r request
      */
     protected void entryAction(Controller controller, Request r) {
         request = new Request(r);
