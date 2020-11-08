@@ -2,10 +2,13 @@ package view;
 
 import java.util.*;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -23,9 +26,10 @@ public class TextualView implements observer.Observer {
     Label TourInfos;
     TableView requestsTable;
     TableColumn<Intersection, Long> intersectionColumn;
-    TableColumn<Intersection, Integer> durationColumn;
+    TableColumn<Intersection, String> durationColumn;
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
+    TableColumn<Intersection, String> arrivalTimeColumn;
 
     public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos) {
         this.map = map;
@@ -40,22 +44,47 @@ public class TextualView implements observer.Observer {
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
         requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        //requestsTable.prefHeightProperty().bind(pane.heightProperty());
+        requestsTable.prefWidthProperty().bind(pane.widthProperty());
+
+        requestsTable.setRowFactory( tableView -> {
+            final TableRow<Intersection> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY) {
+                    Intersection intersection = row.getItem();
+                    Request request = null;
+                    if (intersection instanceof DeliveryPoint) {
+                        request = ((DeliveryPoint) intersection).getRequest();
+                    } else if (intersection instanceof PickUpPoint) {
+                        request = ((PickUpPoint) intersection).getRequest();
+                    }
+                    selectRequest(request);
+                }
+            });
+            return row;
+        });
 
         intersectionColumn = new TableColumn<>("Intersection Id");
         intersectionColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         intersectionColumn.setSortable(false);
 
-        durationColumn = new TableColumn<>("Duration (s)");
-        durationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, Integer>, ObservableValue<Integer>>() {
+        durationColumn = new TableColumn<>("Duration");
+        durationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Intersection, Integer> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+                String res = "";
+                int minutes = 0;
                 if (p.getValue() instanceof DeliveryPoint) {
-                    return new ReadOnlyObjectWrapper(((DeliveryPoint) p.getValue()).getDeliveryDuration());
+                    minutes += ((DeliveryPoint) p.getValue()).getDeliveryDuration()/60;
                 } else if (p.getValue() instanceof PickUpPoint) {
-                    return new ReadOnlyObjectWrapper(((PickUpPoint) p.getValue()).getPickUpDuration());
-                } else {
-                    return null;
+                    minutes += ((PickUpPoint) p.getValue()).getPickUpDuration() / 60;
                 }
+                if (minutes > 1) {
+                    res = minutes + " minutes";
+                } else {
+                    res = minutes + " minute";
+                }
+                return new ReadOnlyObjectWrapper(res);
             }
         });
         durationColumn.setSortable(false);
@@ -86,15 +115,35 @@ public class TextualView implements observer.Observer {
         });
         requestIndexColumn.setSortable(false);
 
+        arrivalTimeColumn = new TableColumn<>("Arrival Time");
+        arrivalTimeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+                if (map.getTour().getListPaths().isEmpty()) {
+                    return new ReadOnlyObjectWrapper("Not computed yet");
+                } else {
+                    int index = 0;
+                    for (Path path: map.getTour().getListPaths()) {
+                        if (path.getIdArrival() == p.getValue().getId()) {
+                            break;
+                        } else {
+                            index++;
+                        }
+                    }
+                    int time = map.getTour().getListTimes().get(index)[1];
+                    return new ReadOnlyObjectWrapper(map.getTour().timeToString(time));
+                }
+            }
+        });
+        arrivalTimeColumn.setVisible(false);
+        arrivalTimeColumn.setSortable(false);
+
         requestsTable.getColumns().add(requestIndexColumn);
         requestsTable.getColumns().add(durationColumn);
         requestsTable.getColumns().add(typeColumn);
+        requestsTable.getColumns().add(arrivalTimeColumn);
 
         requestsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        requestsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            long id = ((Intersection) newSelection).getId();
-            selectRequest(id);
-        });
 
         for (Request item : map.getListRequests()) {
             requestsTable.getItems().add(item.getPickUpPoint());
@@ -118,16 +167,12 @@ public class TextualView implements observer.Observer {
         }
     }
 
-    public void selectRequest(long tourStopId) {
-        Request req = map.getRequestByIntersectionId(tourStopId);
-        if (!requestsTable.getSelectionModel().getSelectedItems().contains(req.getPickUpPoint())) {
-            int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
-            requestsTable.getSelectionModel().select(index);
-        }
-        if (!requestsTable.getSelectionModel().getSelectedItems().contains(req.getDeliveryPoint())) {
-            int index = requestsTable.getItems().indexOf(req.getDeliveryPoint());
-            requestsTable.getSelectionModel().select(index);
-        }
+    public void selectRequest(Request req) {
+        requestsTable.getSelectionModel().clearSelection();
+        int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
+        requestsTable.getSelectionModel().select(index);
+        int index2 = requestsTable.getItems().indexOf(req.getDeliveryPoint());
+        requestsTable.getSelectionModel().select(index2);
     }
 
     public int durationPopup() {
@@ -137,8 +182,25 @@ public class TextualView implements observer.Observer {
         popup.setTitle("Duration");
         popup.setHeaderText("");
         popup.setContentText("Please enter the duration:");
-        Optional<String> result = popup.showAndWait();
-        return Integer.valueOf(result.get());
+        Button okButton = (Button) popup.getDialogPane().lookupButton(ButtonType.OK);
+        TextField input = popup.getEditor();
+        BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> durationIsInvalid(input.getText()), input.textProperty());
+        okButton.disableProperty().bind(isInvalid);
+        Optional<String> resultat = popup.showAndWait();
+        int res = Integer.parseInt(resultat.get());
+        return res;
+    }
+
+    public boolean durationIsInvalid(String str) {
+        try {
+            int res = Integer.parseInt(str);
+            if (res <= 0) {
+                return true;
+            }
+        } catch (NumberFormatException nfe) {
+            return true;
+        }
+        return false;
     }
 
     public void setMessage(String message){
@@ -152,6 +214,7 @@ public class TextualView implements observer.Observer {
         createRequestList();
         if (!map.getTour().getListPaths().isEmpty()) {
             sortRequestsTable();
+            arrivalTimeColumn.setVisible(true);
         }
     }
 }

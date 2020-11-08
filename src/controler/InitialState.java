@@ -63,6 +63,7 @@ public class InitialState implements State {
         }
         CurrentIdList.clear();
 
+
         Request request = controller.map.getRequestByIntersectionId(i.getId());
         if (request != null) {
             //Select both Delivery and Pickup points if the point is a request
@@ -77,6 +78,7 @@ public class InitialState implements State {
             CurrentIdList.add(i.getId());
 
         }
+
     }
 
     @Override
