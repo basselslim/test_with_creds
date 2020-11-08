@@ -10,13 +10,17 @@ import model.Map;
 import model.Request;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  */
 public class InitialState implements State {
 
-    long CurrentId;
+    List<Long> CurrentIdList;
 
     Request request = new Request();
 
@@ -24,10 +28,17 @@ public class InitialState implements State {
      * Default constructor
      */
     public InitialState() {
+        CurrentIdList = new ArrayList<>();
     }
 
     @Override
     public void addRequest(Controller controller) {
+        //Unselect preceding point
+        for (Long id:CurrentIdList) {
+            controller.Gview.undrawMouseSelection(id);
+        }
+        CurrentIdList.clear();
+
         if(!controller.map.getListRequests().isEmpty()) {
             controller.addPickupState.entryAction(controller, request);
             controller.setCurrentState(controller.addPickupState);
@@ -35,10 +46,11 @@ public class InitialState implements State {
     }
 
     public void deleteRequest(Controller controller) {
-        Request request = controller.map.getRequestByIntersectionId(CurrentId);
+        Request request = controller.map.getRequestByIntersectionId(CurrentIdList.get(0));
         if( request != null) {
             controller.deleteState.entryAction(controller,request);
             controller.setCurrentState(controller.deleteState);
+
         }
     }
 
@@ -46,18 +58,25 @@ public class InitialState implements State {
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         //Unselect preceding point
-        controller.Gview.undrawMouseSelection(CurrentId);
-        controller.Gview.undrawMouseSelection(CurrentId);
+        for (Long id:CurrentIdList) {
+            controller.Gview.undrawMouseSelection(id);
+        }
+        CurrentIdList.clear();
 
-        //Select preceding point
-        controller.Gview.drawMouseSelection(i.getId());
-        controller.Gview.drawMouseSelection(i.getId());
-
-        CurrentId = i.getId();
-
-        //Diplay in textual view if the point is a request
-        if (controller.map.getRequestByIntersectionId(i.getId()) != null)
+        Request request = controller.map.getRequestByIntersectionId(i.getId());
+        if (request != null) {
+            //Select both Delivery and Pickup points if the point is a request
+            controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
+            controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
             controller.Tview.selectRequest(i.getId());
+            CurrentIdList.add(request.getPickUpPoint().getId());
+            CurrentIdList.add(request.getDeliveryPoint().getId());
+        }else{
+            //Select current point
+            controller.Gview.drawMouseSelection(i.getId());
+            CurrentIdList.add(i.getId());
+
+        }
     }
 
     @Override

@@ -15,7 +15,7 @@ public class ConfirmRequestState implements State {
     }
 
     @Override
-    public void confirmRequest(Controller controller, Map map) {
+    public void confirmAction(Controller controller, Map map) {
 /**
  *
  */
@@ -30,7 +30,7 @@ public class ConfirmRequestState implements State {
             controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
             controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
             controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
-
+            controller.confirmAction.setVisible(false);
             controller.Gview.disableSelection();
         }
     }
@@ -41,6 +41,7 @@ public class ConfirmRequestState implements State {
         controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
         controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
         controller.setCurrentState(controller.addDeliveryState);
+        controller.confirmAction.setVisible(false);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class ConfirmRequestState implements State {
 
 
     protected void entryAction(Request r, Controller controller) {
+        controller.confirmAction.setVisible(true);
         request = new Request(r);
         PickupPrecedingPoint = new Intersection(controller.addDeliveryState.PickupPrecedingPoint);
         DeliveryPrecedingPoint = new Intersection(controller.addDeliveryState.DeliveryPrecedingPoint);
@@ -57,6 +59,7 @@ public class ConfirmRequestState implements State {
     }
 
     protected void reverseAction(Controller controller) {
+        controller.confirmAction.setVisible(true);
         controller.Gview.disableSelection();
         controller.Gview.drawMouseSelection(DeliveryPrecedingPoint.getId());
         controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());

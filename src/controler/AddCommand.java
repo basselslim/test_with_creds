@@ -24,8 +24,12 @@ public class AddCommand implements Command {
 
     @Override
     public void doCommand() {
-        map.addRequest(request,precedingPickUpId,precedingDeliveryId);
+        if(precedingDeliveryId !=null && precedingPickUpId != null)
+            map.addRequest(request,precedingPickUpId,precedingDeliveryId);
+        else
+            map.addRequest(request);
     }
+
 
     @Override
     public void undoCommand() {

@@ -69,7 +69,6 @@ public class AddPickupState implements State {
 
     protected void entryAction(Controller controller, Request r) {
         request = new Request(r);
-        controller.Gview.enableSelection();
         precedingPoint = null;
         controller.Tview.setMessage("Select the preceding point to the pickup point");
 

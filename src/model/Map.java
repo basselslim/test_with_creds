@@ -159,10 +159,21 @@ public class Map extends observer.Observable {
 
     }
 
+    public void addRequest(Request newRequest) {
+        this.listRequests.add(newRequest);
+        notifyObservers();
+
+    }
+
 
     public void removeRequest(Request request) {
-        this.deliveryTour.removeRequestFromTour(request);
-        this.listRequests.remove(request);
+        if(this.deliveryTour.getListPaths().size() == 0)
+            this.listRequests.remove(request);
+        else {
+            this.deliveryTour.removeRequestFromTour(request);
+            this.listRequests.remove(request);
+        }
+
         this.notifyObservers();
     }
 
