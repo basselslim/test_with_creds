@@ -69,7 +69,7 @@ public class InitialState implements State {
             //Select both Delivery and Pickup points if the point is a request
             controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
             controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
-            controller.Tview.selectRequest(i.getId());
+            controller.Tview.selectRequest(map.getRequestByIntersectionId(i.getId()),false);
             CurrentIdList.add(request.getPickUpPoint().getId());
             CurrentIdList.add(request.getDeliveryPoint().getId());
         }else{
@@ -122,7 +122,9 @@ public class InitialState implements State {
         entryAction(controller);
     }
 
+
     public void entryAction(Controller controller) {
+        CurrentIdList.clear();
         controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
     }
 

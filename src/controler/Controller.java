@@ -30,6 +30,15 @@ public class Controller {
     protected State currentState;
     protected Map map;
     protected Rectangle2D screenBounds;
+
+    public GraphicalView getGview() {
+        return Gview;
+    }
+
+    public TextualView getTview() {
+        return Tview;
+    }
+
     protected GraphicalView Gview;
     protected TextualView Tview;
 
@@ -106,7 +115,7 @@ public class Controller {
 
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg,screenBounds);
-        Tview = new TextualView(map, myPane, TextArea, TextTour);
+        Tview = new TextualView(map, myPane, TextArea, TextTour, this);
         map.addObserver(Gview);
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);

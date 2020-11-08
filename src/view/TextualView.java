@@ -2,6 +2,7 @@ package view;
 
 import java.util.*;
 
+import controler.Controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -21,6 +22,7 @@ import static java.lang.String.valueOf;
 public class TextualView implements observer.Observer {
 
     Map map;
+    Controller controller;
     Pane pane;
     TextArea TextArea;
     Label TourInfos;
@@ -31,7 +33,8 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, Integer> requestIndexColumn;
     TableColumn<Intersection, String> arrivalTimeColumn;
 
-    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos) {
+    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos, Controller controller) {
+        this.controller = controller;
         this.map = map;
         this.pane = pane;
         this.TextArea = textArea;
@@ -58,7 +61,7 @@ public class TextualView implements observer.Observer {
                     } else if (intersection instanceof PickUpPoint) {
                         request = ((PickUpPoint) intersection).getRequest();
                     }
-                    selectRequest(request);
+                    selectRequest(request,true);
                 }
             });
             return row;
@@ -167,12 +170,16 @@ public class TextualView implements observer.Observer {
         }
     }
 
-    public void selectRequest(Request req) {
+    public void selectRequest(Request req, Boolean local) {
+
         requestsTable.getSelectionModel().clearSelection();
         int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
         requestsTable.getSelectionModel().select(index);
         int index2 = requestsTable.getItems().indexOf(req.getDeliveryPoint());
         requestsTable.getSelectionModel().select(index2);
+        if(local) {
+            controller.leftClick(req.getDeliveryPoint().getId());
+        }
     }
 
     public int durationPopup() {
