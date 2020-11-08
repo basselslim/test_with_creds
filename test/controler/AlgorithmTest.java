@@ -93,6 +93,7 @@ class AlgorithmTest {
         for(HashMap<Long, Path> h : CSPMap.values()) {
             listPaths.addAll(h.values());
         }
+
         //Assert
         assert(listPaths.size() == 6);
         for (int i=0; i<listPaths.size(); i++){

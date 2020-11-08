@@ -47,10 +47,9 @@ public class InitialState implements State {
 
         //Unselect preceding point
         controller.Gview.undrawMouseSelection(CurrentId);
-        controller.Gview.undrawMouseSelection(CurrentId);
 
         //Select preceding point
-        controller.Gview.drawMouseSelection(i.getId());
+        controller.Tview.setMessage(i.toString());
         controller.Gview.drawMouseSelection(i.getId());
 
         CurrentId = i.getId();
