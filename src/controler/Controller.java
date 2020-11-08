@@ -74,7 +74,6 @@ public class Controller {
         currentState = newState;
     }
 
-
     //Public Methods
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
@@ -142,7 +141,4 @@ public class Controller {
         currentState.redo(listOfCommand,this);
     }
 
-
-
 }
-
