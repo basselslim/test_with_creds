@@ -49,7 +49,7 @@ public class TextualView implements observer.Observer {
 
         requestsTable.setRowFactory( tableView -> {
             final TableRow<Intersection> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
+            row.setOnMousePressed(event -> {
                 if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY) {
                     Intersection intersection = row.getItem();
                     Request request = null;
@@ -129,6 +129,9 @@ public class TextualView implements observer.Observer {
                         } else {
                             index++;
                         }
+                    }
+                    if (index >= map.getTour().getListTimes().size()) {
+                        return new ReadOnlyObjectWrapper("an error occurred");
                     }
                     int time = map.getTour().getListTimes().get(index)[1];
                     return new ReadOnlyObjectWrapper(map.getTour().timeToString(time));
