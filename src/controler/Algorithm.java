@@ -7,12 +7,11 @@ public class Algorithm {
 
     protected Map map;
     protected List<Request> listRequests;
-    protected final long timeZero;
-
+    protected long timeZero;
+    protected long TIMELIMIT = 20000;
     public Algorithm(Map map) {
         this.map = map;
         this.listRequests = map.getListRequests();
-        this.timeZero = System.currentTimeMillis();
     }
 
     /*
@@ -20,6 +19,7 @@ public class Algorithm {
      */
     public HashMap<Long, HashMap<Long,Path>> computeSmallestPaths() {
         System.out.println("Computing the smallest paths...");
+        this.timeZero = System.currentTimeMillis();
         ComputeSmallestPath algorithmSmallestPath = new ComputeSmallestPath(this.map);
         HashMap<Long, HashMap<Long,Path>> mapSmallestPaths = new HashMap<>();
 
@@ -60,9 +60,9 @@ public class Algorithm {
      * Compute optimal tour
      */
     public void computeOptimalTour(HashMap<Long, HashMap<Long,Path>> mapSmallestPaths) {
+        this.timeZero = System.currentTimeMillis();
         System.out.println("Computing the optimal tour...");
-
-        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths);
+        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths,TIMELIMIT);
         travellingSalesmanProblem.TSP();
         System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
     }
