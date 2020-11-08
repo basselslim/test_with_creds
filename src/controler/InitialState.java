@@ -57,7 +57,7 @@ public class InitialState implements State {
      * @param controller
      * @param map
      * @param listOfCommand
-     * @param i
+     * @param i intersection
      */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
