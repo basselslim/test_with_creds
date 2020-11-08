@@ -14,6 +14,8 @@ import view.Window;
  */
 public class DeleteState implements State {
 
+    private Request request;
+
     /**
      * Left click.
      
