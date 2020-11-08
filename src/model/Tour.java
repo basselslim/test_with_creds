@@ -15,7 +15,6 @@ public class Tour extends Observable {
     /**
      *
      */
-    protected int tourLength;
     protected List<Path> listPaths;
     protected List<int[]> listTimes;
     protected Map map;
@@ -31,7 +30,6 @@ public class Tour extends Observable {
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
         this.listTimes = new LinkedList<int[]>();
-        this.tourLength = 0;
         this.map = map;
         this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
     }
@@ -39,11 +37,7 @@ public class Tour extends Observable {
     public Tour(Map map, List<Path> listPaths) {
         this.listPaths = listPaths;
         this.listTimes = new LinkedList<int[]>();
-        this.tourLength = 0;
         this.map = map;
-        for (Path p : listPaths) {
-            this.tourLength += p.getPathLength();
-        }
         this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
         populateListTimes();
     }
@@ -134,6 +128,10 @@ public class Tour extends Observable {
      * Getters - Setters
      */
     public int getTourLength() {
+        int tourLength =0;
+        for (Path p : listPaths) {
+            tourLength += p.getPathLength();
+        }
         return tourLength;
     }
 
@@ -273,7 +271,6 @@ public class Tour extends Observable {
 
     public void addPath(Path newPath) {
         listPaths.add(newPath);
-        tourLength += newPath.pathLength;
         if (map.getDepot().getId() == listPaths.get(listPaths.size() - 1).getIdArrival()) {
             populateListTimes();
         }

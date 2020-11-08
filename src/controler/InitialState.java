@@ -78,6 +78,7 @@ public class InitialState implements State {
             controller.Gview.drawMouseSelection(i.getId());
             CurrentIdList.add(i.getId());
 
+
         }
 
     }
