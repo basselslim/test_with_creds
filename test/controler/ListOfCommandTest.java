@@ -11,6 +11,8 @@ class ListOfCommandTest {
     ListOfCommand listOfCommand;
     Map m;
     Request r;
+    Long idPickUp;
+    Long idDelivery;
     @BeforeEach
     void setUp() {
         listOfCommand = new ListOfCommand();
@@ -20,14 +22,14 @@ class ListOfCommandTest {
 
     @Test
     void add() {
-        AddCommand c = new AddCommand(m,r);
+        AddCommand c = new AddCommand(m,r,idPickUp,idDelivery);
         listOfCommand.add(c);
         assert (listOfCommand.currentIndex == 0);
     }
 
     @Test
     void undo() {
-        AddCommand c = new AddCommand(m,r);
+        AddCommand c = new AddCommand(m,r,idPickUp,idDelivery);
         listOfCommand.add(c);
         listOfCommand.undo();
         assert (listOfCommand.currentIndex == -1);
@@ -36,7 +38,7 @@ class ListOfCommandTest {
 
     @Test
     void cancel() {
-        AddCommand c = new AddCommand(m,r);
+        AddCommand c = new AddCommand(m,r,idPickUp,idDelivery);
         listOfCommand.add(c);
         listOfCommand.cancel();
         assert (listOfCommand.currentIndex == -1);
@@ -45,7 +47,7 @@ class ListOfCommandTest {
 
     @Test
     void redo() {
-        AddCommand c = new AddCommand(m,r);
+        AddCommand c = new AddCommand(m,r,idPickUp,idDelivery);
         listOfCommand.add(c);
         listOfCommand.undo();
         listOfCommand.redo();
@@ -54,7 +56,7 @@ class ListOfCommandTest {
 
     @Test
     void reset() {
-        AddCommand c = new AddCommand(m,r);
+        AddCommand c = new AddCommand(m,r,idPickUp,idDelivery);
         listOfCommand.add(c);
         listOfCommand.reset();
         assert (listOfCommand.currentIndex == -1);

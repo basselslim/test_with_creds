@@ -3,80 +3,101 @@ package view;
 import controler.Controller;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
-import javax.sound.midi.SysexMessage;
+import java.util.HashMap;
 import java.util.List;
 
 public class MouseGestures {
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
-    List<Circle> circles;
+    HashMap<Long,Circle> circles;
     List<Line> lines;
-    Controller controller;
+    List<Arrow> arrows;
+    HashMap<Long,Rectangle> rectangles;
 
-    MouseGestures(Controller c){
+    Controller controller;
+    GraphicalView Gview;
+
+    Color currentcolor;
+
+    protected double newTranslateX;
+    protected double newTranslateY;
+
+    public MouseGestures(Controller c) {
         controller = c;
     }
 
     public void makeClickable(Node node) {
-        node.setOnMouseEntered(circleOnMouseEnteredEventHandler);
-        node.setOnMouseExited(circleOnMouseExitedEventHandler);
-        node.setOnMouseClicked(circleOnMouseClickedEventHandler);
+        node.setOnMouseEntered(nodeOnMouseEnteredEventHandler);
+        node.setOnMouseExited(nodeOnMouseExitedEventHandler);
+        node.setOnMouseClicked(nodeOnMouseClickedEventHandler);
     }
 
-    public void makeMovable(Node node, List<Circle> circles, List<Line> lines) {
+    public void makeMovable(Node node, HashMap<Long,Circle> circles, List<Line> lines, List<Arrow> arrows, HashMap<Long,Rectangle> rectangles) {
         this.lines = lines;
         this.circles = circles;
+        this.arrows = arrows;
+        this.rectangles = rectangles;
         node.setOnMouseDragged(circleOnMouseDraggedEventHandler);
         node.setOnMousePressed(circleOnMousePressedEventHandler);
     }
 
-    EventHandler<MouseEvent> circleOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> nodeOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
                 Circle circle = ((Circle) (t.getSource()));
-                circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-                circle.setRadius(circle.getRadius()*2);
-                System.out.println(circle.getUserData());
                 controller.leftClick((long)circle.getUserData());
             }
-        }
-    };
 
-    EventHandler<MouseEvent> circleOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
-
-        @Override
-        public void handle(MouseEvent t) {
-
-
-            if (t.getSource() instanceof Circle) {
-
-                Circle p = ((Circle) (t.getSource()));
-
-                p.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-
+            else if(t.getSource() instanceof Rectangle) {
+                Rectangle rectangle = ((Rectangle) (t.getSource()));
+                controller.leftClick((long)rectangle.getUserData());
             }
         }
     };
 
-    EventHandler<MouseEvent> circleOnMouseExitedEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> nodeOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent t) {
 
-
             if (t.getSource() instanceof Circle) {
 
-                Circle p = ((Circle) (t.getSource()));
-                if (p.getRotate() != 1.0)
-                    p.setFill(Color.BLACK.deriveColor(1, 1, 1, 0.9));
+                Circle circle = ((Circle) (t.getSource()));
+                currentcolor = (Color) circle.getFill();
+                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
+                controller.mouseOn((long) circle.getUserData());
+            } else if (t.getSource() instanceof Rectangle) {
+
+                Rectangle rectangle = ((Rectangle) (t.getSource()));
+                currentcolor = (Color) rectangle.getFill();
+                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
+                controller.mouseOn((long) rectangle.getUserData());
+            }
+        }
+    };
+
+    EventHandler<MouseEvent> nodeOnMouseExitedEventHandler = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent t) {
+            if (t.getSource() instanceof Circle) {
+
+                Circle circle = ((Circle) (t.getSource()));
+                if (circle.getRotate() != 1.0)
+                    circle.setFill(currentcolor);
+
+            } else if (t.getSource() instanceof Rectangle) {
+
+                Rectangle rectangle = ((Rectangle) (t.getSource()));
+                if (rectangle.getRotate() != 1.0)
+                    rectangle.setFill(currentcolor);
 
             }
         }
@@ -89,9 +110,10 @@ public class MouseGestures {
             orgSceneY = t.getSceneY();
 
             Node p = ((Node) (t.getSource()));
-
-            orgTranslateX = circles.get(1).getTranslateX();
-            orgTranslateY = circles.get(1).getTranslateY();
+            HashMap.Entry entry = circles.entrySet().iterator().next();
+            long Id = (long)entry.getKey();
+            orgTranslateX = circles.get(Id).getTranslateX();
+            orgTranslateY = circles.get(Id).getTranslateY();
         }
     };
 
@@ -103,22 +125,44 @@ public class MouseGestures {
             double offsetX = t.getSceneX() - orgSceneX;
             double offsetY = t.getSceneY() - orgSceneY;
 
-            double newTranslateX = orgTranslateX + offsetX;
-            double newTranslateY = orgTranslateY + offsetY;
+            newTranslateX = orgTranslateX + offsetX;
+            newTranslateY = orgTranslateY + offsetY;
 
-            if (circles.get(1).getCenterX() < 100) {
-                for (Circle circle : circles) {
-                    circle.setTranslateX(newTranslateX);
-                    circle.setTranslateY(newTranslateY);
-                }
+            //Boolean XBlocking = newTranslateX+controller.getMap().findMinLat() > 1200 ;
+            //Boolean YBlocking = newTranslateY+controller.getMap().findMinLong() > 800 ;
 
-                for (Line line : lines) {
-                    line.setTranslateX(newTranslateX);
-                    line.setTranslateY(newTranslateY);
+            //if(XBlocking && YBlocking){
 
-                }
+            for (HashMap.Entry mapentry : circles.entrySet()) {
+                Circle circle = (Circle) mapentry.getValue();
+                circle.setTranslateX(newTranslateX);
+                circle.setTranslateY(newTranslateY);
+            }
+
+            for (Line line : lines) {
+                line.setTranslateX(newTranslateX);
+                line.setTranslateY(newTranslateY);
+
+            }
+            for (Arrow arrow : arrows) {
+                arrow.setTranslateX(newTranslateX);
+                arrow.setTranslateY(newTranslateY);
+
+            }
+            for (HashMap.Entry mapentry : rectangles.entrySet()) {
+                Rectangle rectangle = (Rectangle) mapentry.getValue();
+                rectangle.setTranslateX(newTranslateX);
+                rectangle.setTranslateY(newTranslateY);
+
             }
         }
+        //}
+
     };
 
+
+
+    public void setGview(GraphicalView graphicalView) {
+        Gview = graphicalView;
+    }
 }

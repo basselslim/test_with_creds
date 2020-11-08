@@ -26,7 +26,7 @@ public class TravellingSalesmanProblem {
     public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths) {
         numberOfStep = mapSmallestPaths.size();
         map = newMap;
-        final_tour = new Tour();
+        final_tour = new Tour(map);
         adjacencyMatrixOfShortestPath = mapSmallestPaths;
         visited = new HashMap<Long, Boolean>();
         initialisePrecedenceMatrix();
@@ -85,7 +85,7 @@ public class TravellingSalesmanProblem {
 
     // This function sets up final_tour
     public void TSP() {
-        Tour curr_tour = new Tour();
+        Tour curr_tour = new Tour(map);
 
         // Calculate initial lower bound for the root node
         // using the formula 1/2 * (sum of first min +

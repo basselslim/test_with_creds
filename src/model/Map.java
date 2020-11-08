@@ -12,9 +12,10 @@ public class Map extends observer.Observable {
      */
     protected List<Request> listRequests;
 
-    protected HashMap<Long,Intersection> listIntersections;
+    protected HashMap<Long, Intersection> listIntersections;
 
     protected Tour deliveryTour;
+
     protected Depot depot;
 
 
@@ -25,8 +26,8 @@ public class Map extends observer.Observable {
     public Map() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
-        depot = new Depot();
-        deliveryTour = new Tour();
+        depot= new Depot();
+        deliveryTour = new Tour(this);
     }
 
 
@@ -63,12 +64,13 @@ public class Map extends observer.Observable {
         listIntersections.clear();
         deliveryTour.getListPaths().clear();
     }
+    
 
     public void clearRequests() {
         listRequests.clear();
     }
 
-    public double findMinLat() {
+    public double getMinLat() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -78,7 +80,7 @@ public class Map extends observer.Observable {
         return min;
     }
 
-    public double findMaxLat() {
+    public double getMaxLat() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -88,7 +90,7 @@ public class Map extends observer.Observable {
         return max;
     }
 
-    public double findMinLong() {
+    public double getMinLong() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -98,7 +100,7 @@ public class Map extends observer.Observable {
         return min;
     }
 
-    public double findMaxLong() {
+    public double getMaxLong() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -106,6 +108,32 @@ public class Map extends observer.Observable {
                 max = intersection.getLongitude();
         }
         return max;
+    }
+
+    public Intersection getTourStopById(long id) {
+        Intersection res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id) {
+                res = listRequests.get(i).getPickUpPoint();
+                break;
+            }
+            if (listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i).getDeliveryPoint();
+                break;
+            }
+        }
+        return res;
+    }
+
+    public Request getRequestByIntersectionId(long id) {
+        Request res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id || listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i);
+                break;
+            }
+        }
+        return res;
     }
 
     /**
@@ -122,16 +150,26 @@ public class Map extends observer.Observable {
         notifyObservers();
     }
 
+
     //INTERSECTIONS
-    public void addRequest(Request r) {
-        this.listRequests.add(r);
+    public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
+        this.listRequests.add(newRequest);
+        this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+        notifyObservers();
+
     }
 
-    public void removeRequest(Request r) {
-        this.listRequests.remove(r);
+
+    public void removeRequest(Request request) {
+        this.deliveryTour.removeRequestFromTour(request);
+        this.listRequests.remove(request);
+        this.notifyObservers();
     }
 
-    public HashMap<Long,Intersection> getListIntersections() {
+
+
+    //INTERSECTIONS
+    public HashMap<Long, Intersection> getListIntersections() {
         return listIntersections;
     }
 
