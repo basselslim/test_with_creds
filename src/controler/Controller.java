@@ -30,6 +30,15 @@ public class Controller {
     protected State currentState;
     protected Map map;
     protected Rectangle2D screenBounds;
+
+    public GraphicalView getGview() {
+        return Gview;
+    }
+
+    public TextualView getTview() {
+        return Tview;
+    }
+
     protected GraphicalView Gview;
     protected TextualView Tview;
 
@@ -43,6 +52,8 @@ public class Controller {
     private javafx.scene.control.TextArea TextArea;
     @FXML
     private Label TextTour;
+    @FXML
+    protected Button confirmAction;
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
@@ -55,6 +66,7 @@ public class Controller {
      */
     public Controller() {
         screenBounds  = Screen.getPrimary().getBounds();
+
         mg = new MouseGestures(this);
         map = new Map();
         listOfCommand = new ListOfCommand();
@@ -103,7 +115,7 @@ public class Controller {
 
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg,screenBounds);
-        Tview = new TextualView(map, myPane, TextArea, TextTour);
+        Tview = new TextualView(map, myPane, TextArea, TextTour, this);
         map.addObserver(Gview);
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);
@@ -126,15 +138,14 @@ public class Controller {
 
     public void addRequest(ActionEvent event) {
         currentState.addRequest(this);
-        confirmRequest();
     }
 
     public void deleteRequest(ActionEvent event){
         currentState.deleteRequest(this);
     }
 
-    public void confirmRequest() {
-        currentState.confirmRequest(this, map);
+    public void confirmAction() {
+        currentState.confirmAction(this, map);
     }
 
     public void undo(ActionEvent event) {
