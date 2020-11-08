@@ -151,7 +151,6 @@ public class Map extends observer.Observable {
     }
 
 
-    //INTERSECTIONS
     public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
         this.listRequests.add(newRequest);
         this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);

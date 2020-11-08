@@ -1,12 +1,24 @@
 package model;
 
+import observer.Observable;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IntersectionTest {
+    @Test
+    void emptyConstructorIsNotNull()
+    {
+        //Arrange
+
+        //Act
+        Intersection i = new Intersection();
+        //Assert
+        assertNotNull(i);
+    }
 
     @Test
     void constructorWithoutListWorking()
@@ -158,4 +170,65 @@ class IntersectionTest {
         //Assert
         assertEquals(0,comparison);
     }
+    @Test
+    void setId() {
+        //Arrange
+        Intersection i = new Intersection();
+        //Act
+        i.setId(1);
+        //Assert
+        assertEquals(1,i.getId());
+    }
+    @Test
+    void setLatitude() {
+        //Arrange
+        Intersection i = new Intersection();
+        //Act
+        i.setLongitude(1);
+        //Assert
+        assertEquals(1,i.getLongitude());
+    }
+    @Test
+    void setLongitude() {
+        //Arrange
+        Intersection i = new Intersection();
+        //Act
+        i.setLatitude(1);
+        //Assert
+        assertEquals(1,i.getLatitude());
+    }
+    @Test
+    void addSegment() {
+        //Arrange
+        Intersection i = new Intersection();
+        Segment s = new Segment(10,"test",2);
+        //Act
+        i.addSegment(s);
+        //Assert
+        assertEquals(s,i.getListSegments().get(0));
+    }
+    @Test
+    void setPrevious() {
+        //Arrange
+        Intersection i = new Intersection();
+        Intersection i1 = new Intersection();
+        //Act
+        i.setPrevious(i1);
+        //Assert
+        assertEquals(i1,i.getPrevious());
+
+    }
+    @Test
+    void setRouteScore() {
+        //Arrange
+        Intersection i = new Intersection();
+        //Act
+        i.setRouteScore(2);
+        //Assert
+        assertEquals(2,i.getRouteScore());
+
+    }
+
+
+
 }

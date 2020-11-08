@@ -16,6 +16,24 @@ class DeliveryPointTest {
         assertNotNull(d);
     }
     @Test
+    void standardConstructorCorrect()
+    {
+        //Arrange
+        long id = 1;
+        double latitude = 1.1;
+        double longitude = 2.2;
+        int deliveryDuration = 2;
+        Intersection i = new Intersection(id,latitude,longitude);
+        //Act
+        DeliveryPoint d = new DeliveryPoint(i,deliveryDuration);
+        //Assert
+        assertNotNull(d);
+        assertEquals(id,d.getId());
+        assertEquals(latitude,d.getLatitude());
+        assertEquals(longitude,d.getLongitude());
+        assertEquals(deliveryDuration,d.getDeliveryDuration());
+    }
+    @Test
     void constructorCorrectWithExtensionOfIntersection()
     {
         //Arrange
@@ -31,6 +49,15 @@ class DeliveryPointTest {
         assertEquals(latitude,d.getLatitude());
         assertEquals(longitude,d.getLongitude());
         assertEquals(deliveryDuration,d.getDeliveryDuration());
+    }
+    @Test
+    void setDeliveryDurationWorking(){
+        //Arrange
+        DeliveryPoint d = new DeliveryPoint();
+        //Act
+        d.setDeliveryDuration(2);
+        //Assert
+        assertEquals(2,d.getDeliveryDuration());
     }
 
 }
