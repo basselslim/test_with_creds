@@ -8,8 +8,8 @@ import model.Map;
  */
 public class AddPickupState implements State {
 
-    private Request request;
-    private Intersection precedingPoint;
+    protected Request request;
+    protected Intersection precedingPoint;
 
     /**
      * Default constructor.
@@ -37,8 +37,10 @@ public class AddPickupState implements State {
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
         if (precedingPoint == null) {
-            if(map.getRequestByIntersectionId(i.getId()) != null) {
+            if(map.getRequestByIntersectionId(i.getId()) != null || i.getId() == map.getDepot().getId()) {
                 precedingPoint = new Intersection(i);
+
+                controller.Gview.drawMouseSelection(i.getId());
                 controller.Tview.setMessage("Select the pickup point");
             }
         } else {
@@ -46,6 +48,7 @@ public class AddPickupState implements State {
                 PickUpPoint pickup = new PickUpPoint(i, 0);
                 request.setPickUpPoint(pickup);
 
+                controller.Gview.drawMouseSelection(i.getId());
                 controller.Tview.setMessage("Enter duration");
                 controller.addDuration(controller.Tview.durationPopup());
             }
@@ -111,8 +114,8 @@ public class AddPickupState implements State {
      * @param controller
      */
     protected void reverseAction(Controller controller) {
-        controller.Gview.enableSelection();
         precedingPoint = null;
+
         controller.Tview.setMessage("Select the preceding point to the pickup point");
     }
 }

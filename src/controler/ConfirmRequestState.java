@@ -26,6 +26,11 @@ public class ConfirmRequestState implements State {
             controller.getListOfCommand().add(addRequestCommand);
             controller.setCurrentState(controller.initialState);
             controller.Tview.setMessage("Request added");
+            controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
+            controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
+            controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
+            controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
+
             controller.Gview.disableSelection();
         }
     }
@@ -33,6 +38,8 @@ public class ConfirmRequestState implements State {
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.addDeliveryState.reverseAction(controller);
+        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
+        controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
         controller.setCurrentState(controller.addDeliveryState);
     }
 
@@ -43,7 +50,6 @@ public class ConfirmRequestState implements State {
 
 
     protected void entryAction(Request r, Controller controller) {
-        controller.Gview.disableSelection();
         request = new Request(r);
         PickupPrecedingPoint = new Intersection(controller.addDeliveryState.PickupPrecedingPoint);
         DeliveryPrecedingPoint = new Intersection(controller.addDeliveryState.DeliveryPrecedingPoint);
@@ -52,6 +58,12 @@ public class ConfirmRequestState implements State {
 
     protected void reverseAction(Controller controller) {
         controller.Gview.disableSelection();
+        controller.Gview.drawMouseSelection(DeliveryPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Gview.drawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
         controller.Tview.setMessage("Confirm adding the request ?");
     }
+
+
 }

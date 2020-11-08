@@ -2,6 +2,8 @@ package controler;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import model.Intersection;
 import model.Map;
@@ -14,6 +16,8 @@ import java.io.File;
  */
 public class InitialState implements State {
 
+    long CurrentId;
+
     Request request = new Request();
 
     /**
@@ -24,13 +28,26 @@ public class InitialState implements State {
 
     @Override
     public void addRequest(Controller controller) {
-        controller.addPickupState.entryAction(controller, request);
-        controller.setCurrentState(controller.addPickupState);
-
+        if(!controller.map.getListRequests().isEmpty()) {
+            controller.addPickupState.entryAction(controller, request);
+            controller.setCurrentState(controller.addPickupState);
+        }
     }
 
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
+
+        //Unselect preceding point
+        controller.Gview.undrawMouseSelection(CurrentId);
+        controller.Gview.undrawMouseSelection(CurrentId);
+
+        //Select preceding point
+        controller.Gview.drawMouseSelection(i.getId());
+        controller.Gview.drawMouseSelection(i.getId());
+
+        CurrentId = i.getId();
+
+        //Diplay in textual view if the point is a request
         if (controller.map.getRequestByIntersectionId(i.getId()) != null)
             controller.Tview.selectRequest(i.getId());
     }
@@ -59,6 +76,8 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
+
+        controller.Tview.setMessage("Please load a request list");
     }
 
     @Override
@@ -70,6 +89,8 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        controller.Gview.enableSelection();
+        entryAction(controller);
     }
 
     public void entryAction(Controller controller) {
