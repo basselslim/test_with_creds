@@ -18,7 +18,7 @@ import model.Map;
 import static java.lang.String.valueOf;
 
 /**
- * Textual view
+ * Textual view.
  *
  * @author T-REXANOME
  */

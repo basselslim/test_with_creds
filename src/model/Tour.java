@@ -22,7 +22,7 @@ public class Tour extends Observable {
     protected HashMap<Long, ArrayList<Intersection>> listRequestsIntersection;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Tour() {
     }

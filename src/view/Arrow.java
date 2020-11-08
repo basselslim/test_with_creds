@@ -6,7 +6,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 /**
- * Arrow
+ * Arrow.
  *
  * @author T-REXANOME
  */

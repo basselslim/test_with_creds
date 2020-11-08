@@ -245,7 +245,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Refresh map.
      */
     public void refreshMap() {
         m_overlay.getChildren().clear();
@@ -257,7 +257,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Disable selection.
      */
     public void disableSelection() {
         isMapClickable = false;
