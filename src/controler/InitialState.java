@@ -40,6 +40,7 @@ public class InitialState implements State {
         CurrentIdList.clear();
 
         if(!controller.map.getListRequests().isEmpty()) {
+            controller.disableButtons(true);
             controller.addPickupState.entryAction(controller, request);
             controller.setCurrentState(controller.addPickupState);
         }
@@ -118,14 +119,14 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
         controller.Gview.enableSelection();
-        entryAction(controller);
     }
 
 
     public void entryAction(Controller controller) {
+        controller.disableButtons(false);
         CurrentIdList.clear();
-        controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
     }
 
 

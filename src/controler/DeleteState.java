@@ -20,15 +20,26 @@ public class DeleteState implements State {
 
     @Override
     public void confirmAction(Controller controller, Map map) {
-
-        ReverseCommand deleteRequestCommand = new ReverseCommand(new AddCommand(map, request,map.findPrecedingRequestPoint(request.getPickUpPoint()).getId(),map.findPrecedingRequestPoint(request.getDeliveryPoint()).getId()));
+        Intersection precedingPickup = map.findPrecedingRequestPoint(request.getPickUpPoint());
+        Intersection precedingDelivery = map.findPrecedingRequestPoint(request.getDeliveryPoint());
+        long precedingPickupId = 0;
+        long precedingDeliveryId = 0;
+        if(precedingPickup!=null){
+            precedingPickupId = precedingPickup.getId();
+            precedingDeliveryId = precedingDelivery.getId();
+        }
+        ReverseCommand deleteRequestCommand = new ReverseCommand(new AddCommand(map,request,precedingPickupId,precedingDeliveryId));
         controller.getListOfCommand().add(deleteRequestCommand);
+
         controller.initialState.entryAction(controller);
         controller.confirmAction.setVisible(false);
+        controller.disableButtons(false);
+        controller.Tview.setMessage("Request deleted");
         controller.setCurrentState(controller.initialState);
     }
 
     public void entryAction(Controller controller, Request request) {
+        controller.disableButtons(true);
         controller.confirmAction.setVisible(true);
         this.request = request;
         controller.Tview.setMessage("Confirm deleting the selected Request ?");

@@ -31,14 +31,6 @@ public class Controller {
     protected Map map;
     protected Rectangle2D screenBounds;
 
-    public GraphicalView getGview() {
-        return Gview;
-    }
-
-    public TextualView getTview() {
-        return Tview;
-    }
-
     protected GraphicalView Gview;
     protected TextualView Tview;
 
@@ -54,6 +46,14 @@ public class Controller {
     private Label TextTour;
     @FXML
     protected Button confirmAction;
+    @FXML
+    protected Button LoadMap;
+    @FXML
+    protected Button LoadRequests;
+    @FXML
+    protected Button ComputeTour;
+    @FXML
+    protected Button ExportTour;
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
@@ -84,6 +84,13 @@ public class Controller {
 
     protected void setCurrentState(State newState) {
         currentState = newState;
+    }
+
+    protected void disableButtons(Boolean bool){
+        LoadMap.setDisable(bool);
+        LoadRequests.setDisable(bool);
+        ComputeTour.setDisable(bool);
+        ExportTour.setDisable(bool);
     }
 
     //Public Methods
@@ -119,7 +126,7 @@ public class Controller {
         map.addObserver(Gview);
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);
-        btn_load_requests.setDisable(false);
+        LoadRequests.setDisable(false);
     }
 
     public void Zoom(ActionEvent event) { Gview.zoom(); }

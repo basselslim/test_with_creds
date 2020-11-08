@@ -235,12 +235,12 @@ public class GraphicalView implements observer.Observer {
         Rectangle rectangle = rectangles.get(NodeId);
         if (circle != null) {
             //circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            //circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
+            circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
             circle.setStroke(Color.RED);
         }
         if (rectangle != null) {
             //rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            //rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
+            rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
             rectangle.setStroke(Color.RED);
         }
 
@@ -251,12 +251,12 @@ public class GraphicalView implements observer.Observer {
         Rectangle rectangle = rectangles.get(NodeId);
         if (circle != null) {
             //circle.setFill(Color.BLACK);
-            //circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
+            circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
             circle.setStroke(Color.BLACK);
         }
         if (rectangle != null) {
             //rectangle.setFill(Color.BLACK);
-            //rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
+            rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
             rectangle.setStroke(Color.BLACK);
         }
     }
