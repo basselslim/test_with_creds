@@ -7,13 +7,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import model.Intersection;
 import model.Map;
+import model.Path;
 import model.Request;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -33,11 +31,8 @@ public class InitialState implements State {
 
     @Override
     public void addRequest(Controller controller) {
-        //Unselect preceding point
-        for (Long id:CurrentIdList) {
-            controller.Gview.undrawMouseSelection(id);
-        }
-        CurrentIdList.clear();
+
+        unSelectPoints(controller);
 
         if(!controller.map.getListRequests().isEmpty()) {
             controller.disableButtons(true);
@@ -58,12 +53,7 @@ public class InitialState implements State {
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
-        //Unselect preceding point
-        for (Long id:CurrentIdList) {
-            controller.Gview.undrawMouseSelection(id);
-        }
-        CurrentIdList.clear();
-
+        unSelectPoints(controller);
 
         Request request = controller.map.getRequestByIntersectionId(i.getId());
         if (request != null) {
@@ -122,6 +112,27 @@ public class InitialState implements State {
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
         controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
         controller.Gview.enableSelection();
+    }
+
+    @Override
+    public void computeTour(Controller controller, Map map){
+        unSelectPoints(controller);
+
+        Algorithm algo = new Algorithm(map);
+        HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
+        algo.computeOptimalTour(mapSmallestPaths);
+        controller.addRequest.setDisable(false);
+        controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+    }
+
+    /**
+     * Unselects all points
+     */
+    private void unSelectPoints(Controller controller){
+        for (Long id:CurrentIdList) {
+            controller.Gview.undrawMouseSelection(id);
+        }
+        CurrentIdList.clear();
     }
 
 

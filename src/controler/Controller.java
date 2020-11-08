@@ -54,6 +54,10 @@ public class Controller {
     protected Button ComputeTour;
     @FXML
     protected Button ExportTour;
+    @FXML
+    protected Button addRequest;
+    @FXML
+    protected Button deleteRequest;
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
@@ -96,13 +100,11 @@ public class Controller {
     //Public Methods
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
+        deleteRequest.setDisable(false);
     }
 
     public void computeTour(ActionEvent event) {
-        Algorithm algo = new Algorithm(map);
-        HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
-        algo.computeOptimalTour(mapSmallestPaths);
-        Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        currentState.computeTour(this,map);
     }
 
     public void ExportRoadMap (ActionEvent event) {
@@ -127,6 +129,8 @@ public class Controller {
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);
         LoadRequests.setDisable(false);
+        addRequest.setDisable(true);
+        deleteRequest.setDisable(true);
     }
 
     public void Zoom(ActionEvent event) { Gview.zoom(); }

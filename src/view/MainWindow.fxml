@@ -37,8 +37,8 @@
        <VBox>
            <AnchorPane fx:id="myPane" maxHeight="800.0" minHeight="200.0" minWidth="300.0" VBox.vgrow="ALWAYS" />
            <HBox alignment="CENTER" maxHeight="30.0">
-               <Button fx:id="addRequest" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addRequest" prefHeight="30.0" prefWidth="120.0" text="Add request" HBox.hgrow="ALWAYS" />
-               <Button fx:id="deleteRequest" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="30.0" prefWidth="120.0" text="Delete Request" HBox.hgrow="ALWAYS" />
+               <Button fx:id="addRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addRequest" prefHeight="30.0" prefWidth="120.0" text="Add request" HBox.hgrow="ALWAYS" />
+               <Button fx:id="deleteRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="30.0" prefWidth="120.0" text="Delete Request" HBox.hgrow="ALWAYS" />
            </HBox>
        </VBox>
      </items>

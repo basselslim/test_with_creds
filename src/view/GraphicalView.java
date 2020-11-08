@@ -35,6 +35,7 @@ public class GraphicalView implements observer.Observer {
     double ReqpointSize;
     double StrokeSize;
     Boolean isMapClickable = false;
+    Boolean setScreenSize = false;
 
     public GraphicalView(Map map, Pane overlay, MouseGestures mg, Rectangle2D screenBounds) {
         m_map = map;
@@ -45,8 +46,6 @@ public class GraphicalView implements observer.Observer {
         m_overlay = overlay;
         screenX = (int)((screenBounds.getMaxX()-100)*0.595);
         screenY = (int)((screenBounds.getMaxY()-100)*0.762);
-        m_overlay.setPrefWidth(screenX);
-        m_overlay.setPrefHeight(screenY);
     }
 
     public static HashMap<Long,Circle> circles = new HashMap<Long,Circle>();
@@ -129,7 +128,11 @@ public class GraphicalView implements observer.Observer {
     }
 
     public void drawMap() {
-
+        if (!setScreenSize) {
+            m_overlay.setPrefWidth(screenX);
+            m_overlay.setPrefHeight(screenY);
+            setScreenSize = true;
+        }
         updateCoeff();
 
         //Drawing all map intersections

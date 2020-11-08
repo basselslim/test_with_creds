@@ -28,4 +28,6 @@ public interface State {
     public default void LoadMap(ActionEvent event, Controller controller, Map map){};
 
     public default void LoadRequests(ActionEvent event, Controller controller, Map map){};
+
+    public default void computeTour(Controller controller, Map map){};
 }
