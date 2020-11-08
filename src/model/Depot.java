@@ -11,13 +11,13 @@ public class Depot {
     protected String departureTime;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Depot() {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param id            id of the intersection
      * @param departureTime departure time (string)

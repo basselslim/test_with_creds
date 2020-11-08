@@ -3,26 +3,20 @@ package model;
 import java.util.*;
 
 /**
- * check for java beans for Observable
+ * Intersection for which a package must be picked up.
+ *
+ * @author T-REXANOME
  */
 public class Map extends observer.Observable {
 
-    /**
-     *
-     */
     protected List<Request> listRequests;
-
     protected HashMap<Long, Intersection> listIntersections;
-
     protected Tour deliveryTour;
-
     protected Depot depot;
 
-
     /**
-     * Default constructor
+     * Default constructor.
      */
-
     public Map() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
@@ -30,23 +24,27 @@ public class Map extends observer.Observable {
         deliveryTour = new Tour(this);
     }
 
-
+    /**
+     * Constructor.
+     *
+     * @param listIntersection
+     */
     public Map(HashMap<Long, Intersection> listIntersection) {
         this.listIntersections = listIntersection;
         listRequests = new ArrayList<>();
         depot = new Depot();
     }
 
+    /**
+     *
+     */
     public void display() {
-
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
             System.out.println(intersection);
-
             for (Segment segment : intersection.getListSegments()) {
                 System.out.println(segment);
             }
-
         }
 
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -56,20 +54,28 @@ public class Map extends observer.Observable {
         for (int i = 0; i < listRequests.size(); i++) {
             System.out.println(listRequests.get(i));
         }
-
         System.out.println(this.depot);
     }
 
+    /**
+     *
+     */
     public void clearMap() {
         listIntersections.clear();
         deliveryTour.getListPaths().clear();
     }
-    
 
+    /**
+     *
+     */
     public void clearRequests() {
         listRequests.clear();
     }
 
+    /**
+     *
+     * @return
+     */
     public double getMinLat() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -80,6 +86,10 @@ public class Map extends observer.Observable {
         return min;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getMaxLat() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -90,6 +100,10 @@ public class Map extends observer.Observable {
         return max;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getMinLong() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -100,6 +114,10 @@ public class Map extends observer.Observable {
         return min;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getMaxLong() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
@@ -110,6 +128,11 @@ public class Map extends observer.Observable {
         return max;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Intersection getTourStopById(long id) {
         Intersection res = null;
         for (int i = 0; i < listRequests.size(); i++) {
@@ -125,6 +148,11 @@ public class Map extends observer.Observable {
         return res;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Request getRequestByIntersectionId(long id) {
         Request res = null;
         for (int i = 0; i < listRequests.size(); i++) {
@@ -136,7 +164,7 @@ public class Map extends observer.Observable {
         return res;
     }
 
-    /**
+    /*
      * Getters - Setters
      */
 
@@ -150,8 +178,14 @@ public class Map extends observer.Observable {
         notifyObservers();
     }
 
-
     //INTERSECTIONS
+
+    /**
+     *
+     * @param newRequest
+     * @param precedingPickUpId
+     * @param precedingDeliveryId
+     */
     public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
         this.listRequests.add(newRequest);
         this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
@@ -159,14 +193,15 @@ public class Map extends observer.Observable {
 
     }
 
-
+    /**
+     *
+     * @param request
+     */
     public void removeRequest(Request request) {
         this.deliveryTour.removeRequestFromTour(request);
         this.listRequests.remove(request);
         this.notifyObservers();
     }
-
-
 
     //INTERSECTIONS
     public HashMap<Long, Intersection> getListIntersections() {

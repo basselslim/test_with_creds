@@ -10,13 +10,13 @@ public class PickUpPoint extends Intersection {
     protected int pickUpDuration;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public PickUpPoint() {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param intersection   intersection where the delivery point is
      * @param pickUpDuration estimated time for the deliverer to pick up the package
@@ -30,7 +30,7 @@ public class PickUpPoint extends Intersection {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param id             id of the intersection
      * @param latitude       x coordinates

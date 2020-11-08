@@ -21,13 +21,13 @@ public class Intersection extends observer.Observable implements Comparable<Inte
     protected String type;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Intersection() {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param id        id of the intersection
      * @param latitude  x coordinates
@@ -41,7 +41,7 @@ public class Intersection extends observer.Observable implements Comparable<Inte
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param id           id of the intersection
      * @param latitude     x coordinates
@@ -56,7 +56,7 @@ public class Intersection extends observer.Observable implements Comparable<Inte
     }
 
     /**
-     * Constructor used in the algorithm of smallest paths
+     * Constructor used in the algorithm of smallest paths.
      *
      * @param current intersection
      */
@@ -72,7 +72,7 @@ public class Intersection extends observer.Observable implements Comparable<Inte
     }
 
     /**
-     * Constructor used in the algorithm of smallest paths
+     * Constructor used in the algorithm of smallest paths.
      *
      * @param current        intersection
      * @param previous       intersection

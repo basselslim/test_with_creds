@@ -3,20 +3,32 @@ import model.*;
 import model.Map;
 import java.util.*;
 
+/**
+ * Algorithm that compute the optimal tour.
+ *
+ * @author T-REXANOME
+ */
 public class Algorithm {
 
     protected Map map;
     protected List<Request> listRequests;
     protected final long timeZero;
 
+    /**
+     * Constructor.
+     *
+     * @param map
+     */
     public Algorithm(Map map) {
         this.map = map;
         this.listRequests = map.getListRequests();
         this.timeZero = System.currentTimeMillis();
     }
 
-    /*
-     * Compute smallest path
+    /**
+     * Compute smallest path.
+     *
+     * @return smallest path
      */
     public HashMap<Long, HashMap<Long,Path>> computeSmallestPaths() {
         System.out.println("Computing the smallest paths...");
@@ -56,8 +68,10 @@ public class Algorithm {
         return mapSmallestPaths;
     }
 
-    /*
-     * Compute optimal tour
+    /**
+     * Compute optimal tour.
+     *
+     * @param mapSmallestPaths optimal tour
      */
     public void computeOptimalTour(HashMap<Long, HashMap<Long,Path>> mapSmallestPaths) {
         System.out.println("Computing the optimal tour...");

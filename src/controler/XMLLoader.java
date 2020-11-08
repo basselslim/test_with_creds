@@ -37,7 +37,6 @@ public class XMLLoader {
         map.clearMap();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             File fileXML = new File(pathNameXMLFile);
@@ -88,7 +87,6 @@ public class XMLLoader {
                     }
                 }
             }
-
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -96,7 +94,6 @@ public class XMLLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         map.setListIntersections(listIntersection);
     }
 

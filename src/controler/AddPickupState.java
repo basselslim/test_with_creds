@@ -4,20 +4,35 @@ import model.*;
 import model.Map;
 
 /**
- *
+ * @author T-REXANOME
  */
 public class AddPickupState implements State {
 
     private Request request;
     private Intersection precedingPoint;
 
+    /**
+     * Default constructor.
+     */
     public AddPickupState() {
     }
 
+    /**
+     *
+     * @return
+     */
     public Intersection getpreceding(){
         return precedingPoint;
     }
 
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map
+     * @param listOfCommand
+     * @param i
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
@@ -38,6 +53,11 @@ public class AddPickupState implements State {
         }
     }
 
+    /**
+     *
+     * @param duration duration to add
+     * @param controller
+     */
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getPickUpPoint().setPickUpDuration(duration);
@@ -47,6 +67,11 @@ public class AddPickupState implements State {
         controller.setCurrentState(controller.addDeliveryState);
     }
 
+    /**
+     *
+     * @param listOfCommand
+     * @param controller
+     */
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.initialState.entryAction(controller);
@@ -54,16 +79,25 @@ public class AddPickupState implements State {
 
     }
 
+    /**
+     *
+     * @param listOfCommand
+     * @param controller
+     */
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
         Request nextReq = controller.addDeliveryState.request;
         if (controller.addDeliveryState.PickupPrecedingPoint != null && nextReq.getPickUpPoint() != null && nextReq.getPickUpPoint().getPickUpDuration() != 0){
             controller.addDeliveryState.reverseAction(controller);
             controller.setCurrentState(controller.addDeliveryState);
+        }
     }
 
-    }
-
+    /**
+     *
+     * @param controller
+     * @param r
+     */
     protected void entryAction(Controller controller, Request r) {
         request = new Request(r);
         controller.Gview.enableSelection();
@@ -72,6 +106,10 @@ public class AddPickupState implements State {
 
     }
 
+    /**
+     *
+     * @param controller
+     */
     protected void reverseAction(Controller controller) {
         controller.Gview.enableSelection();
         precedingPoint = null;

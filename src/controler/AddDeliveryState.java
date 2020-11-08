@@ -5,6 +5,7 @@ import model.Map;
 
 /**
  *
+ * @author T-REXANOME
  */
 public class AddDeliveryState implements State {
 
@@ -13,16 +14,27 @@ public class AddDeliveryState implements State {
     protected Intersection DeliveryPrecedingPoint;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
-
     public AddDeliveryState() {
     }
 
+    /**
+     *
+     * @return
+     */
     public Intersection getpreceding() {
         return DeliveryPrecedingPoint;
     }
 
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map
+     * @param listOfCommand
+     * @param i
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 
@@ -43,6 +55,11 @@ public class AddDeliveryState implements State {
         }
     }
 
+    /**
+     *
+     * @param duration duration to add
+     * @param controller
+     */
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getDeliveryPoint().setDeliveryDuration(duration);
@@ -53,12 +70,24 @@ public class AddDeliveryState implements State {
 
     }
 
+    /**
+     * Undo.
+     *
+     * @param listOfCommand
+     * @param controller
+     */
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.addPickupState.reverseAction(controller);
         controller.setCurrentState(controller.addPickupState);
     }
 
+    /**
+     * Redo.
+     *
+     * @param listOfCommand
+     * @param controller
+     */
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
         Request nextReq = controller.confirmRequestState.request;
@@ -68,6 +97,12 @@ public class AddDeliveryState implements State {
         }
     }
 
+    /**
+     *
+     * @param controller
+     * @param r request
+     * @param pickuppredecingPoint
+     */
     protected void entryAction(Controller controller, Request r, Intersection pickuppredecingPoint) {
         request = new Request(r);
         PickupPrecedingPoint = new Intersection(pickuppredecingPoint);
@@ -76,10 +111,13 @@ public class AddDeliveryState implements State {
         controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
 
+    /**
+     *
+     * @param controller
+     */
     protected void reverseAction(Controller controller) {
         controller.Gview.enableSelection();
         DeliveryPrecedingPoint = null;
         controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
-
 }

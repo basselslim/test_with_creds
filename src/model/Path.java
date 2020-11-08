@@ -15,13 +15,13 @@ public class Path {
     protected long idArrival;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Path() {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param listSegments list of segments of the path
      * @param departure    id of the departure intersection

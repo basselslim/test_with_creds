@@ -17,7 +17,6 @@ import java.util.*;
  */
 public class Controller {
 
-
     protected ListOfCommand listOfCommand;
     protected State currentState;
     protected Map map;
@@ -40,7 +39,6 @@ public class Controller {
     public ListOfCommand getListOfCommand() {
         return listOfCommand;
     }
-
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();

@@ -10,13 +10,13 @@ public class DeliveryPoint extends Intersection {
     public int deliveryDuration;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public DeliveryPoint() {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param intersection     intersection where the delivery point is
      * @param deliveryDuration estimated time for the deliverer to deliver the package
@@ -30,7 +30,7 @@ public class DeliveryPoint extends Intersection {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param id               id of the intersection
      * @param latitude         x coordinates

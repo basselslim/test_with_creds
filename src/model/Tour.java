@@ -1,41 +1,52 @@
 package model;
 
-
 import controler.ComputeSmallestPath;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.*;
 
 /**
+ * List of the steps to be carried out by the deliverer in an outing, and the path to be covered between each of these
+ * steps.
  *
+ * @author T-REXANOME
  */
 public class Tour extends Observable {
-    /**
-     *
-     */
+
     protected int tourLength;
     protected List<Path> listPaths;
     protected List<int[]> listTimes;
     protected Map map;
     protected String roadMapFilePath;
-    protected HashMap<Long,ArrayList<Intersection>> listRequestsIntersection;
+    protected HashMap<Long, ArrayList<Intersection>> listRequestsIntersection;
+
     /**
      * Default constructor
-     *
      */
-    public Tour(){
+    public Tour() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param map
+     */
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
         this.listTimes = new LinkedList<int[]>();
         this.tourLength = 0;
         this.map = map;
-        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
+        this.listRequestsIntersection = new HashMap<Long, ArrayList<Intersection>>();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param map
+     * @param listPaths
+     */
     public Tour(Map map, List<Path> listPaths) {
         this.listPaths = listPaths;
         this.listTimes = new LinkedList<int[]>();
@@ -44,12 +55,17 @@ public class Tour extends Observable {
         for (Path p : listPaths) {
             this.tourLength += p.getPathLength();
         }
-        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
+        this.listRequestsIntersection = new HashMap<Long, ArrayList<Intersection>>();
         populateListTimes();
     }
+
     /**
-     * addRequestToTour
-     **/
+     * Add a request to the tour.
+     *
+     * @param newRequest          request to add
+     * @param precedingPickUpId   id of the preceding pick up point
+     * @param precedingDeliveryId id of the preceding delivery point
+     */
     public void addRequestToTour(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToInsertPickUp = 0;
@@ -91,8 +107,10 @@ public class Tour extends Observable {
     }
 
     /**
-     * removeRequestFromTour
-     **/
+     * Remove a request from the tour.
+     *
+     * @param request request to remove
+     */
     public void removeRequestFromTour(Request request) {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToDeletePickUp = 0;
@@ -104,11 +122,11 @@ public class Tour extends Observable {
                 departure = map.getListIntersections().get(path.getIdDeparture());
             }
             if (path.getIdDeparture() == request.getPickUpPoint().getId()) {
-                List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,map.getListIntersections().get(path.getIdArrival()));
+                List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure, map.getListIntersections().get(path.getIdArrival()));
                 Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure.getId(), path.getIdArrival());
                 listPaths.remove(pathIndexToDeletePickUp);
-                listPaths.remove(pathIndexToDeletePickUp-1);
-                listPaths.add(pathIndexToDeletePickUp-1,pathWithoutPickUpPoint);
+                listPaths.remove(pathIndexToDeletePickUp - 1);
+                listPaths.add(pathIndexToDeletePickUp - 1, pathWithoutPickUpPoint);
                 break;
             }
             pathIndexToDeletePickUp++;
@@ -119,20 +137,21 @@ public class Tour extends Observable {
                 departure = map.getListIntersections().get(path.getIdDeparture());
             }
             if (path.getIdDeparture() == request.getDeliveryPoint().getId()) {
-                List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,map.getListIntersections().get(path.getIdArrival()));
+                List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure, map.getListIntersections().get(path.getIdArrival()));
                 Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure.getId(), path.getIdArrival());
                 listPaths.remove(pathIndexToDeleteDelivery);
-                listPaths.remove(pathIndexToDeleteDelivery-1);
-                listPaths.add(pathIndexToDeleteDelivery-1,pathWithoutDeliveryPoint);
+                listPaths.remove(pathIndexToDeleteDelivery - 1);
+                listPaths.add(pathIndexToDeleteDelivery - 1, pathWithoutDeliveryPoint);
                 break;
             }
             pathIndexToDeleteDelivery++;
         }
     }
 
-    /**
+    /*
      * Getters - Setters
      */
+
     public int getTourLength() {
         return tourLength;
     }
@@ -145,7 +164,10 @@ public class Tour extends Observable {
         return listTimes;
     }
 
-    public void groupRequestIntersections(){
+    /**
+     *
+     */
+    public void groupRequestIntersections() {
         Intersection point;
 
         point = map.getListIntersections().get(map.getDepot().getId());
@@ -153,40 +175,43 @@ public class Tour extends Observable {
 
             ArrayList intermediateList = this.listRequestsIntersection.get(map.getDepot().getId());
             if (intermediateList == null) {
-                intermediateList= new ArrayList<Intersection>();
+                intermediateList = new ArrayList<Intersection>();
             }
             intermediateList.add(point);
-            this.listRequestsIntersection.put(map.getDepot().getId(),intermediateList);
+            this.listRequestsIntersection.put(map.getDepot().getId(), intermediateList);
         }
 
-        for (Request r: this.map.getListRequests()) {
+        for (Request r : this.map.getListRequests()) {
             point = r.getDeliveryPoint();
             if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getDeliveryPoint().getId());
                 if (intermediateList == null) {
-                    intermediateList= new ArrayList<Intersection>();
+                    intermediateList = new ArrayList<Intersection>();
                 }
                 intermediateList.add(point);
-                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(),intermediateList);
+                this.listRequestsIntersection.put(r.getDeliveryPoint().getId(), intermediateList);
             }
             point = r.getPickUpPoint();
             if (point != null) {
                 ArrayList intermediateList = this.listRequestsIntersection.get(r.getPickUpPoint().getId());
                 if (intermediateList == null) {
-                    intermediateList= new ArrayList<Intersection>();
+                    intermediateList = new ArrayList<Intersection>();
                 }
                 intermediateList.add(point);
-                this.listRequestsIntersection.put(r.getPickUpPoint().getId(),intermediateList);
+                this.listRequestsIntersection.put(r.getPickUpPoint().getId(), intermediateList);
             }
         }
     }
 
-    public String writeTextForInterestPoint(long id)
-    {
+    /**
+     * @param id
+     * @return
+     */
+    public String writeTextForInterestPoint(long id) {
         String text = "";
         int nbPu = 0;
-        int nbDe=0;
-        int puTime=0;
+        int nbDe = 0;
+        int puTime = 0;
         int deTime = 0;
         for (Intersection i : this.listRequestsIntersection.get(id)) {
             Intersection interestPoint = i;
@@ -198,40 +223,49 @@ public class Tour extends Observable {
                 deTime += ((DeliveryPoint) interestPoint).getDeliveryDuration();
             }
         }
-        if (nbPu>0) {
-            text+= "   - You have to pick up "+nbPu+" packages at this intersection. This may take "+ puTime +" seconds\n\n";
+        if (nbPu > 0) {
+            text += "   - You have to pick up " + nbPu + " packages at this intersection. This may take " + puTime + " seconds\n\n";
         }
-        if (nbDe>0) {
-            text+= "   - You have to deliver "+nbDe+" packages at this intersection. This may take "+ deTime +" seconds\n\n";
+        if (nbDe > 0) {
+            text += "   - You have to deliver " + nbDe + " packages at this intersection. This may take " + deTime + " seconds\n\n";
         }
         return text;
     }
 
+    /**
+     * Generate the text for the roadmap.
+     *
+     * @return roadmap text
+     */
     public String generateTextForRoadMap() {
 
         this.groupRequestIntersections();
 
         String totalText = "Roadmap \n\n";
         int i = 0;
-        totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
-        for(Path p: listPaths) {
-            String PathTitle = "Step n°" + (i+1) + ":  Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
-            totalText+=PathTitle;
+        totalText += "   - Departure from depot at " + this.timeToString(this.listTimes.get(0)[0]) + "\n\n";
+        for (Path p : listPaths) {
+            String PathTitle = "Step n°" + (i + 1) + ":  Arrive at " + this.timeToString(this.listTimes.get(i)[1]) + "\n\n";
+            totalText += PathTitle;
             int j = 0;
-            for(Segment s: p.getListSegments()) {
+            for (Segment s : p.getListSegments()) {
                 String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m.\n\n";
-                totalText+=SegmentDescription;
+                totalText += SegmentDescription;
                 j++;
             }
-            totalText+=this.writeTextForInterestPoint(p.idArrival);
+            totalText += this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
-        totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
+        totalText += this.writeTextForInterestPoint(listPaths.get(i - 1).idArrival);
         return totalText;
     }
 
-    public void generateRoadMap(String path)
-    {
+    /**
+     * Generate the roadmap.
+     *
+     * @param path text describing the path
+     */
+    public void generateRoadMap(String path) {
         try {
             File roadMap = new File(path);
             if (roadMap.createNewFile()) {
@@ -256,6 +290,11 @@ public class Tour extends Observable {
         }
     }
 
+    /**
+     * Add a path to the tour.
+     *
+     * @param newPath path to add
+     */
     public void addPath(Path newPath) {
         listPaths.add(newPath);
         tourLength += newPath.pathLength;
@@ -264,6 +303,10 @@ public class Tour extends Observable {
         }
     }
 
+    /**
+     * @param s string to convert
+     * @return time
+     */
     public int stringToTime(String s) {
         int indexEndHours = 0;
         while (s.charAt(indexEndHours) != ':') {
@@ -279,6 +322,10 @@ public class Tour extends Observable {
         return time;
     }
 
+    /**
+     * @param t time to convert
+     * @return string
+     */
     public String timeToString(int t) {
         int hours = t / 3600;
         t -= hours * 3600;
@@ -295,6 +342,9 @@ public class Tour extends Observable {
         return res;
     }
 
+    /**
+     *
+     */
     public void populateListTimes() {
         listTimes.clear();
         final double VELOCITY = 2.78;
@@ -325,6 +375,10 @@ public class Tour extends Observable {
         }
     }
 
+    /**
+     * @param time time to check
+     * @return time
+     */
     public int checkTimeUnderOneDay(int time) {
         while (time >= 86400) {
             time -= 86400;

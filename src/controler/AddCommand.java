@@ -3,14 +3,20 @@ package controler;
 import model.Map;
 import model.Request;
 
+/**
+ * Create the command which adds the request r to the plan m.
+ *
+ * @author T-REXANOME
+ */
 public class AddCommand implements Command {
 
     private Map map;
     private Request request;
     private Long precedingPickUpId;
     private Long precedingDeliveryId;
+
     /**
-     * Create the command which adds the request r to the plan m
+     * Constructor.
      *
      * @param m the map to which f is added
      * @param r the request added to m
@@ -22,11 +28,17 @@ public class AddCommand implements Command {
         this.precedingDeliveryId=deliveryId;
     }
 
+    /**
+     * Do.
+     */
     @Override
     public void doCommand() {
         map.addRequest(request,precedingPickUpId,precedingDeliveryId);
     }
 
+    /**
+     * Undo.
+     */
     @Override
     public void undoCommand() {
         map.removeRequest(request);
