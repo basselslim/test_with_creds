@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.Time;
 import java.util.*;
 
 import javafx.beans.binding.Bindings;
@@ -23,6 +22,8 @@ public class TextualView implements observer.Observer {
 
     Map map;
     Pane pane;
+    TextArea TextArea;
+    Label TourInfos;
     TableView requestsTable;
     TableColumn<Intersection, Long> intersectionColumn;
     TableColumn<Intersection, String> durationColumn;
@@ -30,9 +31,11 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, Integer> requestIndexColumn;
     TableColumn<Intersection, String> arrivalTimeColumn;
 
-    public TextualView(Map map, Pane pane) {
+    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos) {
         this.map = map;
         this.pane = pane;
+        this.TextArea = textArea;
+        this.TourInfos = tourInfos;
         createRequestList();
     }
 
@@ -105,7 +108,7 @@ public class TextualView implements observer.Observer {
         requestIndexColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Intersection, Integer> p) {
-                Request req = map.getRequestByTourStopId(p.getValue().getId());
+                Request req = map.getRequestByIntersectionId(p.getValue().getId());
                 int index = map.getListRequests().indexOf(req) + 1;
                 return new ReadOnlyObjectWrapper(index);
             }
@@ -199,6 +202,12 @@ public class TextualView implements observer.Observer {
         }
         return false;
     }
+
+    public void setMessage(String message){
+        TextArea.setText(message);
+    }
+
+    public void setTourInfo(String info){TourInfos.setText(info);}
 
     @Override
     public void update(observer.Observable observed, Object arg) {

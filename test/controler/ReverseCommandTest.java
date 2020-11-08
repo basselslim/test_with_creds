@@ -12,11 +12,14 @@ class ReverseCommandTest {
     Command command;
     Map m;
     Request r;
+    Long idPickUp;
+    Long idDelivery;
+
     @BeforeEach
     void setUp() {
         m = new Map();
         r = new Request();
-        command = new AddCommand(m,r);
+        command = new AddCommand(m,r,idPickUp,idDelivery);
         command.doCommand();
         reverseCommand = new ReverseCommand(command);
     }

@@ -19,6 +19,12 @@ public class Request extends Observable {
     public Request() {
     }
 
+    public Request(Request r) {
+        this.order = r.order;
+        this.pickUpPoint = r.getPickUpPoint();
+        this.deliveryPoint = r.getDeliveryPoint();
+    }
+
     public Request(PickUpPoint pickUpPoint, DeliveryPoint deliveryPoint) {
         this.pickUpPoint = pickUpPoint;
         this.deliveryPoint = deliveryPoint;

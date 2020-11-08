@@ -35,6 +35,7 @@ public class ListOfCommand {
         }
     }
 
+
     /**
      * Permanently remove the last added command (this command cannot be reinserted again with redo)
      */
