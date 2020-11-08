@@ -15,7 +15,8 @@ import view.Window;
 public class DeleteState implements State {
 
     /**
-     *
+     * Left click.
+     
      * @param controller
      * @param map
      * @param listOfCommands
@@ -26,6 +27,11 @@ public class DeleteState implements State {
        /* Shape shape = plan.search(p);
         if (shape != null)
             listOfCommands.add(new ReverseCommand(new AddCommand(plan, shape))); */
+    }
+
+    public void entryAction(Controller controller, Request request) {
+        this.request = request;
+        controller.Tview.setMessage("Confirm deleting the selected Request ?");
     }
 
 }

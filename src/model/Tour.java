@@ -228,11 +228,11 @@ public class Tour extends Observable {
                 deTime += ((DeliveryPoint) interestPoint).getDeliveryDuration();
             }
         }
-        if (nbPu > 0) {
-            text += "   - You have to pick up " + nbPu + " packages at this intersection. This may take " + puTime + " seconds\n\n";
+        if (nbPu>0) {
+            text+= "   - You have to pick up "+nbPu+" package(s) at this intersection. This may take "+ puTime +" seconds\n\n";
         }
-        if (nbDe > 0) {
-            text += "   - You have to deliver " + nbDe + " packages at this intersection. This may take " + deTime + " seconds\n\n";
+        if (nbDe>0) {
+            text+= "   - You have to deliver "+nbDe+" package(s) at this intersection. This may take "+ deTime +" seconds\n\n";
         }
         return text;
     }
@@ -247,15 +247,30 @@ public class Tour extends Observable {
         this.groupRequestIntersections();
 
         String totalText = "Roadmap \n\n";
+
+        String newStreetName = "";
+        String actualStreetName = "";
+        int lengthTotalOnStreet = 0;
+        int nbIntersections =  0;
+
         int i = 0;
         totalText += "   - Departure from depot at " + this.timeToString(this.listTimes.get(0)[0]) + "\n\n";
         for (Path p : listPaths) {
             String PathTitle = "Step n°" + (i + 1) + ":  Arrive at " + this.timeToString(this.listTimes.get(i)[1]) + "\n\n";
             totalText += PathTitle;
             int j = 0;
-            for (Segment s : p.getListSegments()) {
-                String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m.\n\n";
-                totalText += SegmentDescription;
+            for(Segment s: p.getListSegments()) {
+                newStreetName = s.getStreetName();
+                if ((!(newStreetName.equals(actualStreetName)))&&(!(actualStreetName.equals("")))){
+                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersections\n\n";
+                    nbIntersections =0;
+                    lengthTotalOnStreet=0;
+                    totalText+=SegmentDescription;
+                }
+                actualStreetName=newStreetName;
+                lengthTotalOnStreet += (int)s.getLength();
+                nbIntersections+=1;
+
                 j++;
             }
             totalText += this.writeTextForInterestPoint(p.idArrival);

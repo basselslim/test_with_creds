@@ -9,9 +9,9 @@ import model.Request;
  */
 public class ConfirmRequestState implements State {
 
-    Request request;
-    Intersection PickupPrecedingPoint;
-    Intersection DeliveryPrecedingPoint;
+    protected Request request;
+    protected Intersection PickupPrecedingPoint;
+    protected Intersection DeliveryPrecedingPoint;
 
     /**
      * Default Constructor.

@@ -8,6 +8,7 @@ package model;
 public class PickUpPoint extends Intersection {
 
     protected int pickUpDuration;
+    protected Request request;
 
     /**
      * Default constructor.
@@ -51,7 +52,11 @@ public class PickUpPoint extends Intersection {
         return pickUpDuration;
     }
 
+    public Request getRequest() { return request; }
+
     public void setPickUpDuration(int pickUpDuration) {
         this.pickUpDuration = pickUpDuration;
     }
+
+    public void setRequest(Request request) { this.request = request; }
 }

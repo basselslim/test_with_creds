@@ -38,6 +38,8 @@ public class Request extends Observable {
     public Request(PickUpPoint pickUpPoint, DeliveryPoint deliveryPoint) {
         this.pickUpPoint = pickUpPoint;
         this.deliveryPoint = deliveryPoint;
+        this.pickUpPoint.setRequest(this);
+        this.deliveryPoint.setRequest(this);
     }
 
     /*
