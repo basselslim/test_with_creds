@@ -37,7 +37,12 @@ public class InitialState implements State {
             controller.setCurrentState(controller.addPickupState);
         }
     }
-    
+
+    /**
+     * Delete a request.
+     *
+     * @param controller
+     */
     public void deleteRequest(Controller controller) {
         Request request = controller.map.getRequestByIntersectionId(CurrentId);
         if( request != null) {
