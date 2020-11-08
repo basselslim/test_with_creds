@@ -5,16 +5,17 @@ import java.util.*;
 /**
  * check for java beans for Observable
  */
-public class Map extends Observable {
+public class Map extends observer.Observable {
+
     /**
      *
      */
     protected List<Request> listRequests;
 
-    protected HashMap<Long,Intersection> listIntersections;
+    protected HashMap<Long, Intersection> listIntersections;
 
-    protected HashMap<Long, List<Path>> mapSmallestPaths;
-    
+    protected Tour deliveryTour;
+
     protected Depot depot;
 
 
@@ -22,29 +23,27 @@ public class Map extends Observable {
      * Default constructor
      */
 
-    public Map(){
-        listIntersections = new HashMap<Long,Intersection>();
+    public Map() {
+        listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
         depot= new Depot();
+        deliveryTour = new Tour(this);
     }
 
 
-    public Map(HashMap<Long,Intersection> listIntersection) {
+    public Map(HashMap<Long, Intersection> listIntersection) {
         this.listIntersections = listIntersection;
         listRequests = new ArrayList<>();
-        depot= new Depot();
+        depot = new Depot();
     }
 
+    public void display() {
 
-
-
-    public void display(){
-
-        for (HashMap.Entry mapEntry : listIntersections.entrySet()) {
-            Intersection intersection = (Intersection) mapEntry.getValue();
+        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
+            Intersection intersection = (Intersection) mapentry.getValue();
             System.out.println(intersection);
 
-            for ( Segment segment : intersection.getListSegments()) {
+            for (Segment segment : intersection.getListSegments()) {
                 System.out.println(segment);
             }
 
@@ -54,22 +53,24 @@ public class Map extends Observable {
             System.out.println(mapentry.getValue());
         }
 
-        for ( int i=0; i<listRequests.size(); i++ ) {
+        for (int i = 0; i < listRequests.size(); i++) {
             System.out.println(listRequests.get(i));
         }
 
         System.out.println(this.depot);
     }
 
-    public void clearMap(){
+    public void clearMap() {
         listIntersections.clear();
+        deliveryTour.getListPaths().clear();
     }
+    
 
-    public void clearRequests(){
+    public void clearRequests() {
         listRequests.clear();
     }
 
-    public double findMinLat() {
+    public double getMinLat() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -79,7 +80,7 @@ public class Map extends Observable {
         return min;
     }
 
-    public double findMaxLat() {
+    public double getMaxLat() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -89,7 +90,7 @@ public class Map extends Observable {
         return max;
     }
 
-    public double findMinLong() {
+    public double getMinLong() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -99,7 +100,7 @@ public class Map extends Observable {
         return min;
     }
 
-    public double findMaxLong() {
+    public double getMaxLong() {
         double max = 0;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
@@ -109,42 +110,92 @@ public class Map extends Observable {
         return max;
     }
 
+    public Intersection getTourStopById(long id) {
+        Intersection res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id) {
+                res = listRequests.get(i).getPickUpPoint();
+                break;
+            }
+            if (listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i).getDeliveryPoint();
+                break;
+            }
+        }
+        return res;
+    }
+
+    public Request getRequestByIntersectionId(long id) {
+        Request res = null;
+        for (int i = 0; i < listRequests.size(); i++) {
+            if (listRequests.get(i).getPickUpPoint().getId() == id || listRequests.get(i).getDeliveryPoint().getId() == id) {
+                res = listRequests.get(i);
+                break;
+            }
+        }
+        return res;
+    }
+
     /**
      * Getters - Setters
      */
 
+    //REQUESTS
     public List<Request> getListRequests() {
         return listRequests;
     }
 
-    public void setListRequests(List<Request> listRequests) {
-        this.listRequests = listRequests;
+    public void setListRequest(List<Request> l) {
+        listRequests = l;
+        notifyObservers();
     }
 
 
-    public HashMap<Long,Intersection> getListIntersections() {
+    //INTERSECTIONS
+    public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
+        this.listRequests.add(newRequest);
+        this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+        notifyObservers();
+
+    }
+
+
+    public void removeRequest(Request request) {
+        this.deliveryTour.removeRequestFromTour(request);
+        this.listRequests.remove(request);
+        this.notifyObservers();
+    }
+
+
+
+    //INTERSECTIONS
+    public HashMap<Long, Intersection> getListIntersections() {
         return listIntersections;
     }
 
-    public void setListIntersections(HashMap<Long,Intersection>listIntersections) {
-
-        this.listIntersections = listIntersections;
+    public void setListIntersections(HashMap<Long, Intersection> l) {
+        listIntersections = l;
+        notifyObservers();
     }
 
+    //DEPOT
     public Depot getDepot() {
         return depot;
     }
 
     public void setDepot(Depot depot) {
         this.depot = depot;
+        notifyObservers();
     }
 
-    public HashMap<Long, List<Path>> getMapSmallestPaths() {
-        return mapSmallestPaths;
+    //TOUR
+    public Tour getTour() {
+        return deliveryTour;
     }
 
-    public void setMapSmallestPaths(HashMap<Long, List<Path>> mapSmallestPaths) {
-        this.mapSmallestPaths = mapSmallestPaths;
+    public void setDeliveryTour(Tour newTour) {
+        this.deliveryTour = newTour;
+        notifyObservers();
     }
 
 

@@ -15,21 +15,14 @@ public class Depot {
         this.departureTime=departureTime;
     }
 
+    /**
+     * Getters - Setters
+     */
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(String departureTime) {
-        this.departureTime = departureTime;
-    }
+    public String getDepartureTime() { return departureTime; }
 
     @Override
     public String toString() {

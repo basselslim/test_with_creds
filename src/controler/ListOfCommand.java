@@ -2,8 +2,8 @@ package controler;
 import java.util.LinkedList;
 
 public class ListOfCommand {
-    private LinkedList<Command> list;
-    private int currentIndex;
+    protected LinkedList<Command> list;
+    protected int currentIndex;
 
     public ListOfCommand(){
         currentIndex = -1;
@@ -34,6 +34,7 @@ public class ListOfCommand {
             cde.undoCommand();
         }
     }
+
 
     /**
      * Permanently remove the last added command (this command cannot be reinserted again with redo)

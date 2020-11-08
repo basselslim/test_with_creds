@@ -1,6 +1,5 @@
 package view;
 
-import controler.Algorithme;
 import controler.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -13,19 +12,27 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Map;
-import model.Path;
+
 
 import java.io.IOException;
+import javafx.stage.StageStyle;
+import model.*;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class Window extends Application {
 
 
-    TextualView Tview = new TextualView();
+    TextualView Tview;
     Map map = new Map();
     GraphicalView Gview;
     Controller controller = new Controller(map);
+    MouseGestures mg = new MouseGestures(controller);
 
     @FXML
     private Pane overlay;
@@ -33,10 +40,13 @@ public class Window extends Application {
     private Pane myPane;
     @FXML
     private Button btn_load_requests;
+    @FXML
+    private javafx.scene.control.TextArea TextArea;
 
     @Override
     public void start(Stage MainFrame) throws Exception {
         initUI(MainFrame);
+
 
     }
 
@@ -48,12 +58,10 @@ public class Window extends Application {
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);
         stage.show();
-
     }
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     public void Zoom(ActionEvent event) {
@@ -66,36 +74,47 @@ public class Window extends Application {
     }
 
     public void LoadMap(ActionEvent event) {
-
-
-        Gview = new GraphicalView(map, overlay); //Creation de la vue graphique à partir de la map et de la zone d'affichage
+        Gview = new GraphicalView(map, overlay, mg);
+        Tview = new TextualView(map, myPane, TextArea);
+        controller.setGview(Gview);
+        controller.setTview(Tview);
+        map.addObserver(Gview);
 
         //Load the map
         controller.LoadMap(event);
 
-        //Draw the map
-        Gview.refreshMap();
-
-        Gview.enableSelection();
         //reactivate Requests button
         btn_load_requests.setDisable(false);
+        TextArea.setText("Please load a request list");
     }
 
     public void LoadRequests(ActionEvent event) {
+        map.addObserver(Tview);
         controller.LoadRequests(event);
+        Gview.enableSelection();
+    }
 
-        Gview.refreshMap();
+    public void addRequest(ActionEvent event) {
+        controller.addRequest();
+        controller.confirmRequest(); //TEMPORAIRE
 
-        Tview.createRequestList(map, myPane);
+    }
+
+    public void undo(ActionEvent event){
+        controller.undo();
+    }
+
+    public void redo(ActionEvent event){
+        controller.redo();
     }
 
     public void Compute(ActionEvent event) {
-        Algorithme algo = new Algorithme(map);
-        HashMap<Long, List<Path>> mapSmallestPaths = algo.computeSmallestPaths();
-        map.setMapSmallestPaths(mapSmallestPaths);
-        Gview.refreshMap();
+        controller.computeTour();
+    }
 
+    public void Export(ActionEvent event) {
 
+        controller.ExportRoadMap(event);
     }
 
 }
