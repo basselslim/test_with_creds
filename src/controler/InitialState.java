@@ -34,6 +34,14 @@ public class InitialState implements State {
         }
     }
 
+    public void deleteRequest(Controller controller) {
+        Request request = controller.map.getRequestByIntersectionId(CurrentId);
+        if( request != null) {
+            controller.deleteState.entryAction(controller,request);
+            controller.setCurrentState(controller.deleteState);
+        }
+    }
+
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
 

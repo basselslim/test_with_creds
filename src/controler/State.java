@@ -15,6 +15,8 @@ public interface State {
 
     public default void addRequest(Controller controller){};
 
+    public default void deleteRequest(Controller controller){};
+
     public default void confirmRequest(Controller controller,Map map){};
 
     public default void undo(ListOfCommand listOfCommand, Controller controller){};

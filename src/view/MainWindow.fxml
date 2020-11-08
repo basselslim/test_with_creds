@@ -34,13 +34,10 @@
                </Pane>
             </children>
          </AnchorPane>
-       <AnchorPane fx:id="myPane" maxHeight="800.0" maxWidth="500.0" minHeight="0.0" minWidth="300.0">
-            <children>
-               <Button fx:id="addRequest" layoutX="8.0" layoutY="454.0" mnemonicParsing="false" onAction="#addRequest" prefHeight="20.0" prefWidth="200.0" text="Add request" translateX="50.0" translateY="200.0" />
-            </children></AnchorPane>
+       <AnchorPane fx:id="myPane" maxHeight="800.0" maxWidth="500.0" minHeight="0.0" minWidth="300.0" />
      </items>
    </SplitPane>
-   <HBox maxHeight="100.0">
+   <HBox alignment="CENTER" maxHeight="100.0">
       <children>
          <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo" translateX="47.0" translateY="50.0" />
          <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo" translateY="10.0" />
@@ -60,6 +57,8 @@
             </font>
          </Button>
          <Label fx:id="TextTour" text="Tour length :" translateX="270.0" translateY="20.0" />
+         <Button fx:id="addRequest" mnemonicParsing="false" onAction="#addRequest" prefHeight="29.0" prefWidth="102.0" text="Add request" translateX="50.0" translateY="-80.0" />
+         <Button fx:id="deleteRequest" mnemonicParsing="false" text="Delete Request" translateX="90.0" translateY="-80.0" />
       </children>
    </HBox>
    <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="30.0" translateY="-130.0" />
