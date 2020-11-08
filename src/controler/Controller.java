@@ -129,6 +129,10 @@ public class Controller {
         confirmRequest();
     }
 
+    public void deleteRequest(ActionEvent event){
+        currentState.deleteRequest(this);
+    }
+
     public void confirmRequest() {
         currentState.confirmRequest(this, map);
     }
