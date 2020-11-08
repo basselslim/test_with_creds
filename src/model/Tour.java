@@ -15,7 +15,6 @@ public class Tour extends Observable {
     /**
      *
      */
-    protected int tourLength;
     protected List<Path> listPaths;
     protected List<int[]> listTimes;
     protected Map map;
@@ -31,7 +30,6 @@ public class Tour extends Observable {
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
         this.listTimes = new LinkedList<int[]>();
-        this.tourLength = 0;
         this.map = map;
         this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
     }
@@ -39,11 +37,7 @@ public class Tour extends Observable {
     public Tour(Map map, List<Path> listPaths) {
         this.listPaths = listPaths;
         this.listTimes = new LinkedList<int[]>();
-        this.tourLength = 0;
         this.map = map;
-        for (Path p : listPaths) {
-            this.tourLength += p.getPathLength();
-        }
         this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
         populateListTimes();
     }
@@ -134,6 +128,10 @@ public class Tour extends Observable {
      * Getters - Setters
      */
     public int getTourLength() {
+        int tourLength =0;
+        for (Path p : listPaths) {
+            tourLength += p.getPathLength();
+        }
         return tourLength;
     }
 
@@ -199,10 +197,10 @@ public class Tour extends Observable {
             }
         }
         if (nbPu>0) {
-            text+= "   - You have to pick up "+nbPu+" packages at this intersection. This may take "+ puTime +" seconds\n\n";
+            text+= "   - You have to pick up "+nbPu+" package(s) at this intersection. This may take "+ puTime +" seconds\n\n";
         }
         if (nbDe>0) {
-            text+= "   - You have to deliver "+nbDe+" packages at this intersection. This may take "+ deTime +" seconds\n\n";
+            text+= "   - You have to deliver "+nbDe+" package(s) at this intersection. This may take "+ deTime +" seconds\n\n";
         }
         return text;
     }
@@ -212,6 +210,12 @@ public class Tour extends Observable {
         this.groupRequestIntersections();
 
         String totalText = "Roadmap \n\n";
+
+        String newStreetName = "";
+        String actualStreetName = "";
+        int lengthTotalOnStreet = 0;
+        int nbIntersections =  0;
+
         int i = 0;
         totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
         for(Path p: listPaths) {
@@ -219,8 +223,17 @@ public class Tour extends Observable {
             totalText+=PathTitle;
             int j = 0;
             for(Segment s: p.getListSegments()) {
-                String SegmentDescription = "   - Take " + s.getStreetName() + " on " + s.getLength() + " m.\n\n";
-                totalText+=SegmentDescription;
+                newStreetName = s.getStreetName();
+                if ((!(newStreetName.equals(actualStreetName)))&&(!(actualStreetName.equals("")))){
+                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersections\n\n";
+                    nbIntersections =0;
+                    lengthTotalOnStreet=0;
+                    totalText+=SegmentDescription;
+                }
+                actualStreetName=newStreetName;
+                lengthTotalOnStreet += (int)s.getLength();
+                nbIntersections+=1;
+
                 j++;
             }
             totalText+=this.writeTextForInterestPoint(p.idArrival);
@@ -258,7 +271,6 @@ public class Tour extends Observable {
 
     public void addPath(Path newPath) {
         listPaths.add(newPath);
-        tourLength += newPath.pathLength;
         if (map.getDepot().getId() == listPaths.get(listPaths.size() - 1).getIdArrival()) {
             populateListTimes();
         }

@@ -30,6 +30,7 @@ public class Controller {
     protected State currentState;
     protected Map map;
     protected Rectangle2D screenBounds;
+
     protected GraphicalView Gview;
     protected TextualView Tview;
 
@@ -43,6 +44,16 @@ public class Controller {
     private javafx.scene.control.TextArea TextArea;
     @FXML
     private Label TextTour;
+    @FXML
+    protected Button confirmAction;
+    @FXML
+    protected Button LoadMap;
+    @FXML
+    protected Button LoadRequests;
+    @FXML
+    protected Button ComputeTour;
+    @FXML
+    protected Button ExportTour;
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
@@ -55,6 +66,7 @@ public class Controller {
      */
     public Controller() {
         screenBounds  = Screen.getPrimary().getBounds();
+
         mg = new MouseGestures(this);
         map = new Map();
         listOfCommand = new ListOfCommand();
@@ -74,6 +86,12 @@ public class Controller {
         currentState = newState;
     }
 
+    protected void disableButtons(Boolean bool){
+        LoadMap.setDisable(bool);
+        LoadRequests.setDisable(bool);
+        ComputeTour.setDisable(bool);
+        ExportTour.setDisable(bool);
+    }
 
     //Public Methods
     public void LoadRequests(ActionEvent event) {
@@ -104,11 +122,11 @@ public class Controller {
 
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg,screenBounds);
-        Tview = new TextualView(map, myPane, TextArea, TextTour);
+        Tview = new TextualView(map, myPane, TextArea, TextTour, this);
         map.addObserver(Gview);
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);
-        btn_load_requests.setDisable(false);
+        LoadRequests.setDisable(false);
     }
 
     public void Zoom(ActionEvent event) { Gview.zoom(); }
@@ -127,11 +145,14 @@ public class Controller {
 
     public void addRequest(ActionEvent event) {
         currentState.addRequest(this);
-        confirmRequest();
     }
 
-    public void confirmRequest() {
-        currentState.confirmRequest(this, map);
+    public void deleteRequest(ActionEvent event){
+        currentState.deleteRequest(this);
+    }
+
+    public void confirmAction() {
+        currentState.confirmAction(this, map);
     }
 
     public void undo(ActionEvent event) {
@@ -142,7 +163,4 @@ public class Controller {
         currentState.redo(listOfCommand,this);
     }
 
-
-
 }
-

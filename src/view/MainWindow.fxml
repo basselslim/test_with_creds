@@ -13,12 +13,12 @@
 <VBox maxHeight="1050.0" maxWidth="1680.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
     <HBox minHeight="60.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
       <children>
-        <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="37.0" prefWidth="166.0" text="Load Map" translateX="20.0" translateY="10.0">
+        <Button fx:id="LoadMap" mnemonicParsing="false" onAction="#LoadMap" prefHeight="37.0" prefWidth="166.0" text="Load Map" translateX="20.0" translateY="10.0">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btn_load_requests" disable="true" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="40.0" prefWidth="203.0" text="Load Requests" translateX="880.0" translateY="10.0">
+        <Button fx:id="LoadRequests" disable="true" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="40.0" prefWidth="203.0" text="Load Requests" translateX="880.0" translateY="10.0">
           <font>
               <Font size="18.0" />
           </font>
@@ -34,13 +34,10 @@
                </Pane>
             </children>
          </AnchorPane>
-       <AnchorPane fx:id="myPane" maxHeight="800.0" maxWidth="500.0" minHeight="0.0" minWidth="300.0">
-            <children>
-               <Button fx:id="addRequest" layoutX="8.0" layoutY="454.0" mnemonicParsing="false" onAction="#addRequest" prefHeight="20.0" prefWidth="200.0" text="Add request" translateX="50.0" translateY="200.0" />
-            </children></AnchorPane>
+       <AnchorPane fx:id="myPane" maxHeight="800.0" maxWidth="500.0" minHeight="0.0" minWidth="300.0" />
      </items>
    </SplitPane>
-   <HBox maxHeight="100.0">
+   <HBox alignment="CENTER" maxHeight="100.0">
       <children>
          <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo" translateX="47.0" translateY="50.0" />
          <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo" translateY="10.0" />
@@ -49,17 +46,20 @@
                <Font name="System Bold" size="18.0" />
             </font>
          </TextArea>
-         <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#computeTour" prefHeight="40.0" prefWidth="150.0" text="Compute" translateX="200.0" translateY="30.0">
+         <Button fx:id="confirmAction" mnemonicParsing="false" onAction="#confirmAction" prefHeight="50.0" prefWidth="88.0" text="Confirm" translateX="40.0" translateY="10.0" visible="false" />
+         <Button fx:id="ComputeTour" mnemonicParsing="false" onAction="#computeTour" prefHeight="40.0" prefWidth="150.0" text="Compute" translateX="200.0" translateY="30.0">
             <font>
                <Font size="17.0" />
             </font>
          </Button>
-         <Button fx:id="btn_export" mnemonicParsing="false" onAction="#ExportRoadMap" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="240.0" translateY="30.0">
+         <Button fx:id="ExportTour" mnemonicParsing="false" onAction="#ExportRoadMap" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="240.0" translateY="30.0">
             <font>
                <Font size="17.0" />
             </font>
          </Button>
          <Label fx:id="TextTour" text="Tour length :" translateX="270.0" translateY="20.0" />
+         <Button fx:id="addRequest" mnemonicParsing="false" onAction="#addRequest" prefHeight="29.0" prefWidth="102.0" text="Add request" translateY="-80.0" />
+         <Button fx:id="deleteRequest" mnemonicParsing="false" onAction="#deleteRequest" text="Delete Request" translateX="40.0" translateY="-80.0" />
       </children>
    </HBox>
    <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="30.0" translateY="-130.0" />
