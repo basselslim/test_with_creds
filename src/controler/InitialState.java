@@ -74,7 +74,7 @@ public class InitialState implements State {
 
         //Diplay in textual view if the point is a request
         if (controller.map.getRequestByIntersectionId(i.getId()) != null)
-            controller.Tview.selectRequest(i.getId());
+            controller.Tview.selectRequest(controller.map.getRequestByIntersectionId(i.getId()));
     }
 
     /**
