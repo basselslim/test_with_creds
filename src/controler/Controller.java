@@ -69,7 +69,6 @@ public class Controller {
      * Default constructor
      */
     public Controller() {
-        screenBounds  = Screen.getPrimary().getBounds();
 
         mg = new MouseGestures(this);
         map = new Map();
@@ -123,7 +122,7 @@ public class Controller {
     }
 
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg,screenBounds);
+        Gview = new GraphicalView(map, overlay, mg);
         Tview = new TextualView(map, myPane, TextArea, TextTour, this);
         map.addObserver(Gview);
         map.addObserver(Tview);

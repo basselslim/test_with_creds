@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Screen;
 import model.*;
 import model.Map;
 
@@ -37,15 +38,16 @@ public class GraphicalView implements observer.Observer {
     Boolean isMapClickable = false;
     Boolean setScreenSize = false;
 
-    public GraphicalView(Map map, Pane overlay, MouseGestures mg, Rectangle2D screenBounds) {
+    public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
         mouseGestures = mg;
         mouseGestures.setGview(this);
         mg.newTranslateX = 0;
         mg.newTranslateY = 0;
         m_overlay = overlay;
-        screenX = (int)((screenBounds.getMaxX()-100)*0.595);
-        screenY = (int)((screenBounds.getMaxY()-100)*0.762);
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        screenX = (int)((screenBounds.getMaxX()-150)*0.595);
+        screenY = (int)((screenBounds.getMaxY()-150)*0.762);
     }
 
     public static HashMap<Long,Circle> circles = new HashMap<Long,Circle>();

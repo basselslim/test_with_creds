@@ -32,7 +32,7 @@ public class Window extends Application {
 
     private void initUI(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        var scene = new Scene(root, screenBounds.getMaxX()-100, screenBounds.getMaxY()-100, Color.WHITE);
+        var scene = new Scene(root, screenBounds.getMaxX()-150, screenBounds.getMaxY()-150, Color.WHITE);
 
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);
