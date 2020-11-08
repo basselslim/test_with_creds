@@ -21,7 +21,7 @@ public class DeleteState implements State {
     @Override
     public void confirmAction(Controller controller, Map map) {
 
-        ReverseCommand deleteRequestCommand = new ReverseCommand(new AddCommand(map, request,null,null));
+        ReverseCommand deleteRequestCommand = new ReverseCommand(new AddCommand(map, request,map.findPrecedingRequestPoint(request.getPickUpPoint()).getId(),map.findPrecedingRequestPoint(request.getDeliveryPoint()).getId()));
         controller.getListOfCommand().add(deleteRequestCommand);
         controller.initialState.entryAction(controller);
         controller.confirmAction.setVisible(false);

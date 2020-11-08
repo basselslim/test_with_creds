@@ -150,6 +150,17 @@ public class Map extends observer.Observable {
         notifyObservers();
     }
 
+    public Intersection findPrecedingRequestPoint(Intersection RequestPoint){
+        Intersection precedingPoint = null;
+
+        for (Path path : deliveryTour.getListPaths()) {
+            if (path.getIdArrival() == RequestPoint.getId())
+                precedingPoint = listIntersections.get(path.getIdDeparture());
+            }
+
+        return precedingPoint;
+    }
+
 
     //INTERSECTIONS
     public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
