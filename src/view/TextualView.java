@@ -47,7 +47,7 @@ public class TextualView implements observer.Observer {
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
         requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        //requestsTable.prefHeightProperty().bind(pane.heightProperty());
+        requestsTable.prefHeightProperty().bind(pane.heightProperty());
         requestsTable.prefWidthProperty().bind(pane.widthProperty());
 
         requestsTable.setRowFactory( tableView -> {
@@ -204,7 +204,7 @@ public class TextualView implements observer.Observer {
     public boolean durationIsInvalid(String str) {
         try {
             int res = Integer.parseInt(str);
-            if (res <= 0) {
+            if (res < 0) {
                 return true;
             }
         } catch (NumberFormatException nfe) {
