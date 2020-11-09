@@ -28,7 +28,6 @@ public class DeleteState implements State {
         controller.getListOfCommand().add(deleteRequestCommand);
 
         controller.initialState.entryAction(controller);
-        controller.confirmAction.setVisible(false);
         controller.disableButtons(false);
         controller.Tview.setMessage("Request deleted");
         controller.setCurrentState(controller.initialState);
@@ -37,9 +36,8 @@ public class DeleteState implements State {
     public void entryAction(Controller controller, Request request) {
         controller.deleteRequest.setDisable(true);
         controller.disableButtons(true);
-        controller.confirmAction.setVisible(true);
         this.request = request;
-        controller.Tview.setMessage("Confirm deleting the selected Request ?");
+        controller.confirmAction();
     }
 
 }

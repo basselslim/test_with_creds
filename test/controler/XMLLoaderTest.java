@@ -3,6 +3,7 @@ package controler;
 import model.*;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.util.HashMap;
 
@@ -104,5 +105,23 @@ class XMLLoaderTest {
         //Assert
         assert(request != map.getListRequests().get(0));
         assert(depot != map.getDepot());
+    }
+
+    @Test
+    void wrongFormatXML(){
+
+        //Arrange
+        String pathNameXMLFileRequests = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testRequestBad.xml";
+        String pathNameXMLFileMap = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testMapBad.xml";
+        Map map = new Map();
+        XMLLoader xmlLoader = new XMLLoader();
+
+        //Act
+        int a = xmlLoader.parseMapXML(pathNameXMLFileMap, map);
+        int b = xmlLoader.parseRequestXML(pathNameXMLFileRequests, map);
+
+        //Assert
+        //assertNull(a);
+        //assertNull(b);
     }
 }

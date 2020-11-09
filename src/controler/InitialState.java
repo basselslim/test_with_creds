@@ -48,8 +48,8 @@ public class InitialState implements State {
         Request request = controller.map.getRequestByIntersectionId(CurrentIdList.get(0));
         if( request != null) {
             controller.addRequest.setDisable(true);
-            controller.deleteState.entryAction(controller,request);
             controller.setCurrentState(controller.deleteState);
+            controller.deleteState.entryAction(controller,request);
 
         }
     }
@@ -117,6 +117,7 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        controller.addRequest.setDisable(true);
         controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
         controller.Gview.enableSelection();
     }
@@ -128,6 +129,7 @@ public class InitialState implements State {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
+        controller.Tview.setMessage("Optimal tour computed !");
         controller.addRequest.setDisable(false);
         controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
     }

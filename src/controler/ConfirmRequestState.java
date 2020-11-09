@@ -24,25 +24,37 @@ public class ConfirmRequestState implements State {
  */
         if(request != null) {
 
+
             AddCommand addRequestCommand = new AddCommand(controller. map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
-            controller.getListOfCommand().add(addRequestCommand);
+            int errorCode = controller.getListOfCommand().add(addRequestCommand);
+            if(errorCode!=0) {
+                controller.initialState.undo(controller.getListOfCommand(), controller);
+            }
+
 
             controller.initialState.entryAction(controller);
             controller.setCurrentState(controller.initialState);
             unDrawSelection(controller);
 
-            controller.Tview.setMessage("Request added");
             controller.confirmAction.setVisible(false);
             controller.addRequest.setDisable(false);
             controller.Gview.disableSelection();
+
+            if (errorCode == 0) {
+                controller.Tview.setMessage("Request added");
+            } else if (errorCode == 1) {
+                controller.Tview.setMessage("Error : Can't find a path to the new pick up point.");
+            }else if (errorCode == 2) {
+                controller.Tview.setMessage("Error : Can't find a path to the new delivery point.");
+            }
         }
     }
 
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.addDeliveryState.reverseAction(controller);
-        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
-        controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
+        controller.Gview.undrawMouseSelection(request.getDeliveryPoint());
         controller.setCurrentState(controller.addDeliveryState);
         controller.confirmAction.setVisible(false);
     }
