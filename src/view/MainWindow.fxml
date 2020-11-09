@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1050.0" maxWidth="1680.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
-    <HBox minHeight="60.0" style="-fx-background-color: darkgrey;">
+<VBox maxHeight="1050.0" maxWidth="1680.0" style="-fx-background-color: Whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
+    <HBox minHeight="60.0" style="-fx-background-color: Whitesmoke;">
       <children>
         <Button fx:id="LoadMap" mnemonicParsing="false" onAction="#LoadMap" prefHeight="37.0" prefWidth="166.0" text="Load Map" translateX="20.0" translateY="10.0">
             <font>
@@ -43,7 +43,7 @@
        </VBox>
      </items>
    </SplitPane>
-   <HBox alignment="CENTER" style="-fx-background-color: darkgrey;" VBox.vgrow="ALWAYS">
+   <HBox alignment="CENTER" style="-fx-background-color: Whitesmoke;" VBox.vgrow="ALWAYS">
       <children>
          <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo" translateX="47.0" translateY="50.0" />
          <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo" translateY="10.0" />
