@@ -6,6 +6,8 @@ import model.Request;
 import javax.naming.ldap.Control;
 
 /**
+ * Confirm request state.
+ *
  * @authorT-REXANOME
  */
 public class ConfirmRequestState implements State {
@@ -94,6 +96,10 @@ public class ConfirmRequestState implements State {
         controller.Tview.setMessage("Confirm adding the request ?");
     }
 
+    /**
+     *
+     * @param controller
+     */
     private void drawSelection(Controller controller){
         controller.Gview.drawMouseSelection(DeliveryPrecedingPoint.getId());
         controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
@@ -101,6 +107,10 @@ public class ConfirmRequestState implements State {
         controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
     }
 
+    /**
+     *
+     * @param controller
+     */
     private void unDrawSelection(Controller controller){
         controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());

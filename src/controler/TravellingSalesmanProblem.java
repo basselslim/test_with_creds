@@ -27,6 +27,13 @@ public class TravellingSalesmanProblem {
     protected long timeZero;
     protected long TIMELIMIT;
 
+    /**
+     * Constructor.
+     *
+     * @param newMap
+     * @param mapSmallestPaths map of all smallest paths between intersections of the requests
+     * @param t time limit for the algorithm
+     */
     public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths,long t) {
         numberOfStep = mapSmallestPaths.size();
         map = newMap;

@@ -21,7 +21,7 @@ import java.util.List;
 public class XMLLoader {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public XMLLoader() {
     }

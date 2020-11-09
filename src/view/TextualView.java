@@ -37,6 +37,15 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, Integer> requestIndexColumn;
     TableColumn<Intersection, String> arrivalTimeColumn;
 
+    /**
+     * Constructor.
+     *
+     * @param map
+     * @param pane
+     * @param textArea
+     * @param tourInfos
+     * @param controller
+     */
     public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos, Controller controller) {
         this.controller = controller;
         this.map = map;
@@ -183,6 +192,11 @@ public class TextualView implements observer.Observer {
         }
     }
 
+    /**
+     *
+     * @param req request
+     * @param local
+     */
     public void selectRequest(Request req, Boolean local) {
 
         requestsTable.getSelectionModel().clearSelection();
@@ -216,6 +230,11 @@ public class TextualView implements observer.Observer {
         return res;
     }
 
+    /**
+     *
+     * @param str
+     * @return
+     */
     public boolean durationIsInvalid(String str) {
         try {
             int res = Integer.parseInt(str);

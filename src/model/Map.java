@@ -181,17 +181,22 @@ public class Map extends observer.Observable {
         notifyObservers();
     }
 
-    public Intersection findPrecedingRequestPoint(Intersection RequestPoint){
+    /**
+     * Find the departure intersection of a request, giving the arrival intersection.
+     *
+     * @param RequestPoint arrival intersection of a request
+     * @return preceding intersection
+     */
+    public Intersection findPrecedingRequestPoint(Intersection RequestPoint) {
         Intersection precedingPoint = null;
 
         for (Path path : deliveryTour.getListPaths()) {
             if (path.getIdArrival() == RequestPoint.getId())
                 precedingPoint = listIntersections.get(path.getIdDeparture());
-            }
+        }
 
         return precedingPoint;
     }
-
 
     //INTERSECTIONS
 
@@ -208,6 +213,11 @@ public class Map extends observer.Observable {
         notifyObservers();
     }
 
+    /**
+     * Add a request.
+     *
+     * @param newRequest request to add
+     */
     public void addRequest(Request newRequest) {
         this.listRequests.add(newRequest);
         notifyObservers();
@@ -220,7 +230,7 @@ public class Map extends observer.Observable {
      * @param request request to remove
      */
     public void removeRequest(Request request) {
-        if(this.deliveryTour.getListPaths().size() == 0)
+        if (this.deliveryTour.getListPaths().size() == 0)
             this.listRequests.remove(request);
         else {
             this.deliveryTour.removeRequestFromTour(request);

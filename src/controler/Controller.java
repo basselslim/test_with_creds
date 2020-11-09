@@ -21,7 +21,9 @@ import java.io.File;
 import java.util.*;
 
 /**
- * 
+ * Controller
+ *
+ * @author T-REXANOME
  */
 public class Controller {
     
@@ -66,7 +68,7 @@ public class Controller {
     protected final DeleteState deleteState = new DeleteState();
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Controller() {
 
@@ -97,15 +99,31 @@ public class Controller {
     }
 
     //Public Methods
+
+    /**
+     * Load requests.
+     *
+     * @param event
+     */
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
         deleteRequest.setDisable(false);
     }
 
+    /**
+     * Compute optimal tour.
+     *
+     * @param event
+     */
     public void computeTour(ActionEvent event) {
         currentState.computeTour(this,map);
     }
 
+    /**
+     * Export road map.
+     *
+     * @param event
+     */
     public void ExportRoadMap (ActionEvent event) {
         FileChooser exportFileChooser = new FileChooser();
         exportFileChooser.setTitle("Export RoadMap");
@@ -116,11 +134,21 @@ public class Controller {
         map.getTour().generateRoadMap(exportLocation.getPath());
     }
 
+    /**
+     * Left click.
+     *
+     * @param idIntersection
+     */
     public void leftClick(long idIntersection){
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
+    /**
+     * Load map.
+     *
+     * @param event
+     */
     public void LoadMap(ActionEvent event) {
         Gview = new GraphicalView(map, overlay, mg);
         Tview = new TextualView(map, myPane, TextArea, TextTour, this);
@@ -132,38 +160,79 @@ public class Controller {
         deleteRequest.setDisable(true);
     }
 
+    /**
+     * Zoom.
+     *
+     * @param event
+     */
     public void Zoom(ActionEvent event) { Gview.zoom(); }
 
+    /**
+     * Unzoom.
+     *
+     * @param event
+     */
     public void UnZoom(ActionEvent event) {
         Gview.unZoom();
     }
 
+    /**
+     *
+     * @param idIntersection
+     */
     public void mouseOn(long idIntersection) {
         currentState.mouseOn(idIntersection, this);
     }
 
+    /**
+     * Add duration.
+     *
+     * @param duration duration to add
+     */
     public void addDuration(int duration) {
         currentState.addDuration(duration, this);
     }
 
+    /**
+     * Add a request.
+     *
+     * @param event
+     */
     public void addRequest(ActionEvent event) {
         currentState.addRequest(this);
     }
 
+    /**
+     * Delete a request.
+     *
+     * @param event
+     */
     public void deleteRequest(ActionEvent event){
         currentState.deleteRequest(this);
     }
 
+    /**
+     *
+     */
     public void confirmAction() {
         currentState.confirmAction(this, map);
     }
 
+    /**
+     * Undo.
+     *
+     * @param event
+     */
     public void undo(ActionEvent event) {
         currentState.undo(listOfCommand, this);
     }
 
+    /**
+     * Redo.
+     *
+     * @param event
+     */
     public void redo(ActionEvent event) {
         currentState.redo(listOfCommand,this);
     }
-
 }

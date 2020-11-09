@@ -14,9 +14,10 @@ import model.Map;
 import java.util.*;
 
 /**
+ * Graphical view.
  *
+ * @author T-REXANOME
  */
-
 public class GraphicalView implements observer.Observer {
 
     MouseGestures mouseGestures;
@@ -38,6 +39,13 @@ public class GraphicalView implements observer.Observer {
     Boolean isMapClickable = false;
     Boolean setScreenSize = false;
 
+    /**
+     * Constructor.
+     *
+     * @param map
+     * @param overlay
+     * @param mg
+     */
     public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
         mouseGestures = mg;
@@ -46,18 +54,21 @@ public class GraphicalView implements observer.Observer {
         mg.newTranslateY = 0;
         m_overlay = overlay;
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        screenX = (int)((screenBounds.getMaxX()-150)*0.595);
-        screenY = (int)((screenBounds.getMaxY()-150)*0.762);
+        screenX = (int) ((screenBounds.getMaxX() - 150) * 0.595);
+        screenY = (int) ((screenBounds.getMaxY() - 150) * 0.762);
     }
 
-    public static HashMap<Long,Circle> circles = new HashMap<Long,Circle>();
+    public static HashMap<Long, Circle> circles = new HashMap<Long, Circle>();
 
     public static List<Line> lines = new ArrayList<Line>();
 
     public static List<Arrow> arrows = new ArrayList<Arrow>();
 
-    public static HashMap<Long,Rectangle> rectangles = new HashMap<Long,Rectangle>();
+    public static HashMap<Long, Rectangle> rectangles = new HashMap<Long, Rectangle>();
 
+    /**
+     *
+     */
     public void drawMap() {
         if (!setScreenSize) {
             m_overlay.setPrefWidth(screenX);
@@ -69,7 +80,7 @@ public class GraphicalView implements observer.Observer {
         //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            drawPoint(intersection, Color.BLACK, pointSize,false); //draw standard point
+            drawPoint(intersection, Color.BLACK, pointSize, false); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
@@ -82,9 +93,9 @@ public class GraphicalView implements observer.Observer {
             int rand = generator.nextInt(150);
             int rand2 = generator.nextInt(150);
             int rand3 = generator.nextInt(150);
-            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+            Color color = Color.rgb(rand + 100, (rand2 + 100), (rand3 + 100));
             drawRectangle(pickup, color, ReqpointSize);
-            drawPoint(delivery, color, ReqpointSize,true);
+            drawPoint(delivery, color, ReqpointSize, true);
 
         }
 
@@ -110,11 +121,14 @@ public class GraphicalView implements observer.Observer {
 
         addNodesToOverlay();
 
-        if(isMapClickable = true)
+        if (isMapClickable = true)
             enableSelection();
 
     }
 
+    /**
+     *
+     */
     public void refreshMap() {
         m_overlay.getChildren().clear();
         lines.clear();
@@ -124,6 +138,9 @@ public class GraphicalView implements observer.Observer {
         drawMap();
     }
 
+    /**
+     *
+     */
     public void enableSelection() {
         isMapClickable = true;
         for (Node node : m_overlay.getChildren()) {
@@ -132,11 +149,17 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     *
+     */
     public void disableSelection() {
         isMapClickable = false;
         refreshMap();
     }
 
+    /**
+     * Zoom.
+     */
     public void zoom() {
 
         if (zoomVal < 3.5) {
@@ -149,8 +172,12 @@ public class GraphicalView implements observer.Observer {
             zoomTranslateY = 0;
         }
     }
+
+    /**
+     * Unzoom.
+     */
     public void unZoom() {
-        double width = latToPix(m_map.getMinLat())-latToPix(m_map.getMaxLat());
+        double width = latToPix(m_map.getMinLat()) - latToPix(m_map.getMaxLat());
         if (width > screenY) {
             zoomVal -= zoomStep;
             updateCoeff();
@@ -162,6 +189,9 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * @param NodeId
+     */
     public void drawMouseSelection(long NodeId) {
         Circle circle = circles.get(NodeId);
         Rectangle rectangle = rectangles.get(NodeId);
@@ -178,6 +208,9 @@ public class GraphicalView implements observer.Observer {
 
     }
 
+    /**
+     * @param NodeId
+     */
     public void undrawMouseSelection(long NodeId) {
         Circle circle = circles.get(NodeId);
         Rectangle rectangle = rectangles.get(NodeId);
@@ -193,7 +226,10 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
-
+    /**
+     * @param origin
+     * @param segmentList
+     */
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
         double originX = longToPix(origin.getLongitude());
@@ -203,13 +239,18 @@ public class GraphicalView implements observer.Observer {
             Intersection destination = m_map.getListIntersections().get(segment.getDestination());
             double destinationX = longToPix(destination.getLongitude());
             double destinationY = latToPix(destination.getLatitude());
-            double length = Math.sqrt(Math.pow(destinationX-originX,2)+Math.pow(destinationY-originY,2));
+            double length = Math.sqrt(Math.pow(destinationX - originX, 2) + Math.pow(destinationY - originY, 2));
             Line line = new Line(originX, originY, destinationX, destinationY);
             line.setStrokeWidth(StrokeSize);
             lines.add(line);
         }
     }
 
+    /**
+     * @param origin
+     * @param destination
+     * @param size
+     */
     private void drawArrow(Intersection origin, Intersection destination, double size) {
 
         double originX = longToPix(origin.getLongitude());
@@ -222,6 +263,12 @@ public class GraphicalView implements observer.Observer {
         arrows.add(arrow);
     }
 
+    /**
+     * @param intersection
+     * @param color
+     * @param size
+     * @param isRequest
+     */
     private void drawPoint(Intersection intersection, Color color, double size, Boolean isRequest) {
 
         double pointX = longToPix(intersection.getLongitude());
@@ -233,34 +280,42 @@ public class GraphicalView implements observer.Observer {
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(intersection.getId());
-        if(isRequest)
+        if (isRequest)
             circle.setViewOrder(-1.0);
-        circles.put(intersection.getId(),circle);
+        circles.put(intersection.getId(), circle);
     }
 
+    /**
+     * @param intersection
+     * @param color
+     * @param size
+     */
     private void drawRectangle(Intersection intersection, Color color, double size) {
 
         double pointX = longToPix(intersection.getLongitude());
         double pickupY = latToPix(intersection.getLatitude());
 
-        Rectangle rectangle = new Rectangle(pointX-size,pickupY-size, size*2, size*2);
+        Rectangle rectangle = new Rectangle(pointX - size, pickupY - size, size * 2, size * 2);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(StrokeSize);
         rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
         rectangle.setUserData(intersection.getId());
         circles.remove(intersection.getId());
-        rectangles.put(intersection.getId(),rectangle);
+        rectangles.put(intersection.getId(), rectangle);
     }
 
-    private void addNodesToOverlay(){
+    /**
+     *
+     */
+    private void addNodesToOverlay() {
         for (Line line : lines) {
             m_overlay.getChildren().add(line);
         }
 
         Circle depot = new Circle();
         for (HashMap.Entry mapentry : circles.entrySet()) {
-            Circle circle = (Circle)mapentry.getValue();
-            if ((long)mapentry.getKey() == m_map.getDepot().getId()) {
+            Circle circle = (Circle) mapentry.getValue();
+            if ((long) mapentry.getKey() == m_map.getDepot().getId()) {
                 depot = circle;
                 depot.setRadius(pointSize * 2);
                 depot.setFill(Color.RED);
@@ -282,6 +337,9 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     *
+     */
     private void updateCoeff() {
         double maxHeigth = ((-1 * m_map.getMaxLat()) + 90) * (screenY / 180);
         double minHeigth = ((-1 * m_map.getMinLat()) + 90) * (screenY / 180);
@@ -300,6 +358,10 @@ public class GraphicalView implements observer.Observer {
         StrokeSize = 0.00016 * coeffX;
     }
 
+    /**
+     * @param XValue
+     * @param YValue
+     */
     private void updateTranslation(double XValue, double YValue) {
 
         for (HashMap.Entry mapentry : circles.entrySet()) {
@@ -326,14 +388,26 @@ public class GraphicalView implements observer.Observer {
         mouseGestures.newTranslateY += zoomTranslateY / 2;
     }
 
+    /**
+     * @param lat latitude to convert
+     * @return
+     */
     private double latToPix(double lat) {
         return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;
     }
 
+    /**
+     * @param lon longitude to convert
+     * @return
+     */
     private double longToPix(double lon) {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
     }
 
+    /**
+     * @param observed
+     * @param arg      argument
+     */
     @Override
     public void update(observer.Observable observed, Object arg) {
         refreshMap();

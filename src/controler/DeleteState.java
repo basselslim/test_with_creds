@@ -21,7 +21,7 @@ public class DeleteState implements State {
     /**
      * Left click.
      
-     * @param controller
+     * @param controler
      * @param map
      * @param listOfCommands
      * @param i
@@ -31,6 +31,11 @@ public class DeleteState implements State {
 
     }
 
+    /**
+     *
+     * @param controller
+     * @param map
+     */
     @Override
     public void confirmAction(Controller controller, Map map) {
         Intersection precedingPickup = map.findPrecedingRequestPoint(request.getPickUpPoint());
@@ -51,6 +56,11 @@ public class DeleteState implements State {
         controller.setCurrentState(controller.initialState);
     }
 
+    /**
+     *
+     * @param controller
+     * @param request
+     */
     public void entryAction(Controller controller, Request request) {
         controller.disableButtons(true);
         controller.confirmAction.setVisible(true);

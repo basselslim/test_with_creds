@@ -161,6 +161,12 @@ public class InitialState implements State {
         controller.Gview.enableSelection();
     }
 
+    /**
+     * Compute optimal tour.
+     *
+     * @param controller
+     * @param map
+     */
     @Override
     public void computeTour(Controller controller, Map map){
         unSelectPoints(controller);
@@ -182,7 +188,10 @@ public class InitialState implements State {
         CurrentIdList.clear();
     }
 
-
+    /**
+     *
+     * @param controller
+     */
     public void entryAction(Controller controller) {
         controller.disableButtons(false);
         CurrentIdList.clear();
