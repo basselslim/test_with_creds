@@ -3,6 +3,7 @@ package controler;
 import model.*;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.util.HashMap;
 
@@ -114,29 +115,13 @@ class XMLLoaderTest {
         String pathNameXMLFileMap = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testMapBad.xml";
         Map map = new Map();
         XMLLoader xmlLoader = new XMLLoader();
-        long pickUpAdress = 2;
-        long deliveryAdress = 3;
-        int pickUpDuration = 100;
-        int deliveryDuration = 100;
-        long latitudeP = 4;
-        long longitudeP = 6;
-        long latitudeD = 6;
-        long longitudeD = 9;
-        long depotId = 1;
-        String depotDepartureTime = "8:0:0";
-        Intersection pickupIntersection = new Intersection(pickUpAdress, latitudeP, longitudeP);
-        Intersection deliveryIntersection = new Intersection(deliveryAdress, latitudeD, longitudeD);
-        PickUpPoint pickUpPoint = new PickUpPoint(pickupIntersection.getId(), pickupIntersection.getLatitude(), pickupIntersection.getLongitude(), pickUpDuration);
-        DeliveryPoint deliveryPoint = new DeliveryPoint(deliveryIntersection.getId(), deliveryIntersection.getLatitude(), deliveryIntersection.getLongitude(), deliveryDuration);
-        Request request = new Request(pickUpPoint, deliveryPoint);
-        Depot depot = new Depot(depotId, depotDepartureTime);
 
         //Act
-        xmlLoader.parseMapXML(pathNameXMLFileMap, map);
-        xmlLoader.parseRequestXML(pathNameXMLFileRequests, map);
+        int a = xmlLoader.parseMapXML(pathNameXMLFileMap, map);
+        int b = xmlLoader.parseRequestXML(pathNameXMLFileRequests, map);
 
         //Assert
-        assert(request != map.getListRequests().get(0));
-        assert(depot != map.getDepot());
+        //assertNull(a);
+        //assertNull(b);
     }
 }

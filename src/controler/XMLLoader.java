@@ -107,7 +107,6 @@ public class XMLLoader {
 
                                     Intersection intersection = listIntersection.get(origin);
                                     intersection.addSegment(segment);
-                                    System.out.println(intersection.getListSegments());
                                 }
                             }
                         }
@@ -123,6 +122,7 @@ public class XMLLoader {
             e.printStackTrace();
         }
 
+        System.out.println(check);
         return check;
     }
 
@@ -204,6 +204,7 @@ public class XMLLoader {
             e.printStackTrace();
         }
 
+        System.out.println(check);
         return check;
     }
 }
