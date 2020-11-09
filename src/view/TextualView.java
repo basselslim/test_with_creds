@@ -186,7 +186,7 @@ public class TextualView implements observer.Observer {
     }
 
     public int durationPopup() {
-        TextInputDialog popup = new TextInputDialog();
+        TextInputDialog popup = new TextInputDialog("0");
         popup.initStyle(StageStyle.UNDECORATED);
         popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
         popup.setTitle("Duration");
