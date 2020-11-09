@@ -21,6 +21,7 @@ public class InitialState implements State {
     List<Long> CurrentIdList;
 
     Request request = new Request();
+    Boolean isTourComputed = false;
 
     /**
      * Default constructor.
@@ -37,6 +38,8 @@ public class InitialState implements State {
     @Override
     public void addRequest(Controller controller) {
 
+        controller.deleteRequest.setDisable(true);
+        controller.addRequest.setDisable(true);
         unSelectPoints(controller);
 
         if(!controller.map.getListRequests().isEmpty()) {
@@ -54,6 +57,7 @@ public class InitialState implements State {
     public void deleteRequest(Controller controller) {
         Request request = controller.map.getRequestByIntersectionId(CurrentIdList.get(0));
         if( request != null) {
+            controller.addRequest.setDisable(true);
             controller.deleteState.entryAction(controller,request);
             controller.setCurrentState(controller.deleteState);
 
@@ -81,12 +85,12 @@ public class InitialState implements State {
             controller.Tview.selectRequest(map.getRequestByIntersectionId(i.getId()),false);
             CurrentIdList.add(request.getPickUpPoint().getId());
             CurrentIdList.add(request.getDeliveryPoint().getId());
+            controller.deleteRequest.setDisable(false);
         }else{
             //Select current point
             controller.Gview.drawMouseSelection(i.getId());
             CurrentIdList.add(i.getId());
-
-
+            controller.deleteRequest.setDisable(true);
         }
 
     }
@@ -170,7 +174,7 @@ public class InitialState implements State {
     @Override
     public void computeTour(Controller controller, Map map){
         unSelectPoints(controller);
-
+        isTourComputed = true;
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
@@ -193,6 +197,8 @@ public class InitialState implements State {
      * @param controller
      */
     public void entryAction(Controller controller) {
+        if (isTourComputed)
+            controller.addRequest.setDisable(false);
         controller.disableButtons(false);
         CurrentIdList.clear();
     }

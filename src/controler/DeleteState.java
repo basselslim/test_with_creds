@@ -62,6 +62,7 @@ public class DeleteState implements State {
      * @param request
      */
     public void entryAction(Controller controller, Request request) {
+        controller.deleteRequest.setDisable(true);
         controller.disableButtons(true);
         controller.confirmAction.setVisible(true);
         this.request = request;

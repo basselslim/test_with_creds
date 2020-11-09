@@ -41,8 +41,6 @@ public class Controller {
     @FXML
     private Pane myPane;
     @FXML
-    private Button btn_load_requests;
-    @FXML
     private javafx.scene.control.TextArea TextArea;
     @FXML
     private Label TextTour;
@@ -107,7 +105,6 @@ public class Controller {
      */
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
-        deleteRequest.setDisable(false);
     }
 
     /**

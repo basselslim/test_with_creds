@@ -220,7 +220,7 @@ public class TextualView implements observer.Observer {
         popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
         popup.setTitle("Duration");
         popup.setHeaderText("");
-        popup.setContentText("Please enter the duration:");
+        popup.setContentText("Please enter the duration (in seconds):");
         Button okButton = (Button) popup.getDialogPane().lookupButton(ButtonType.OK);
         TextField input = popup.getEditor();
         BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> durationIsInvalid(input.getText()), input.textProperty());
