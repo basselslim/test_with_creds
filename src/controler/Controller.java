@@ -9,9 +9,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
-import model.Intersection;
+import model.*;
 import model.Map;
-import model.Path;
 import view.GraphicalView;
 import view.MouseGestures;
 import view.TextualView;
@@ -116,6 +115,10 @@ public class Controller {
     public void leftClick(long idIntersection){
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
+    }
+
+    public void leftClick(Step step){
+        currentState.leftClick(this, map, listOfCommand, step);
     }
 
     public void LoadMap(ActionEvent event) {

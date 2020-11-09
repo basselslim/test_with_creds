@@ -3,6 +3,7 @@ package controler;
 import model.Intersection;
 import model.Map;
 import model.Request;
+import model.Step;
 import view.Window;
 
 import javax.naming.ldap.Control;
@@ -20,15 +21,10 @@ public class DeleteState implements State {
 
     @Override
     public void confirmAction(Controller controller, Map map) {
-        Intersection precedingPickup = map.findPrecedingRequestPoint(request.getPickUpPoint());
-        Intersection precedingDelivery = map.findPrecedingRequestPoint(request.getDeliveryPoint());
-        long precedingPickupId = 0;
-        long precedingDeliveryId = 0;
-        if(precedingPickup!=null){
-            precedingPickupId = precedingPickup.getId();
-            precedingDeliveryId = precedingDelivery.getId();
-        }
-        ReverseCommand deleteRequestCommand = new ReverseCommand(new AddCommand(map,request,precedingPickupId,precedingDeliveryId));
+        Step precedingPickup = map.findPrecedingRequestPoint(request.getPickUpPoint());
+        Step precedingDelivery = map.findPrecedingRequestPoint(request.getDeliveryPoint());
+
+        ReverseCommand deleteRequestCommand = new ReverseCommand(new AddCommand(map,request,precedingPickup,precedingDelivery));
         controller.getListOfCommand().add(deleteRequestCommand);
 
         controller.initialState.entryAction(controller);

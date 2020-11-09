@@ -9,27 +9,35 @@ import model.Map;
 public class AddPickupState implements State {
 
     protected Request request;
-    protected Intersection precedingPoint;
+    protected Step precedingPoint;
 
     public AddPickupState() {
     }
 
-    public Intersection getpreceding(){
-        return precedingPoint;
-    }
 
     @Override
-    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
-
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
         if (precedingPoint == null) {
-            if(map.getRequestByIntersectionId(i.getId()) != null || i.getId() == map.getDepot().getId()) {
-                precedingPoint = new Intersection(i);
+            if(map.getRequestByIntersectionId(step.getId()) != null || step.getId() == map.getDepot().getId()) {
+                precedingPoint = new Step(step);
 
-                controller.Gview.drawMouseSelection(i.getId());
+                controller.Gview.drawMouseSelection(step);
                 controller.Tview.setMessage("Select the pickup point");
             }
         } else {
-            if(map.getRequestByIntersectionId(i.getId()) == null || map.getRequestByIntersectionId(i.getId()) != null) {
+                PickUpPoint pickup = new PickUpPoint(step, 0);
+                request.setPickUpPoint(pickup);
+
+                controller.Gview.drawMouseSelection(step);
+                controller.Tview.setMessage("Enter duration");
+                controller.addDuration(controller.Tview.durationPopup());
+
+}
+    }
+    @Override
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
+        if (precedingPoint != null) {
+            if (map.getRequestByIntersectionId(i.getId()) == null || map.getRequestByIntersectionId(i.getId()) != null) {
                 PickUpPoint pickup = new PickUpPoint(i, 0);
                 request.setPickUpPoint(pickup);
 
@@ -37,7 +45,6 @@ public class AddPickupState implements State {
                 controller.Tview.setMessage("Enter duration");
                 controller.addDuration(controller.Tview.durationPopup());
             }
-
         }
     }
 

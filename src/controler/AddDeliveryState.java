@@ -9,8 +9,8 @@ import model.Map;
 public class AddDeliveryState implements State {
 
     protected Request request;
-    protected Intersection PickupPrecedingPoint;
-    protected Intersection DeliveryPrecedingPoint;
+    protected Step PickupPrecedingPoint;
+    protected Step DeliveryPrecedingPoint;
 
     /**
      * Default constructor
@@ -20,16 +20,27 @@ public class AddDeliveryState implements State {
     }
 
     @Override
-    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
-
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
         if (DeliveryPrecedingPoint == null) {
-            if (map.getRequestByIntersectionId(i.getId()) != null || i.getId() == map.getDepot().getId()) {
-                DeliveryPrecedingPoint = i;
+            if (map.getRequestByIntersectionId(step.getId()) != null || step.getId() == map.getDepot().getId()) {
+                DeliveryPrecedingPoint = step;
 
-                controller.Gview.drawMouseSelection(i.getId());
+                controller.Gview.drawMouseSelection(step);
                 controller.Tview.setMessage("Select the delivery point");
             }
         } else {
+            DeliveryPoint delivery = new DeliveryPoint(step, 0);
+            request.setDeliveryPoint(delivery);
+
+            controller.Gview.drawMouseSelection(step);
+            controller.Tview.setMessage("Enter duration");
+            controller.addDuration(controller.Tview.durationPopup());
+        }
+    }
+
+    @Override
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
+        if (DeliveryPrecedingPoint != null) {
             if (map.getRequestByIntersectionId(i.getId()) == null || map.getRequestByIntersectionId(i.getId()) != null) {
                 DeliveryPoint delivery = new DeliveryPoint(i, 0);
                 request.setDeliveryPoint(delivery);
@@ -66,9 +77,9 @@ public class AddDeliveryState implements State {
         }
     }
 
-    protected void entryAction(Controller controller, Request r, Intersection pickuppredecingPoint) {
+    protected void entryAction(Controller controller, Request r, Step pickuppredecingPoint) {
         request = new Request(r);
-        PickupPrecedingPoint = new Intersection(pickuppredecingPoint);
+        PickupPrecedingPoint = new Step(pickuppredecingPoint);
         DeliveryPrecedingPoint = null;
         controller.Gview.enableSelection();
         controller.Tview.setMessage("Select the preceding point to the delivery point");
@@ -76,20 +87,20 @@ public class AddDeliveryState implements State {
 
     protected void reverseAction(Controller controller) {
         DeliveryPrecedingPoint = null;
-        controller.Gview.drawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(PickupPrecedingPoint);
         controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
         controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
 
     private void unDrawSelections(Controller controller){
         if(DeliveryPrecedingPoint !=null)
-            controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
+            controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
         else if(controller.confirmRequestState.DeliveryPrecedingPoint !=null)
-            controller.Gview.undrawMouseSelection(controller.confirmRequestState.DeliveryPrecedingPoint.getId());
+            controller.Gview.undrawMouseSelection(controller.confirmRequestState.DeliveryPrecedingPoint);
         if(request.getDeliveryPoint()!=null)
             controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
         controller.Gview.undrawMouseSelection(controller.addPickupState.request.getPickUpPoint().getId());
-        controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.undrawMouseSelection(PickupPrecedingPoint);
     }
 
 }

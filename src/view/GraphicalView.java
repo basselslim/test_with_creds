@@ -50,13 +50,13 @@ public class GraphicalView implements observer.Observer {
         screenY = (int)((screenBounds.getMaxY()-150)*0.762);
     }
 
-    public static HashMap<Long,Circle> circles = new HashMap<Long,Circle>();
+    public static HashMap<Long,List<Circle>> circles = new HashMap<Long,List<Circle>>();
 
     public static List<Line> lines = new ArrayList<Line>();
 
     public static List<Arrow> arrows = new ArrayList<Arrow>();
 
-    public static HashMap<Long,Rectangle> rectangles = new HashMap<Long,Rectangle>();
+    public static HashMap<Long,List<Rectangle>> rectangles = new HashMap<Long,List<Rectangle>>();
 
     public void drawMap() {
         if (!setScreenSize) {
@@ -69,22 +69,22 @@ public class GraphicalView implements observer.Observer {
         //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            drawPoint(intersection, Color.BLACK, pointSize,false); //draw standard point
+            drawPoint(intersection, Color.BLACK, pointSize); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
         //draw request points
         for (Request request : m_map.getListRequests()) {
 
-            Intersection pickup = request.getPickUpPoint();
-            Intersection delivery = request.getDeliveryPoint();
-            Random generator = new Random(pickup.getId());
+            Step pickupStep = request.getPickUpPoint();
+            Step deliveryStep = request.getDeliveryPoint();
+            Random generator = new Random(pickupStep.getId());
             int rand = generator.nextInt(150);
             int rand2 = generator.nextInt(150);
             int rand3 = generator.nextInt(150);
             Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
-            drawRectangle(pickup, color, ReqpointSize);
-            drawPoint(delivery, color, ReqpointSize,true);
+            drawRectangle(pickupStep, color, ReqpointSize);
+            drawRequestPoint(deliveryStep, color, ReqpointSize);
 
         }
 
@@ -163,24 +163,55 @@ public class GraphicalView implements observer.Observer {
     }
 
     public void drawMouseSelection(long NodeId) {
-        Circle circle = circles.get(NodeId);
-        Rectangle rectangle = rectangles.get(NodeId);
+        Circle circle = circles.get(NodeId).get(0);
         if (circle != null) {
             //circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
             circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
             circle.setStroke(Color.RED);
         }
-        if (rectangle != null) {
-            //rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
-            rectangle.setStroke(Color.RED);
-        }
 
     }
 
+    public void drawMouseSelection(Step step) {
+        List<Circle> CircleList = circles.get(step.getId());
+        for (Circle circle : CircleList) {
+            if (circle.getUserData() == step) {
+                circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
+                circle.setStroke(Color.RED);
+            }
+        }
+
+        List<Rectangle> RectangleList = rectangles.get(step.getId());
+        for (Rectangle rectangle : RectangleList) {
+            if (rectangle.getUserData() == step) {
+                rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
+                rectangle.setStroke(Color.RED);
+            }
+        }
+    }
+
+
+    public void undrawMouseSelection(Step step) {
+        List<Circle> CircleList = circles.get(step.getId());
+        for (Circle circle : CircleList) {
+            if (circle.getUserData() == step) {
+                circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
+                circle.setStroke(Color.BLACK);
+            }
+        }
+
+        List<Rectangle> RectangleList = rectangles.get(step.getId());
+        for (Rectangle rectangle : RectangleList) {
+            if (rectangle.getUserData() == step) {
+                rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
+                rectangle.setStroke(Color.BLACK);
+            }
+        }
+    }
+
     public void undrawMouseSelection(long NodeId) {
-        Circle circle = circles.get(NodeId);
-        Rectangle rectangle = rectangles.get(NodeId);
+        Circle circle = circles.get(NodeId).get(0);
+        Rectangle rectangle = rectangles.get(NodeId).get(0);
         if (circle != null) {
             //circle.setFill(Color.BLACK);
             circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
@@ -221,7 +252,7 @@ public class GraphicalView implements observer.Observer {
         arrows.add(arrow);
     }
 
-    private void drawPoint(Intersection intersection, Color color, double size, Boolean isRequest) {
+    private void drawPoint(Intersection intersection, Color color, double size) {
 
         double pointX = longToPix(intersection.getLongitude());
         double pickupY = latToPix(intersection.getLatitude());
@@ -232,32 +263,52 @@ public class GraphicalView implements observer.Observer {
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(intersection.getId());
-        if(isRequest)
-            circle.setViewOrder(-1.0);
-        circles.put(intersection.getId(),circle);
+        List<Circle> CircleList = new ArrayList<Circle>();
+        CircleList.add(circle);
+        circles.put(intersection.getId(),CircleList);
     }
 
-    private void drawRectangle(Intersection intersection, Color color, double size) {
+    private void drawRequestPoint(Step step, Color color, double size) {
 
-        double pointX = longToPix(intersection.getLongitude());
-        double pickupY = latToPix(intersection.getLatitude());
-        long id = intersection.getId();
+        double pointX = longToPix(step.getLongitude());
+        double pickupY = latToPix(step.getLatitude());
+
+        Circle circle = new Circle(size);
+        circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(StrokeSize);
+        circle.setFill(color.deriveColor(1, 1, 1, 1.0));
+        circle.relocate(pointX - size, pickupY - size);
+        circle.setUserData(step.getRequest().getDeliveryPoint());
+        circle.setViewOrder(-1.0);
+        if(circles.containsKey(step.getId())) {
+            circle.setTranslateX(1.0);
+            circle.setTranslateY(1.0);
+            circles.get(step.getId()).add(circle);
+        }
+    }
+
+    private void drawRectangle(Step step, Color color, double size) {
+
+        double pointX = longToPix(step.getLongitude());
+        double pickupY = latToPix(step.getLatitude());
+        long id = step.getId();
 
         Rectangle rectangle = new Rectangle(pointX-size,pickupY-size, size*2, size*2);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(StrokeSize);
         rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
 
-        rectangle.setUserData(id);
-        circles.remove(id);
-        if(rectangles.get(id)!=null) {
-            id +=1;
-            rectangle.setUserData(id);
-            rectangle.setHeight(rectangle.getHeight() / 2);
-            rectangle.setWidth(rectangle.getWidth() / 2);
+        rectangle.setUserData(step.getRequest().getPickUpPoint());
+        circles.get(id).remove(0);
+        if(rectangles.containsKey(step.getId())) {
+            rectangle.setTranslateX(1.0);
+            rectangle.setTranslateY(1.0);
+            rectangles.get(step.getId()).add(rectangle);
+        } else {
+            List<Rectangle> RectangleList = new ArrayList<Rectangle>();
+            RectangleList.add(rectangle);
+            rectangles.put(step.getId(),RectangleList);
         }
-        else
-        rectangles.put(id,rectangle);
     }
 
     private void addNodesToOverlay(){

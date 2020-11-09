@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import model.Request;
+import model.Step;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +17,10 @@ import java.util.List;
 public class MouseGestures {
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
-    HashMap<Long,Circle> circles;
+    HashMap<Long,List<Circle>> circles;
     List<Line> lines;
     List<Arrow> arrows;
-    HashMap<Long,Rectangle> rectangles;
+    HashMap<Long,List<Rectangle>> rectangles;
 
     Controller controller;
     GraphicalView Gview;
@@ -38,7 +40,7 @@ public class MouseGestures {
         node.setOnMouseClicked(nodeOnMouseClickedEventHandler);
     }
 
-    public void makeMovable(Node node, HashMap<Long,Circle> circles, List<Line> lines, List<Arrow> arrows, HashMap<Long,Rectangle> rectangles) {
+    public void makeMovable(Node node, HashMap<Long,List<Circle>> circles, List<Line> lines, List<Arrow> arrows, HashMap<Long,List<Rectangle>> rectangles) {
         this.lines = lines;
         this.circles = circles;
         this.arrows = arrows;
@@ -50,14 +52,21 @@ public class MouseGestures {
     EventHandler<MouseEvent> nodeOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent t) {
+
             if (t.getSource() instanceof Circle) {
                 Circle circle = ((Circle) (t.getSource()));
-                controller.leftClick((long)circle.getUserData());
+                if(circle.getUserData() instanceof Step)
+                {
+                    controller.leftClick((Step)circle.getUserData());
+                } else {
+                    controller.leftClick((long)circle.getUserData());
+                }
+
             }
 
             else if(t.getSource() instanceof Rectangle) {
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
-                controller.leftClick((long)rectangle.getUserData());
+                controller.leftClick((Step)rectangle.getUserData());
             }
         }
     };
@@ -112,8 +121,8 @@ public class MouseGestures {
             Node p = ((Node) (t.getSource()));
             HashMap.Entry entry = circles.entrySet().iterator().next();
             long Id = (long)entry.getKey();
-            orgTranslateX = circles.get(Id).getTranslateX();
-            orgTranslateY = circles.get(Id).getTranslateY();
+            orgTranslateX = circles.get(Id).get(0).getTranslateX();
+            orgTranslateY = circles.get(Id).get(0).getTranslateY();
         }
     };
 

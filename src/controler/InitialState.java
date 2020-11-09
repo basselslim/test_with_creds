@@ -5,10 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-import model.Intersection;
+import model.*;
 import model.Map;
-import model.Path;
-import model.Request;
 
 import java.io.File;
 import java.util.*;
@@ -56,24 +54,27 @@ public class InitialState implements State {
 
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
-
         unSelectPoints(controller);
 
-        Request request = controller.map.getRequestByIntersectionId(i.getId());
-        if (request != null) {
-            //Select both Delivery and Pickup points if the point is a request
-            controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
-            controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
-            controller.Tview.selectRequest(map.getRequestByIntersectionId(i.getId()),false);
-            CurrentIdList.add(request.getPickUpPoint().getId());
-            CurrentIdList.add(request.getDeliveryPoint().getId());
-            controller.deleteRequest.setDisable(false);
-        }else{
-            //Select current point
-            controller.Gview.drawMouseSelection(i.getId());
-            CurrentIdList.add(i.getId());
-            controller.deleteRequest.setDisable(true);
-        }
+        //Select current point
+        controller.Gview.drawMouseSelection(i.getId());
+        CurrentIdList.add(i.getId());
+        controller.deleteRequest.setDisable(true);
+
+    }
+
+    @Override
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
+        unSelectPoints(controller);
+
+        Request request = step.getRequest();
+        //Select both Delivery and Pickup points if the point is a request
+        controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
+        controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Tview.selectRequest(request,false);
+        CurrentIdList.add(request.getPickUpPoint().getId());
+        CurrentIdList.add(request.getDeliveryPoint().getId());
+        controller.deleteRequest.setDisable(false);
 
     }
 

@@ -3,6 +3,7 @@ package controler;
 import model.Intersection;
 import model.Map;
 import model.Request;
+import model.Step;
 
 import javax.naming.ldap.Control;
 
@@ -10,8 +11,8 @@ import javax.naming.ldap.Control;
 public class ConfirmRequestState implements State {
 
     protected Request request;
-    protected Intersection PickupPrecedingPoint;
-    protected Intersection DeliveryPrecedingPoint;
+    protected Step PickupPrecedingPoint;
+    protected Step DeliveryPrecedingPoint;
 
     public ConfirmRequestState() {
     }
@@ -22,9 +23,8 @@ public class ConfirmRequestState implements State {
  *
  */
         if(request != null) {
-            long precedingDeliveryId = DeliveryPrecedingPoint.getId();
-            long precedingPickupId = PickupPrecedingPoint.getId();
-            AddCommand addRequestCommand = new AddCommand(controller. map, request, precedingPickupId, precedingDeliveryId);
+
+            AddCommand addRequestCommand = new AddCommand(controller. map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
             controller.getListOfCommand().add(addRequestCommand);
 
             controller.initialState.entryAction(controller);
@@ -56,8 +56,8 @@ public class ConfirmRequestState implements State {
     protected void entryAction(Request r, Controller controller) {
         controller.confirmAction.setVisible(true);
         request = new Request(r);
-        PickupPrecedingPoint = new Intersection(controller.addDeliveryState.PickupPrecedingPoint);
-        DeliveryPrecedingPoint = new Intersection(controller.addDeliveryState.DeliveryPrecedingPoint);
+        PickupPrecedingPoint = new Step(controller.addDeliveryState.PickupPrecedingPoint);
+        DeliveryPrecedingPoint = new Step(controller.addDeliveryState.DeliveryPrecedingPoint);
         controller.Tview.setMessage("Confirm adding the request ?");
     }
 
@@ -71,17 +71,17 @@ public class ConfirmRequestState implements State {
     }
 
     private void drawSelection(Controller controller){
-        controller.Gview.drawMouseSelection(DeliveryPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(DeliveryPrecedingPoint);
         controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
-        controller.Gview.drawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(PickupPrecedingPoint);
         controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
     }
 
     private void unDrawSelection(Controller controller){
         controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
-        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
-        controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
+        controller.Gview.undrawMouseSelection(PickupPrecedingPoint);
     }
 
 
