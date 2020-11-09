@@ -33,6 +33,7 @@ public class ConfirmRequestState implements State {
 
             controller.Tview.setMessage("Request added");
             controller.confirmAction.setVisible(false);
+            controller.addRequest.setDisable(false);
             controller.Gview.disableSelection();
         }
     }
@@ -61,6 +62,8 @@ public class ConfirmRequestState implements State {
     }
 
     protected void reverseAction(Controller controller) {
+        controller.addRequest.setDisable(true);
+        controller.deleteRequest.setDisable(true);
         controller.confirmAction.setVisible(true);
         controller.Gview.disableSelection();
         drawSelection(controller);
