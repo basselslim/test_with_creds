@@ -163,7 +163,7 @@ public class Map extends observer.Observable {
 
 
     //INTERSECTIONS
-    public void addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
+    public void addRequest(Request newRequest,Step precedingPickUpId,Step precedingDeliveryId) {
         this.listRequests.add(newRequest);
         this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
         notifyObservers();
