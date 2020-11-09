@@ -44,14 +44,14 @@ public class Tour {
     /**
      * addRequestToTour
      **/
-    public void addRequestToTour(Request newRequest, Step precedingPickUpId, Step precedingDeliveryId) {
+    public void addRequestToTour(Request newRequest, Step precedingPickUp, Step precedingDelivery) {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToInsertPickUp = 0;
         int pathIndexToInsertDelivery = 0;
 
         //Find the place to insert the pickUp
         for (Path path : listPaths) {
-            if (path.getDeparture() == precedingPickUpId) {
+            if (path.getDeparture().getRequest() == precedingPickUp.getRequest()) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
                 List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(path.getDeparture(), newRequest.getPickUpPoint());
                 List<Segment> roadNewPickUptoArrival = calculator.computeSmallestPath(newRequest.getPickUpPoint(), path.getArrival());
@@ -68,7 +68,7 @@ public class Tour {
 
         //Find the place to insert the Delivery
         for (Path path : listPaths) {
-            if (path.getDeparture() == precedingDeliveryId) {
+            if (path.getDeparture().getRequest() == precedingDelivery.getRequest()) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(path.getDeparture(),newRequest.getDeliveryPoint());
                 List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(newRequest.getDeliveryPoint(),path.getArrival());
