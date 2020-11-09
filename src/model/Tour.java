@@ -73,6 +73,12 @@ public class Tour extends Observable {
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getDeliveryPoint().getId()));
                 List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getDeliveryPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
                 // Create the paths and insert them into the tour List
+                if (newRequest.getDeliveryPoint().getId() == path.getIdDeparture()) {
+                    System.out.println("meme point que le preceding");
+                }
+                if (newRequest.getDeliveryPoint().getId() == path.getIdArrival()) {
+                    System.out.println("meme point que le suivant");
+                }
                 Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getIdDeparture(), newRequest.getDeliveryPoint().getId());
                 Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint().getId(), path.getIdArrival());
                 listPaths.remove(pathIndexToInsertDelivery);
