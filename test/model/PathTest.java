@@ -54,4 +54,14 @@ class PathTest {
         assertEquals(0,p.getPathLength());
 
     }
+    @Test
+    void getDuration(){
+        //Arrange
+        Path p = new Path();
+        p.setPathLength(150);
+        //Act
+        int d = p.getDuration();
+        //Assert
+        assertEquals(36,d);
+    };
 }

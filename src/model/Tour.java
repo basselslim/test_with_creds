@@ -346,4 +346,40 @@ public class Tour extends Observable {
         }
         return time;
     }
+
+    public void setTourLength(int tourLength) {
+        this.tourLength = tourLength;
+    }
+
+    public void setListPaths(List<Path> listPaths) {
+        this.listPaths = listPaths;
+    }
+
+    public void setListTimes(List<int[]> listTimes) {
+        this.listTimes = listTimes;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public String getRoadMapFilePath() {
+        return roadMapFilePath;
+    }
+
+    public void setRoadMapFilePath(String roadMapFilePath) {
+        this.roadMapFilePath = roadMapFilePath;
+    }
+
+    public HashMap<Long, ArrayList<Intersection>> getListRequestsIntersection() {
+        return listRequestsIntersection;
+    }
+
+    public void setListRequestsIntersection(HashMap<Long, ArrayList<Intersection>> listRequestsIntersection) {
+        this.listRequestsIntersection = listRequestsIntersection;
+    }
 }

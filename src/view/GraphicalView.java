@@ -152,9 +152,9 @@ public class GraphicalView implements observer.Observer {
         }
 
         //draw best tour
-        if (!m_map.getTour().getListPaths().isEmpty() && m_map.getTour() != null) {
+        if (!m_map.getDeliveryTour().getListPaths().isEmpty() && m_map.getDeliveryTour() != null) {
             System.out.println("ENTREE");
-            for (Path path : m_map.getTour().getListPaths()) {
+            for (Path path : m_map.getDeliveryTour().getListPaths()) {
                 Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
                 if (depart != null) {
                     for (Segment segment : path.getListSegments()) {

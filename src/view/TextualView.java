@@ -104,7 +104,7 @@ public class TextualView implements observer.Observer {
 
     public void sortRequestsTable() {
         int newTableIndex = 0;
-        for (Path path : map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
+        for (Path path : map.getDeliveryTour().getListPaths().subList(1, map.getDeliveryTour().getListPaths().size())) {
             long id = path.getIdDeparture();
             int tableIndex = 0;
             while (((Intersection) requestsTable.getItems().get(tableIndex)).getId() != id) {
@@ -146,7 +146,7 @@ public class TextualView implements observer.Observer {
     @Override
     public void update(observer.Observable observed, Object arg) {
         createRequestList();
-        if (!map.getTour().getListPaths().isEmpty()) {
+        if (!map.getDeliveryTour().getListPaths().isEmpty()) {
             sortRequestsTable();
         }
     }

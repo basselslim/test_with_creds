@@ -57,12 +57,4 @@ public class Request extends Observable {
         this.deliveryPoint = deliveryPoint;
     }
 
-    @Override
-    public String toString() {
-        return "Request{" +
-                "order=" + order +
-                ", pickUpPoint=" + pickUpPoint +
-                ", deliveryPoint=" + deliveryPoint +
-                '}';
-    }
 }

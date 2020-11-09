@@ -37,6 +37,10 @@ public class Path {
         return pathLength;
     }
 
+    public void setPathLength(int pathLength) {
+        this.pathLength = pathLength;
+    }
+
     public List<Segment> getListSegments() {
         return listSegments;
     }
@@ -53,12 +57,4 @@ public class Path {
         return idArrival;
     }
 
-    @Override
-    public String toString() {
-        return "Path{" +
-                "pathLength=" + pathLength +
-                ", idDeparture=" + idDeparture +
-                ", idArrival=" + idArrival +
-                '}';
-    }
 }

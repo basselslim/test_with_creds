@@ -1,7 +1,6 @@
 package controler;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import model.Intersection;
 import model.Map;
@@ -78,7 +77,7 @@ public class Controller {
         exportFileChooser.getExtensionFilters().add(extFilter);
         File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
 
-        map.getTour().generateRoadMap(exportLocation.getPath());
+        map.getDeliveryTour().generateRoadMap(exportLocation.getPath());
     }
 
     public void leftClick(long idIntersection){
