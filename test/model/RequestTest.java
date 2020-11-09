@@ -34,6 +34,21 @@ class RequestTest {
     @Test
     void standardConstructorWorking()
     {
+        //Arrange
+        PickUpPoint p1 = new PickUpPoint(1,2,3,4);
+        DeliveryPoint d1 = new DeliveryPoint(2,2,3,4);
+        //Act
+        Request r1 = new Request(p1,d1);
+        //Assert
+        assertEquals(p1,r1.getPickUpPoint());
+        assertEquals(d1,r1.getDeliveryPoint());
+    }
+    @Test
+    void setOrder(){
+        //Arrange
+        Request r1 = new Request();
+        //Act
+        r1.setOrder(2);
 
     }
 }
