@@ -99,7 +99,6 @@ public class Controller {
     //Public Methods
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event,this,map);
-        deleteRequest.setDisable(false);
     }
 
     public void computeTour(ActionEvent event) {
