@@ -3,6 +3,7 @@ package controler;
 import model.Intersection;
 import model.Map;
 import model.Segment;
+import model.Step;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public class ComputeSmallestPath {
         this.map = map;
     }
 
-    public List<Segment> computeSmallestPath(Intersection a, Intersection b) {
+    public List<Segment> computeSmallestPath(Step a, Step b) {
         Intersection from = map.getListIntersections().get(a.getId());
         Intersection to = map.getListIntersections().get(b.getId());
         List<Intersection> computedPath;
