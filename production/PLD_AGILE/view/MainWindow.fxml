@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< Updated upstream
 <?import javafx.scene.canvas.Canvas?>
+=======
+<?import javafx.geometry.Insets?>
+>>>>>>> Stashed changes
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -9,49 +14,136 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< Updated upstream
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Window">
     <HBox prefHeight="100.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+=======
+<VBox maxHeight="1050.0" maxWidth="1680.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
+    <HBox alignment="CENTER_LEFT" minHeight="60.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+>>>>>>> Stashed changes
       <children>
-        <Button fx:id="btn_load_map" mnemonicParsing="false" onAction="#LoadMap" prefHeight="56.0" prefWidth="190.0" text="Load Map" translateX="20.0" translateY="30.0">
+        <Button fx:id="LoadMap" mnemonicParsing="false" onAction="#LoadMap" prefHeight="40.0" prefWidth="200.0" text="Load Map">
             <font>
                 <Font size="18.0" />
             </font>
+            <HBox.margin>
+               <Insets left="20.0" />
+            </HBox.margin>
         </Button>
+<<<<<<< Updated upstream
         <Button fx:id="btn_load_requests" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="56.0" prefWidth="290.0" text="Load Requests" translateX="800.0" translateY="30.0" disable="true">
+=======
+         <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+        <Button fx:id="LoadRequests" disable="true" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="40.0" prefWidth="203.0" text="Load Requests">
+>>>>>>> Stashed changes
           <font>
               <Font size="18.0" />
           </font>
+            <HBox.margin>
+               <Insets right="100.0" />
+            </HBox.margin>
         </Button>
       </children>
     </HBox>
+<<<<<<< Updated upstream
    <SplitPane dividerPositions="0.7390776699029126">
+=======
+   <SplitPane dividerPositions="0.6573676680972819" maxHeight="800.0">
+>>>>>>> Stashed changes
      <items>
-       <AnchorPane minHeight="0.0" minWidth="0.0">
+       <AnchorPane>
             <children>
+<<<<<<< Updated upstream
                 <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0">
                    <children>
                       <Canvas fx:id="canvas" height="600.0" width="1200.0" />
                      <Button fx:id="btn_zoom" layoutX="29.0" layoutY="542.0" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" />
+=======
+                <Pane fx:id="overlay" onZoom="#Zoom" prefHeight="800.0" prefWidth="1000.0" translateX="30.0">
+>>>>>>> Stashed changes
 
                    </children>
                </Pane>
             </children>
          </AnchorPane>
+<<<<<<< Updated upstream
        <AnchorPane fx:id="myPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+=======
+       <VBox>
+           <AnchorPane fx:id="myPane" maxHeight="800.0" minHeight="200.0" minWidth="300.0" VBox.vgrow="ALWAYS" />
+           <HBox alignment="CENTER" maxHeight="30.0">
+               <Button fx:id="addRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addRequest" prefHeight="30.0" prefWidth="120.0" text="Add request" HBox.hgrow="ALWAYS" />
+               <Button fx:id="deleteRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="30.0" prefWidth="120.0" text="Delete Request" HBox.hgrow="ALWAYS" />
+           </HBox>
+       </VBox>
+>>>>>>> Stashed changes
      </items>
    </SplitPane>
-   <HBox prefHeight="100.0" prefWidth="200.0">
+   <Pane maxHeight="0.0" maxWidth="0.0" prefHeight="0.0" prefWidth="0.0">
       <children>
+         <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="20.0" translateY="-50.0" />
+          <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="70.0" translateY="-50.0" />
+      </children>
+   </Pane>
+   <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: darkgrey;" VBox.vgrow="ALWAYS">
+      <children>
+<<<<<<< Updated upstream
          <Button fx:id="btn_compute" mnemonicParsing="false" onAction="#Compute" prefHeight="41.0" prefWidth="170.0" text="Compute" translateX="40.0" translateY="30.0">
+=======
+          <VBox alignment="CENTER">
+              <children>
+                  <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo">
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin></Button>
+                  <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo">
+                  <VBox.margin>
+                     <Insets top="5.0" />
+                  </VBox.margin>
+               </Button>
+              </children>
+          </VBox>
+
+         <TextArea fx:id="TextArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="64.0" prefWidth="514.0" text="Please load a map">
+            <font>
+               <Font name="System Bold" size="18.0" />
+            </font>
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </TextArea>
+         <Button fx:id="confirmAction" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#confirmAction" prefHeight="50.0" prefWidth="88.0" text="Confirm" visible="false" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin></Button>
+         <Button fx:id="ComputeTour" mnemonicParsing="false" onAction="#computeTour" prefHeight="40.0" prefWidth="150.0" style="-fx-border-color: black;" text="Compute">
+>>>>>>> Stashed changes
             <font>
                <Font size="21.0" />
             </font>
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
          </Button>
+<<<<<<< Updated upstream
          <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="161.0" text="Export RoadMap" translateX="1000.0" translateY="30.0">
+=======
+         <Button fx:id="ExportTour" mnemonicParsing="false" onAction="#ExportRoadMap" prefHeight="38.0" prefWidth="161.0" style="-fx-border-color: black;" text="Export RoadMap">
+>>>>>>> Stashed changes
             <font>
                <Font size="19.0" />
             </font>
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
          </Button>
+         <Label fx:id="TextTour" prefWidth="150.0" text="Tour length :">
+            <HBox.margin>
+               <Insets left="10.0" right="20.0" />
+            </HBox.margin></Label>
       </children>
+      <padding>
+         <Insets bottom="20.0" left="20.0" top="20.0" />
+      </padding>
    </HBox>
 </VBox>
