@@ -8,7 +8,7 @@ import javax.naming.ldap.Control;
 /**
  * Confirm request state.
  *
- * @authorT-REXANOME
+ * @author T-REXANOME
  */
 public class ConfirmRequestState implements State {
 

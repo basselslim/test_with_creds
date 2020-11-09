@@ -18,14 +18,16 @@ public class AddCommand implements Command {
     /**
      * Constructor.
      *
-     * @param m the map to which f is added
-     * @param r the request added to m
+     * @param m          the map to which f is added
+     * @param r          the request added to m
+     * @param deliveryId id of the delivery point
+     * @param pickUpId   id of the pick up point
      */
-    public AddCommand(Map m, Request r,Long pickUpId,Long deliveryId) {
+    public AddCommand(Map m, Request r, Long pickUpId, Long deliveryId) {
         this.map = m;
         this.request = r;
-        this.precedingPickUpId=pickUpId;
-        this.precedingDeliveryId=deliveryId;
+        this.precedingPickUpId = pickUpId;
+        this.precedingDeliveryId = deliveryId;
     }
 
     /**
@@ -33,8 +35,8 @@ public class AddCommand implements Command {
      */
     @Override
     public void doCommand() {
-        if(precedingDeliveryId !=0 && precedingPickUpId != 0)
-            map.addRequest(request,precedingPickUpId,precedingDeliveryId);
+        if (precedingDeliveryId != 0 && precedingPickUpId != 0)
+            map.addRequest(request, precedingPickUpId, precedingDeliveryId);
         else
             map.addRequest(request);
     }

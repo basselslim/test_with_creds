@@ -9,8 +9,8 @@ import javax.naming.ldap.Control;
 
 /**
  * State of AGILEPLD when receiving the message delete() from InitialState
- * -> Wait for a leftClick
- * -> Return back to initialState when receiving the message rightClick()
+ * - Wait for a leftClick
+ * - Return back to initialState when receiving the message rightClick()
  *
  * @author T-REXANOME
  */
