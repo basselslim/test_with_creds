@@ -289,6 +289,10 @@ public class GraphicalView implements observer.Observer {
             circle.setUserData(step.getRequest().getDeliveryPoint());
             circle.setViewOrder(-1.0);
             int order = circles.get(id).size()-1;
+            System.out.println("depot : " +m_map.getDepot().getId());
+            System.out.println("id : "+id);
+            if(m_map.getDepot().getId() == id)
+                order++;
             if(rectangles.get(id)!=null)
                     order += rectangles.get(id).size();
             System.out.println(order);
@@ -310,6 +314,8 @@ public class GraphicalView implements observer.Observer {
             //circles.get(id).remove(0);
             if (rectangles.containsKey(id)) {
                 int order = circles.get(id).size() + rectangles.get(id).size()-1;
+                if(m_map.getDepot().getId() == id)
+                    order++;
                 rectangle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
                 rectangles.get(id).add(rectangle);
             } else {
@@ -337,11 +343,14 @@ public class GraphicalView implements observer.Observer {
                         depot.setStroke(Color.BLACK);
                         depot.setStrokeWidth(StrokeSize * 1.5);
                         depot.setViewOrder(-1.0);
-                        depot.setUserData(m_map.getDepot());
+                        depot.setUserData(m_map.getDepot().getId());
                     } else
                         m_overlay.getChildren().add(circle);
                 }
             }
+            List<Circle> DepotCircleList = new ArrayList<>();
+            circles.put(m_map.getDepot().getId(),DepotCircleList);
+            circles.get(m_map.getDepot().getId()).add(depot);
             m_overlay.getChildren().add(depot);
 
             for (Arrow arrow : arrows) {
