@@ -135,7 +135,7 @@ public class TextualView implements observer.Observer {
                         if (!empty) {
                             setText(Integer.toString(i));
                             Step step = (Step)requestsTable.getItems().get(indexProperty().getValue());
-                            Random generator = new Random(step.getRequest().getPickUpPoint().getId());
+                            Random generator = new Random(step.getRequest().getDeliveryPoint().getId()+step.getRequest().getPickUpPoint().getId()+1);
                             int rand = generator.nextInt(150);
                             int rand2 = generator.nextInt(150);
                             int rand3 = generator.nextInt(150);

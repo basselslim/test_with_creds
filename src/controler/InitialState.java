@@ -45,7 +45,7 @@ public class InitialState implements State {
     }
 
     public void deleteRequest(Controller controller) {
-        Request request = controller.map.getRequestByIntersectionId(CurrentIdList.get(0));
+        Request request = CurrentStepList.get(0).getRequest();
         if( request != null) {
             controller.addRequest.setDisable(true);
             controller.setCurrentState(controller.deleteState);
