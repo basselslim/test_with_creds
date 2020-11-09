@@ -228,7 +228,7 @@ public class Tour extends Observable {
             for(Segment s: p.getListSegments()) {
                 newStreetName = s.getStreetName();
                 if ((!(newStreetName.equals(actualStreetName)))&&(!(actualStreetName.equals("")))){
-                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersections\n\n";
+                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersection(s)\n\n";
                     nbIntersections =0;
                     lengthTotalOnStreet=0;
                     totalText+=SegmentDescription;
@@ -243,7 +243,7 @@ public class Tour extends Observable {
             totalText+=this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
-        totalText += "   - Arrival at depot, your tour have ended. Congratulations";
+        totalText += "   - Arrival at depot, your tour has ended. Congratulations";
         totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
         return totalText;
     }
