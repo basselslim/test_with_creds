@@ -297,8 +297,6 @@ public class GraphicalView implements observer.Observer {
             circle.setUserData(step.getRequest().getDeliveryPoint());
             circle.setViewOrder(-1.0);
             int order = circles.get(id).size()-1;
-            System.out.println("depot : " +m_map.getDepot().getId());
-            System.out.println("id : "+id);
             if(m_map.getDepot().getId() == id)
                 order++;
             if(rectangles.get(id)!=null)

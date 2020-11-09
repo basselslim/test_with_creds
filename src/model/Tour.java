@@ -164,6 +164,12 @@ public class Tour {
         return tourLength;
     }
 
+    public String getDuration() {
+        String duration = "";
+        duration = timeToString(getListTimes().get(getListTimes().size()-1)[1]-getListTimes().get(0)[0]);
+        return duration;
+    }
+
     public List<Path> getListPaths() {
         return listPaths;
     }
