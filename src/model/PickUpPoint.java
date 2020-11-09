@@ -6,12 +6,11 @@ import java.util.*;
 /**
  * 
  */
-public class PickUpPoint extends Intersection {
+public class PickUpPoint extends Step {
     /**
      *
      */
     protected int pickUpDuration;
-
     /**
      * Default constructor
      */
@@ -43,4 +42,5 @@ public class PickUpPoint extends Intersection {
     public void setPickUpDuration(int pickUpDuration) {
         this.pickUpDuration = pickUpDuration;
     }
+
 }

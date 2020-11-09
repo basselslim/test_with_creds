@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Time;
 
-public class Depot {
+public class Depot extends Step{
 
     protected long id;
     protected String departureTime;

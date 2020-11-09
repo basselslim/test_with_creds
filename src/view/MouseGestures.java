@@ -9,27 +9,26 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MouseGestures {
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
-    List<Circle> circles;
+    HashMap<Long,Circle> circles;
     List<Line> lines;
     List<Arrow> arrows;
-    List<Rectangle> rectangles;
+    HashMap<Long,Rectangle> rectangles;
 
     Controller controller;
     GraphicalView Gview;
 
     Color currentcolor;
-    Circle currentCircle;
-    Rectangle currentRectangle;
 
     protected double newTranslateX;
     protected double newTranslateY;
 
-    MouseGestures(Controller c) {
+    public MouseGestures(Controller c) {
         controller = c;
     }
 
@@ -39,7 +38,7 @@ public class MouseGestures {
         node.setOnMouseClicked(nodeOnMouseClickedEventHandler);
     }
 
-    public void makeMovable(Node node, List<Circle> circles, List<Line> lines, List<Arrow> arrows, List<Rectangle> rectangles) {
+    public void makeMovable(Node node, HashMap<Long,Circle> circles, List<Line> lines, List<Arrow> arrows, HashMap<Long,Rectangle> rectangles) {
         this.lines = lines;
         this.circles = circles;
         this.arrows = arrows;
@@ -52,18 +51,12 @@ public class MouseGestures {
         @Override
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
-                deselectCurrent();
                 Circle circle = ((Circle) (t.getSource()));
-                Gview.drawMouseSelection(circle);
-                currentCircle = circle;
                 controller.leftClick((long)circle.getUserData());
             }
 
             else if(t.getSource() instanceof Rectangle) {
-                deselectCurrent();
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
-                Gview.drawMouseSelection(rectangle);
-                currentRectangle = rectangle;
                 controller.leftClick((long)rectangle.getUserData());
             }
         }
@@ -78,13 +71,13 @@ public class MouseGestures {
 
                 Circle circle = ((Circle) (t.getSource()));
                 currentcolor = (Color) circle.getFill();
-                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
+                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
                 controller.mouseOn((long) circle.getUserData());
             } else if (t.getSource() instanceof Rectangle) {
 
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
                 currentcolor = (Color) rectangle.getFill();
-                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.7));
+                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
                 controller.mouseOn((long) rectangle.getUserData());
             }
         }
@@ -117,9 +110,10 @@ public class MouseGestures {
             orgSceneY = t.getSceneY();
 
             Node p = ((Node) (t.getSource()));
-
-            orgTranslateX = circles.get(1).getTranslateX();
-            orgTranslateY = circles.get(1).getTranslateY();
+            HashMap.Entry entry = circles.entrySet().iterator().next();
+            long Id = (long)entry.getKey();
+            orgTranslateX = circles.get(Id).getTranslateX();
+            orgTranslateY = circles.get(Id).getTranslateY();
         }
     };
 
@@ -138,45 +132,35 @@ public class MouseGestures {
             //Boolean YBlocking = newTranslateY+controller.getMap().findMinLong() > 800 ;
 
             //if(XBlocking && YBlocking){
-                if (circles.get(1).getCenterX() < 100) {
-                    for (Circle circle : circles) {
-                        circle.setTranslateX(newTranslateX);
-                        circle.setTranslateY(newTranslateY);
-                    }
 
-                    for (Line line : lines) {
-                        line.setTranslateX(newTranslateX);
-                        line.setTranslateY(newTranslateY);
-
-                    }
-                    for (Arrow arrow : arrows) {
-                        arrow.setTranslateX(newTranslateX);
-                        arrow.setTranslateY(newTranslateY);
-
-                    }
-                    for (Rectangle rectangle : rectangles) {
-                        rectangle.setTranslateX(newTranslateX);
-                        rectangle.setTranslateY(newTranslateY);
-
-                    }
+            for (HashMap.Entry mapentry : circles.entrySet()) {
+                Circle circle = (Circle) mapentry.getValue();
+                circle.setTranslateX(newTranslateX);
+                circle.setTranslateY(newTranslateY);
             }
-            //}
+
+            for (Line line : lines) {
+                line.setTranslateX(newTranslateX);
+                line.setTranslateY(newTranslateY);
+
+            }
+            for (Arrow arrow : arrows) {
+                arrow.setTranslateX(newTranslateX);
+                arrow.setTranslateY(newTranslateY);
+
+            }
+            for (HashMap.Entry mapentry : rectangles.entrySet()) {
+                Rectangle rectangle = (Rectangle) mapentry.getValue();
+                rectangle.setTranslateX(newTranslateX);
+                rectangle.setTranslateY(newTranslateY);
+
+            }
         }
+        //}
+
     };
 
-    private void deselectCurrent() {
-        if (currentRectangle != null) {
-            currentRectangle.setStroke(Color.BLACK);
-            currentRectangle.setStrokeWidth(currentRectangle.getStrokeWidth() / 2);
-            currentRectangle = null;
-        }
-        if (currentCircle != null) {
-            currentCircle.setStroke(Color.BLACK);
-            currentCircle.setStrokeWidth(currentCircle.getStrokeWidth() / 2);
-            currentCircle = null;
-        }
 
-    }
 
     public void setGview(GraphicalView graphicalView) {
         Gview = graphicalView;

@@ -23,11 +23,17 @@ public class Request extends Observable {
         this.order = r.order;
         this.pickUpPoint = r.getPickUpPoint();
         this.deliveryPoint = r.getDeliveryPoint();
+        if (deliveryPoint != null && pickUpPoint != null) {
+            this.pickUpPoint.setRequest(this);
+            this.deliveryPoint.setRequest(this);
+        }
     }
 
     public Request(PickUpPoint pickUpPoint, DeliveryPoint deliveryPoint) {
         this.pickUpPoint = pickUpPoint;
         this.deliveryPoint = deliveryPoint;
+        this.pickUpPoint.setRequest(this);
+        this.deliveryPoint.setRequest(this);
     }
 
     /**

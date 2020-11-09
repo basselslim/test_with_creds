@@ -65,11 +65,11 @@ class TravellingSalesmanProblemTest {
             for (Segment s : mapentry.getValue().getListSegments()) {
                 List<Segment> listSegments = new LinkedList<Segment>();
                 listSegments.add(s);
-                adjacencyList.put(s.getDestination(),new Path(listSegments,mapentry.getKey(),s.getDestination()));
+                //adjacencyList.put(s.getDestination(),new Path(listSegments,mapentry.getValue(),map.getListIntersections().get(s.getDestination())));
             }
             adjacencyMatrixOfShortestPath.put(mapentry.getKey(),adjacencyList);
         }
-        TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath);
+        TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath,10000);
     }
 
     @Test
