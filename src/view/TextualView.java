@@ -92,8 +92,9 @@ public class TextualView implements observer.Observer {
             }
         });
         durationColumn.setSortable(false);
-        //durationColumn.setResizable(false);
-        //durationColumn.setMaxWidth(100);
+        durationColumn.setResizable(false);
+        durationColumn.setMinWidth(70);
+        durationColumn.setMaxWidth(70);
 
         typeColumn = new TableColumn<>("Type");
         typeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
@@ -109,8 +110,9 @@ public class TextualView implements observer.Observer {
             }
         });
         typeColumn.setSortable(false);
-        //typeColumn.setResizable(false);
-        //typeColumn.setMaxWidth(100);
+        typeColumn.setResizable(false);
+        typeColumn.setMinWidth(60);
+        typeColumn.setMaxWidth(60);
 
         requestIndexColumn = new TableColumn<>("");
         requestIndexColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, Integer>, ObservableValue<Integer>>() {
@@ -145,8 +147,9 @@ public class TextualView implements observer.Observer {
             }
         });
         requestIndexColumn.setSortable(false);
-        //requestIndexColumn.setResizable(false);
-        //requestIndexColumn.setMaxWidth(20);
+        requestIndexColumn.setResizable(false);
+        requestIndexColumn.setMinWidth(20);
+        requestIndexColumn.setMaxWidth(20);
 
         arrivalTimeColumn = new TableColumn<>("Arrival Time");
         arrivalTimeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
@@ -157,7 +160,7 @@ public class TextualView implements observer.Observer {
                 } else {
                     int index = 0;
                     for (Path path: map.getTour().getListPaths()) {
-                        if (path.getIdArrival() == p.getValue().getId()) {
+                        if (path.getArrival() == p.getValue()) {
                             break;
                         } else {
                             index++;
@@ -173,7 +176,9 @@ public class TextualView implements observer.Observer {
         });
         arrivalTimeColumn.setVisible(false);
         arrivalTimeColumn.setSortable(false);
-        //arrivalTimeColumn.setResizable(false);
+        arrivalTimeColumn.setResizable(false);
+        arrivalTimeColumn.setMinWidth(80);
+        arrivalTimeColumn.setMaxWidth(80);
 
         crossroadColumn = new TableColumn<>("Crossroad");
         crossroadColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
@@ -215,8 +220,7 @@ public class TextualView implements observer.Observer {
             return cell ;
         });
         crossroadColumn.setSortable(false);
-        //crossroadColumn.setResizable(true);
-        //crossroadColumn.setPrefWidth(260);
+        crossroadColumn.setMinWidth(100);
 
         requestsTable.getColumns().add(requestIndexColumn);
         requestsTable.getColumns().add(durationColumn);
@@ -237,13 +241,13 @@ public class TextualView implements observer.Observer {
     public void sortRequestsTable() {
         int newTableIndex = 0;
         for (Path path : map.getTour().getListPaths().subList(1, map.getTour().getListPaths().size())) {
-            long id = path.getIdDeparture();
+            Step step = path.getDeparture();
             int tableIndex = 0;
-            while (((Intersection) requestsTable.getItems().get(tableIndex)).getId() != id) {
+            while (requestsTable.getItems().get(tableIndex) != step) {
                 tableIndex++;
             }
-            Intersection point = (Intersection) requestsTable.getItems().remove(tableIndex);
-            requestsTable.getItems().add(newTableIndex, point);
+            Step tableStep = (Step)requestsTable.getItems().remove(tableIndex);
+            requestsTable.getItems().add(newTableIndex, tableStep);
             newTableIndex++;
         }
     }
@@ -251,11 +255,21 @@ public class TextualView implements observer.Observer {
     public void selectRequest(Request req, Boolean local) {
         requestsTable.getSelectionModel().clearSelection();
         int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
+        /*int test = 0;
+        while (test < requestsTable.getItems().size()) {
+            Step step = (Step)requestsTable.getItems().get(test);
+            if (step == req.getPickUpPoint() && step.getRequest() == req) {
+                break;
+            }
+            test++;
+        }
+        System.out.println(index);
+        System.out.println(test);*/
         requestsTable.getSelectionModel().select(index);
         int index2 = requestsTable.getItems().indexOf(req.getDeliveryPoint());
         requestsTable.getSelectionModel().select(index2);
         if(local) {
-            controller.leftClick(req.getDeliveryPoint().getId());
+            //controller.leftClick(req.getDeliveryPoint());
         }
     }
 

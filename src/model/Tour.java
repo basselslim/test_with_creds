@@ -329,12 +329,11 @@ public class Tour {
         listTimes.get(0)[1] = time;
         int indexPath = 1;
         for (int[] times : listTimes.subList(1, listTimes.size())) {
-            long id = listPaths.get(indexPath).getIdDeparture();
-            Intersection stop = map.getTourStopById(id);
-            if (stop instanceof PickUpPoint) {
-                time += ((PickUpPoint) stop).getPickUpDuration();
-            } else if (stop instanceof DeliveryPoint) {
-                time += ((DeliveryPoint) stop).getDeliveryDuration();
+            Step step = listPaths.get(indexPath).getDeparture();
+            if (step instanceof PickUpPoint) {
+                time += ((PickUpPoint) step).getPickUpDuration();
+            } else if (step instanceof DeliveryPoint) {
+                time += ((DeliveryPoint) step).getDeliveryDuration();
             }
             time = checkTimeUnderOneDay(time);
             times[0] = time;
