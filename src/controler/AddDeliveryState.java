@@ -50,6 +50,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
+     * Add a duration.
      *
      * @param duration duration to add
      * @param controller
@@ -63,7 +64,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Undo.
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      *
      * @param listOfCommand
      * @param controller
@@ -76,7 +77,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Redo.
+     * Reinsert the last command removed by undo.
      *
      * @param listOfCommand
      * @param controller

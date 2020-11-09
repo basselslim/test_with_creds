@@ -1,7 +1,7 @@
 package observer;
 
 /**
- * Observer
+ * Observer.
  *
  * @author T-REXANOME
  */

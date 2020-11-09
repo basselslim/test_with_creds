@@ -10,7 +10,7 @@ public class ListOfCommand {
     protected int currentIndex;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public ListOfCommand() {
         currentIndex = -1;

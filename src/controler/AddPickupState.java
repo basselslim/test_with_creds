@@ -17,10 +17,6 @@ public class AddPickupState implements State {
     public AddPickupState() {
     }
 
-    /**
-     *
-     * @return
-     */
     public Intersection getpreceding(){
         return precedingPoint;
     }
@@ -57,6 +53,7 @@ public class AddPickupState implements State {
     }
 
     /**
+     * Add duration.
      *
      * @param duration duration to add
      * @param controller
@@ -71,6 +68,7 @@ public class AddPickupState implements State {
     }
 
     /**
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      *
      * @param listOfCommand
      * @param controller
@@ -83,6 +81,7 @@ public class AddPickupState implements State {
     }
 
     /**
+     * Reinsert the last command removed by undo.
      *
      * @param listOfCommand
      * @param controller

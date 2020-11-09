@@ -67,7 +67,7 @@ public class GraphicalView implements observer.Observer {
     public static HashMap<Long, Rectangle> rectangles = new HashMap<Long, Rectangle>();
 
     /**
-     *
+     * Draw the map.
      */
     public void drawMap() {
         if (!setScreenSize) {
@@ -127,7 +127,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Refresh map.
      */
     public void refreshMap() {
         m_overlay.getChildren().clear();
@@ -139,7 +139,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Enable selection.
      */
     public void enableSelection() {
         isMapClickable = true;
@@ -150,7 +150,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Disable selection.
      */
     public void disableSelection() {
         isMapClickable = false;
@@ -158,7 +158,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Zoom.
+     * Zoom into the map.
      */
     public void zoom() {
 
@@ -227,8 +227,10 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * @param origin
-     * @param segmentList
+     * Draw segments from an origin intersection.
+     *
+     * @param origin      origin intersection
+     * @param segmentList list of segments of the intersection
      */
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
@@ -247,9 +249,11 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * @param origin
-     * @param destination
-     * @param size
+     * Draw an arrow.
+     *
+     * @param origin      origin intersection
+     * @param destination destination intersection
+     * @param size        size of the arrow
      */
     private void drawArrow(Intersection origin, Intersection destination, double size) {
 
@@ -264,10 +268,12 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * @param intersection
-     * @param color
-     * @param size
-     * @param isRequest
+     * Draw a point.
+     *
+     * @param intersection intersection
+     * @param color        color of the point
+     * @param size         size of the point
+     * @param isRequest    if the intersection belongs to a request
      */
     private void drawPoint(Intersection intersection, Color color, double size, Boolean isRequest) {
 
@@ -286,9 +292,11 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * @param intersection
-     * @param color
-     * @param size
+     * Draw a rectangle.
+     *
+     * @param intersection intersection
+     * @param color        color of the rectangle
+     * @param size         size of the rectangle
      */
     private void drawRectangle(Intersection intersection, Color color, double size) {
 
@@ -389,16 +397,20 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Convert latitude to pixel coordinate.
+     *
      * @param lat latitude to convert
-     * @return
+     * @return pixel coordinate
      */
     private double latToPix(double lat) {
         return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;
     }
 
     /**
+     * Convert longitude to pixel coordinate.
+     *
      * @param lon longitude to convert
-     * @return
+     * @return pixel coordinate
      */
     private double longToPix(double lon) {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;

@@ -51,7 +51,7 @@ public class Window extends Application {
     }
 
     /**
-     * Main
+     * Main.
      *
      * @param args arguments
      */

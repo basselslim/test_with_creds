@@ -20,7 +20,7 @@ public class DeleteState implements State {
 
     /**
      * Left click.
-     
+     *
      * @param controler
      * @param map
      * @param listOfCommands

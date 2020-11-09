@@ -216,7 +216,7 @@ public class Controller {
     }
 
     /**
-     * Undo.
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      *
      * @param event
      */
@@ -225,7 +225,7 @@ public class Controller {
     }
 
     /**
-     * Redo.
+     * Reinsert the last command removed by undo.
      *
      * @param event
      */

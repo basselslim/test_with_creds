@@ -29,7 +29,7 @@ public class AddCommand implements Command {
     }
 
     /**
-     * Do.
+     * Do action.
      */
     @Override
     public void doCommand() {
@@ -40,7 +40,7 @@ public class AddCommand implements Command {
     }
 
     /**
-     * Undo.
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      */
     @Override
     public void undoCommand() {

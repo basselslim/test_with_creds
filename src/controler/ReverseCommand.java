@@ -26,7 +26,7 @@ public class ReverseCommand implements Command {
     }
 
     /**
-     * Undo.
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      */
     @Override
     public void undoCommand() {

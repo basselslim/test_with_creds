@@ -104,7 +104,7 @@ public class InitialState implements State {
     }
 
     /**
-     * Undo.
+     * Temporary remove the last added command (this command may be reinserted again with redo).
      *
      * @param listOfCommand
      * @param controller
@@ -115,7 +115,7 @@ public class InitialState implements State {
     }
 
     /**
-     * Redo.
+     * Reinsert the last command removed by undo.
      *
      * @param listOfCommand
      * @param controller
