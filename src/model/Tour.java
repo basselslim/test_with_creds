@@ -57,13 +57,13 @@ public class Tour {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
 
                 List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(path.getDeparture(), newRequest.getPickUpPoint());
-                if (roadDeparturetoNewPickUp == null) {
-                    return 1; /* can't find a path to the new pick up point*/
-                }
+                /*if (roadDeparturetoNewPickUp == null) {
+                    return 1; // can't find a path to the new pick up point
+                }*/
                 List<Segment> roadNewPickUptoArrival = calculator.computeSmallestPath(newRequest.getPickUpPoint(), path.getArrival());
-                if (roadNewPickUptoArrival == null) {
-                    return 1; /* can't find a path to from new pick up point*/
-                }
+                /*if (roadNewPickUptoArrival == null) {
+                    return 1; // can't find a path to from new pick up point
+                }*/
 
 
                 // Create the path and insert them into the tour List
@@ -83,13 +83,13 @@ public class Tour {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
 
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(path.getDeparture(),newRequest.getDeliveryPoint());
-                if (roadDeparturetoNewDelivery == null) {
-                    return 2; /* can't find a path to the new delivery point*/
-                }
+                /*if (roadDeparturetoNewDelivery == null) {
+                    return 2; // can't find a path to the new delivery point
+                }*/
                 List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(newRequest.getDeliveryPoint(),path.getArrival());
-                if (roadNewDeliverytoArrival == null) {
-                    return 2; /* can't find a path from the new delivery point*/
-                }
+                /*if (roadNewDeliverytoArrival == null) {
+                    return 2; // can't find a path from the new delivery point
+                }*/
 
 
                 // Create the paths and insert them into the tour List
