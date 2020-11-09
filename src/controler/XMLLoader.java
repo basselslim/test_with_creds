@@ -26,6 +26,12 @@ public class XMLLoader {
     public XMLLoader() {
     }
 
+    /**
+     *
+     * @param pathNameXMLFile
+     * @param map
+     * @return
+     */
     public int parseMapXML(String pathNameXMLFile, Map map) {
         int check = 0;
         HashMap<Long,Intersection> listIntersection = new HashMap<Long,Intersection>();
@@ -125,6 +131,12 @@ public class XMLLoader {
         return check;
     }
 
+    /**
+     *
+     * @param pathNameXMLFile
+     * @param map
+     * @return
+     */
     public int parseRequestXML(String pathNameXMLFile, Map map) {
         int check = 0;
 

@@ -80,7 +80,7 @@ public class GraphicalView implements observer.Observer {
         //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            drawPoint(intersection, Color.DIMGRAY, pointSize,false); //draw standard point
+            drawPoint(intersection, Color.DIMGRAY, pointSize, false); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
@@ -260,7 +260,7 @@ public class GraphicalView implements observer.Observer {
         double destinationY = latToPix(destination.getLatitude());
         Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, 6.0);
         arrow.setFill(Color.BLUE);
-        arrow.setStrokeWidth(StrokeSize*1.5);
+        arrow.setStrokeWidth(StrokeSize * 1.5);
         arrows.add(arrow);
     }
 
@@ -283,11 +283,11 @@ public class GraphicalView implements observer.Observer {
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(intersection.getId());
-        if(isRequest) {
+        if (isRequest) {
             circle.setStroke(Color.BLACK);
             circle.setViewOrder(-1.0);
         }
-        circles.put(intersection.getId(),circle);
+        circles.put(intersection.getId(), circle);
     }
 
     /**
@@ -415,14 +415,19 @@ public class GraphicalView implements observer.Observer {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
     }
 
-
-    private Color generateColor(long seed){
+    /**
+     * Generate a random color with a seed.
+     *
+     * @param seed seed
+     * @return random color
+     */
+    private Color generateColor(long seed) {
         Random generator = new Random(seed);
         int rand = generator.nextInt(150);
         int rand2 = generator.nextInt(150);
         int rand3 = generator.nextInt(150);
-        Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
-        return  color;
+        Color color = Color.rgb(rand + 100, (rand2 + 100), (rand3 + 100));
+        return color;
     }
 
     /**

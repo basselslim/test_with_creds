@@ -73,7 +73,9 @@ public class Map extends observer.Observable {
         listRequests.clear();
     }
 
-
+    /**
+     * Clear tour.
+     */
     public void clearTour() {
         deliveryTour.listPaths.clear();
         deliveryTour.listRequestsIntersection.clear();
@@ -206,15 +208,30 @@ public class Map extends observer.Observable {
     }
 
     //INTERSECTIONS
-    public int addRequest(Request newRequest,Long precedingPickUpId,Long precedingDeliveryId) {
-        int errorCode = this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+
+    /**
+     * Add a request.
+     *
+     * @param newRequest          request to add
+     * @param precedingPickUpId   id of the preceding pick up point
+     * @param precedingDeliveryId id of the preceding delivery point
+     * @return error code
+     */
+    public int addRequest(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
+        int errorCode = this.deliveryTour.addRequestToTour(newRequest, precedingPickUpId, precedingDeliveryId);
         //if (errorCode == 0) {
-            this.listRequests.add(newRequest);
+        this.listRequests.add(newRequest);
         //}
         notifyObservers();
         return errorCode;
     }
 
+    /**
+     * Add a request.
+     *
+     * @param newRequest request to add
+     * @return errorcode
+     */
     public int addRequest(Request newRequest) {
         this.listRequests.add(newRequest);
         notifyObservers();

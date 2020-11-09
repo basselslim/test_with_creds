@@ -21,6 +21,7 @@ public class ListOfCommand {
      * Add command c to this.
      *
      * @param c the command to add
+     * @return error code
      */
     public int add(Command c){
         int i = currentIndex+1;

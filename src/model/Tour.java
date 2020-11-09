@@ -53,8 +53,13 @@ public class Tour extends Observable {
     }
 
     /**
-     * addRequestToTour
-     **/
+     * Add a request to the tour.
+     *
+     * @param newRequest request to add
+     * @param precedingPickUpId   id of the preceding pick up point
+     * @param precedingDeliveryId id of the preceding delivery point
+     * @return error code
+     */
     public int addRequestToTour(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToInsertPickUp = 0;
