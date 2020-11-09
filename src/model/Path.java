@@ -21,16 +21,16 @@ public class Path {
     }
 
     public Path(List<Segment> listSegments, long departure, long arrival) {
-        this.listSegments = listSegments;
         this.idDeparture = departure;
         this.idArrival = arrival;
         this.pathLength = 0;
         if (listSegments != null) {
+            this.listSegments = listSegments;
             for(Segment s: listSegments) {
                 this.pathLength += s.getLength();
             }
         } else {
-            listSegments = new LinkedList<Segment>();
+            this.listSegments = new LinkedList<Segment>();
         }
     }
 

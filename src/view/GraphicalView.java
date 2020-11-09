@@ -93,7 +93,7 @@ public class GraphicalView implements observer.Observer {
             System.out.println("ENTREE");
             for (Path path : m_map.getTour().getListPaths()) {
                 Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
-                if (depart != null && path.getIdArrival() != path.getIdDeparture()) {
+                if (depart != null) {
                     for (Segment segment : path.getListSegments()) {
                         Intersection step = m_map.getListIntersections().get(segment.getDestination());
                         drawArrow(depart, step, pointSize);
