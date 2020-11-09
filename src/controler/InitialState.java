@@ -126,11 +126,13 @@ public class InitialState implements State {
         requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File requestsFile = requestsFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
-        controller.addRequest.setDisable(true);
-        controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
-        controller.Gview.enableSelection();
+        if (requestsFile != null) {
+            XMLLoader xmlloader = new XMLLoader();
+            xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+            controller.addRequest.setDisable(true);
+            controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
+            controller.Gview.enableSelection();
+        }
     }
 
     @Override

@@ -36,12 +36,9 @@
     </HBox>
    <SplitPane dividerPositions="0.6005004170141784" maxHeight="800.0">
      <items>
-
-       <AnchorPane style="-fx-background-color: Whitesmoke;">
+       <AnchorPane style="-fx-background-color: Whitesmoke;" prefHeight="800.0" prefWidth="805.0">
             <children>
-                <Pane fx:id="overlay" onZoom="#Zoom" prefHeight="800.0" prefWidth="805.0" style="-fx-background-color: Whitesmoke;">
-
-
+                <Pane fx:id="overlay" onZoom="#Zoom" style="-fx-background-color: Whitesmoke;">
                </Pane>
             </children>
          </AnchorPane>

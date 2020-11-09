@@ -111,7 +111,9 @@ public class Controller {
         exportFileChooser.getExtensionFilters().add(extFilter);
         File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
 
-        map.getTour().generateRoadMap(exportLocation.getPath());
+        if (exportLocation != null) {
+            map.getTour().generateRoadMap(exportLocation.getPath());
+        }
     }
 
     public void leftClick(long idIntersection){
