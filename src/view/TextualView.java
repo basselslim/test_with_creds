@@ -32,6 +32,7 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, String> typeColumn;
     TableColumn<Intersection, Integer> requestIndexColumn;
     TableColumn<Intersection, String> arrivalTimeColumn;
+    TableColumn<Intersection, String> crossroadColumn;
 
     public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos, Controller controller) {
         this.controller = controller;
@@ -46,7 +47,7 @@ public class TextualView implements observer.Observer {
 
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
-        requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        //requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         requestsTable.prefHeightProperty().bind(pane.heightProperty());
         requestsTable.prefWidthProperty().bind(pane.widthProperty());
 
@@ -107,7 +108,7 @@ public class TextualView implements observer.Observer {
         });
         typeColumn.setSortable(false);
 
-        requestIndexColumn = new TableColumn<>("Request Index");
+        requestIndexColumn = new TableColumn<>("RI");
         requestIndexColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, Integer>, ObservableValue<Integer>>() {
             @Override
             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Intersection, Integer> p) {
@@ -144,10 +145,41 @@ public class TextualView implements observer.Observer {
         arrivalTimeColumn.setVisible(false);
         arrivalTimeColumn.setSortable(false);
 
+        crossroadColumn = new TableColumn<>("Crossroad");
+        crossroadColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+                long id = p.getValue().getId();
+                List<Segment> segments = map.getListIntersections().get(id).getListSegments();
+                System.out.println(segments);
+                String res = "";
+                int i = 0;
+                while (i < segments.size()) {
+                    Segment segment = segments.get(i);
+                    if (i == 0) {
+                        if (segment.getStreetName() != "" && segment.getStreetName() != null) {
+                            res += segment.getStreetName();
+                            res += " - ";
+                        }
+                    } else {
+                        if (segment.getStreetName() != "" && segment.getStreetName() != null && !segment.getStreetName().equals(segments.get(i-1).getStreetName())) {
+                            res += segment.getStreetName();
+                            res += " - ";
+                        }
+                    }
+                    i++;
+                }
+                res = res.substring(0, res.length()-3);
+                return new ReadOnlyObjectWrapper(res);
+            }
+        });
+        crossroadColumn.setSortable(false);
+
         requestsTable.getColumns().add(requestIndexColumn);
         requestsTable.getColumns().add(durationColumn);
         requestsTable.getColumns().add(typeColumn);
         requestsTable.getColumns().add(arrivalTimeColumn);
+        requestsTable.getColumns().add(crossroadColumn);
 
         requestsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
