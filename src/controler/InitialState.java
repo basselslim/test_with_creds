@@ -164,6 +164,7 @@ public class InitialState implements State {
 
 
     public void entryAction(Controller controller) {
+        controller.Tview.setTourInfo("Tour length : " + controller.map.getTour().getTourLength());
         if (isTourComputed)
             controller.addRequest.setDisable(false);
         controller.disableButtons(false);

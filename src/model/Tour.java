@@ -288,6 +288,7 @@ public class Tour {
                 System.out.println("File already exists.");
                 roadMap.delete();
                 roadMap.createNewFile();
+                this.roadMapFilePath = roadMap.getAbsolutePath();
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
