@@ -59,6 +59,7 @@ public class Controller {
     @FXML
     protected Button deleteRequest;
 
+
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
     protected final AddDeliveryState addDeliveryState = new AddDeliveryState();

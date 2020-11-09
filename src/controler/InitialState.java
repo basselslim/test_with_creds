@@ -48,8 +48,8 @@ public class InitialState implements State {
         Request request = controller.map.getRequestByIntersectionId(CurrentIdList.get(0));
         if( request != null) {
             controller.addRequest.setDisable(true);
-            controller.deleteState.entryAction(controller,request);
             controller.setCurrentState(controller.deleteState);
+            controller.deleteState.entryAction(controller,request);
 
         }
     }
