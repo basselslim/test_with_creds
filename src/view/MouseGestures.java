@@ -52,6 +52,7 @@ public class MouseGestures {
         public void handle(MouseEvent t) {
             if (t.getSource() instanceof Circle) {
                 Circle circle = ((Circle) (t.getSource()));
+                circle.setViewOrder(-1.0);
                 controller.leftClick((long)circle.getUserData());
             }
 
@@ -71,13 +72,13 @@ public class MouseGestures {
 
                 Circle circle = ((Circle) (t.getSource()));
                 currentcolor = (Color) circle.getFill();
-                circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
+                circle.setFill(Color.WHITE.deriveColor(1, 1, 1, 0.9));
                 controller.mouseOn((long) circle.getUserData());
             } else if (t.getSource() instanceof Rectangle) {
 
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
                 currentcolor = (Color) rectangle.getFill();
-                rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
+                rectangle.setFill(Color.WHITE.deriveColor(1, 1, 1, 0.9));
                 controller.mouseOn((long) rectangle.getUserData());
             }
         }

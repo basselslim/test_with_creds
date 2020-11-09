@@ -13,13 +13,13 @@ public class ReverseCommand implements Command {
     }
 
     @Override
-    public void doCommand() {
-        cmd.undoCommand();
+    public int doCommand() {
+        return cmd.undoCommand();
     }
 
     @Override
-    public void undoCommand() {
-        cmd.doCommand();
+    public int undoCommand() {
+        return cmd.doCommand();
     }
 
 }

@@ -69,7 +69,7 @@ public class GraphicalView implements observer.Observer {
         //Drawing all map intersections
         for (HashMap.Entry mapentry : m_map.getListIntersections().entrySet()) {
             Intersection intersection = (Intersection) mapentry.getValue();
-            drawPoint(intersection, Color.BLACK, pointSize,false); //draw standard point
+            drawPoint(intersection, Color.DIMGRAY, pointSize,false); //draw standard point
             drawMultipleLines(intersection, intersection.getListSegments());
         }
 
@@ -78,11 +78,7 @@ public class GraphicalView implements observer.Observer {
 
             Intersection pickup = request.getPickUpPoint();
             Intersection delivery = request.getDeliveryPoint();
-            Random generator = new Random(pickup.getId());
-            int rand = generator.nextInt(150);
-            int rand2 = generator.nextInt(150);
-            int rand3 = generator.nextInt(150);
-            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+            Color color = generateColor(pickup.getId());
             drawRectangle(pickup, color, ReqpointSize);
             drawPoint(delivery, color, ReqpointSize,true);
 
@@ -167,12 +163,12 @@ public class GraphicalView implements observer.Observer {
         Rectangle rectangle = rectangles.get(NodeId);
         if (circle != null) {
             //circle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
+            circle.setStrokeWidth(circle.getStrokeWidth() * 2.0);
             circle.setStroke(Color.RED);
         }
         if (rectangle != null) {
             //rectangle.setFill(Color.DARKGREY.deriveColor(1, 1, 1, 0.9));
-            rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
+            rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 2.0);
             rectangle.setStroke(Color.RED);
         }
 
@@ -183,13 +179,13 @@ public class GraphicalView implements observer.Observer {
         Rectangle rectangle = rectangles.get(NodeId);
         if (circle != null) {
             //circle.setFill(Color.BLACK);
-            circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
-            circle.setStroke(Color.BLACK);
+            circle.setStrokeWidth(circle.getStrokeWidth() / 2.0);
+            circle.setStroke(Color.DIMGRAY);
         }
         if (rectangle != null) {
             //rectangle.setFill(Color.BLACK);
-            rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
-            rectangle.setStroke(Color.BLACK);
+            rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 2.0);
+            rectangle.setStroke(Color.DIMGRAY);
         }
     }
 
@@ -205,6 +201,7 @@ public class GraphicalView implements observer.Observer {
             double destinationY = latToPix(destination.getLatitude());
             double length = Math.sqrt(Math.pow(destinationX-originX,2)+Math.pow(destinationY-originY,2));
             Line line = new Line(originX, originY, destinationX, destinationY);
+            line.setStroke(Color.GREY);
             line.setStrokeWidth(StrokeSize);
             lines.add(line);
         }
@@ -216,9 +213,9 @@ public class GraphicalView implements observer.Observer {
         double originY = latToPix(origin.getLatitude());
         double destinationX = longToPix(destination.getLongitude());
         double destinationY = latToPix(destination.getLatitude());
-        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, size);
-        arrow.setFill(Color.RED);
-        arrow.setStrokeWidth(StrokeSize);
+        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, 6.0);
+        arrow.setFill(Color.BLUE);
+        arrow.setStrokeWidth(StrokeSize*1.5);
         arrows.add(arrow);
     }
 
@@ -228,13 +225,15 @@ public class GraphicalView implements observer.Observer {
         double pickupY = latToPix(intersection.getLatitude());
 
         Circle circle = new Circle(size);
-        circle.setStroke(Color.BLACK);
+        circle.setStroke(Color.DIMGRAY);
         circle.setStrokeWidth(StrokeSize);
         circle.setFill(color.deriveColor(1, 1, 1, 1.0));
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(intersection.getId());
-        if(isRequest)
+        if(isRequest) {
+            circle.setStroke(Color.BLACK);
             circle.setViewOrder(-1.0);
+        }
         circles.put(intersection.getId(),circle);
     }
 
@@ -332,6 +331,15 @@ public class GraphicalView implements observer.Observer {
 
     private double longToPix(double lon) {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
+    }
+
+    private Color generateColor(long seed){
+        Random generator = new Random(seed);
+        int rand = generator.nextInt(150);
+        int rand2 = generator.nextInt(150);
+        int rand3 = generator.nextInt(150);
+        Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+        return  color;
     }
 
     @Override

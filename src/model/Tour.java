@@ -44,7 +44,7 @@ public class Tour extends Observable {
     /**
      * addRequestToTour
      **/
-    public void addRequestToTour(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
+    public int addRequestToTour(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToInsertPickUp = 0;
         int pathIndexToInsertDelivery = 0;
@@ -54,7 +54,14 @@ public class Tour extends Observable {
             if (path.getIdDeparture() == precedingPickUpId) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
                 List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getPickUpPoint().getId()));
+                if (roadDeparturetoNewPickUp == null) {
+                    return 1; /* can't find a path to the new pick up point*/
+                }
                 List<Segment> roadNewPickUptoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getPickUpPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
+                if (roadNewPickUptoArrival == null) {
+                    return 1; /* can't find a path to from new pick up point*/
+                }
+
                 // Create the path and insert them into the tour List
                 Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getIdDeparture(), newRequest.getPickUpPoint().getId());
                 Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint().getId(), path.getIdArrival());
@@ -71,7 +78,14 @@ public class Tour extends Observable {
             if (path.getIdDeparture() == precedingDeliveryId) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getDeliveryPoint().getId()));
+                if (roadDeparturetoNewDelivery == null) {
+                    return 2; /* can't find a path to the new delivery point*/
+                }
                 List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getDeliveryPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
+                if (roadNewDeliverytoArrival == null) {
+                    return 2; /* can't find a path from the new delivery point*/
+                }
+
                 // Create the paths and insert them into the tour List
                 Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getIdDeparture(), newRequest.getDeliveryPoint().getId());
                 Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint().getId(), path.getIdArrival());
@@ -84,6 +98,7 @@ public class Tour extends Observable {
         }
 
         populateListTimes();
+        return 0;
     }
 
     /**
