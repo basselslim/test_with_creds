@@ -11,7 +11,7 @@ import java.util.*;
 /**
  *
  */
-public class Tour extends Observable {
+public class Tour {
     /**
      *
      */
@@ -53,11 +53,11 @@ public class Tour extends Observable {
         for (Path path : listPaths) {
             if (path.getIdDeparture() == precedingPickUpId) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
-                List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getPickUpPoint().getId()));
-                List<Segment> roadNewPickUptoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getPickUpPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
+                List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(path.getDeparture(), newRequest.getPickUpPoint());
+                List<Segment> roadNewPickUptoArrival = calculator.computeSmallestPath(newRequest.getPickUpPoint(), path.getArrival());
                 // Create the path and insert them into the tour List
-                Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getIdDeparture(), newRequest.getPickUpPoint().getId());
-                Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint().getId(), path.getIdArrival());
+                Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getDeparture(), newRequest.getPickUpPoint());
+                Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint(), path.getArrival());
                 listPaths.remove(pathIndexToInsertPickUp);
                 listPaths.add(pathIndexToInsertPickUp, pathDeparturetoNewPickUp);
                 listPaths.add(pathIndexToInsertPickUp + 1, pathNewPickUptoArrival);
@@ -70,11 +70,14 @@ public class Tour extends Observable {
         for (Path path : listPaths) {
             if (path.getIdDeparture() == precedingDeliveryId) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
-                List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getDeliveryPoint().getId()));
-                List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getDeliveryPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
+                List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(path.getDeparture(),newRequest.getDeliveryPoint());
+                List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(newRequest.getDeliveryPoint(),path.getArrival());
                 // Create the paths and insert them into the tour List
-                Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getIdDeparture(), newRequest.getDeliveryPoint().getId());
-                Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint().getId(), path.getIdArrival());
+                Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getDeparture(), newRequest.getDeliveryPoint());
+                Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint(), path.getArrival());
+                System.out.println(pathDeparturetoNewDelivery);
+                System.out.println(pathNewDeliverytoArrival);
+
                 listPaths.remove(pathIndexToInsertDelivery);
                 listPaths.add(pathIndexToInsertDelivery, pathDeparturetoNewDelivery);
                 listPaths.add(pathIndexToInsertDelivery + 1, pathNewDeliverytoArrival);
@@ -93,15 +96,17 @@ public class Tour extends Observable {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToDeletePickUp = 0;
         int pathIndexToDeleteDelivery = 0;
-        Intersection departure = null;
+        Step departure = null;
 
         for (Path path : listPaths) {
-            if (path.getIdArrival() == request.getPickUpPoint().getId()) {
-                departure = map.getListIntersections().get(path.getIdDeparture());
+
+            if (path.getArrival().getRequest() == request.getPickUpPoint().getRequest()) {
+                departure = path.getDeparture();
             }
-            if (path.getIdDeparture() == request.getPickUpPoint().getId()) {
-                List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,map.getListIntersections().get(path.getIdArrival()));
-                Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure.getId(), path.getIdArrival());
+
+            if (path.getDeparture().getRequest() == request.getPickUpPoint().getRequest()) {
+                List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,path.getArrival());
+                Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeletePickUp);
                 listPaths.remove(pathIndexToDeletePickUp-1);
                 listPaths.add(pathIndexToDeletePickUp-1,pathWithoutPickUpPoint);
@@ -111,12 +116,12 @@ public class Tour extends Observable {
         }
 
         for (Path path : listPaths) {
-            if (path.getIdArrival() == request.getDeliveryPoint().getId()) {
-                departure = map.getListIntersections().get(path.getIdDeparture());
+            if (path.getArrival().getRequest() == request.getDeliveryPoint().getRequest()) {
+                departure = path.getDeparture();
             }
-            if (path.getIdDeparture() == request.getDeliveryPoint().getId()) {
-                List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,map.getListIntersections().get(path.getIdArrival()));
-                Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure.getId(), path.getIdArrival());
+            if (path.getDeparture().getRequest() == request.getDeliveryPoint().getRequest()) {
+                List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,path.getArrival());
+                Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeleteDelivery);
                 listPaths.remove(pathIndexToDeleteDelivery-1);
                 listPaths.add(pathIndexToDeleteDelivery-1,pathWithoutDeliveryPoint);

@@ -3,7 +3,7 @@ package model;
 import java.util.*;
 
 /**
- * 
+ *
  */
 public class Path {
     /**
@@ -13,6 +13,8 @@ public class Path {
     protected List<Segment> listSegments;
     protected long idDeparture;
     protected long idArrival;
+    protected Step departure;
+    protected Step arrival;
 
     /**
      * Default constructor
@@ -20,13 +22,19 @@ public class Path {
     public Path() {
     }
 
-    public Path(List<Segment> listSegments, long departure, long arrival) {
-        this.listSegments = listSegments;
-        this.idDeparture = departure;
-        this.idArrival = arrival;
+    public Path(List<Segment> listSegments, Step a, Step b) {
+        departure = a;
+        arrival = b;
+        this.idDeparture = a.getId();
+        this.idArrival = b.getId();
         this.pathLength = 0;
-        for(Segment s: listSegments) {
-            this.pathLength += s.getLength();
+        if (listSegments != null) {
+            this.listSegments = listSegments;
+            for (Segment s : listSegments) {
+                this.pathLength += s.getLength();
+            }
+        } else {
+            this.listSegments = new LinkedList<Segment>();
         }
     }
 
@@ -42,7 +50,7 @@ public class Path {
     }
 
     public int getDuration() {
-        return (int) (((double) pathLength/15.0)*3.6);
+        return (int) (((double) pathLength / 15.0) * 3.6);
     }
 
     public long getIdDeparture() {
@@ -52,6 +60,11 @@ public class Path {
     public long getIdArrival() {
         return idArrival;
     }
+
+    public Step getDeparture() { return departure; }
+
+    public Step getArrival() { return arrival; }
+
 
     @Override
     public String toString() {

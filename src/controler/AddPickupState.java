@@ -29,7 +29,7 @@ public class AddPickupState implements State {
                 controller.Tview.setMessage("Select the pickup point");
             }
         } else {
-            if(map.getRequestByIntersectionId(i.getId()) == null) {
+            if(map.getRequestByIntersectionId(i.getId()) == null || map.getRequestByIntersectionId(i.getId()) != null) {
                 PickUpPoint pickup = new PickUpPoint(i, 0);
                 request.setPickUpPoint(pickup);
 

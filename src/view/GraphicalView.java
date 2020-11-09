@@ -242,14 +242,23 @@ public class GraphicalView implements observer.Observer {
 
         double pointX = longToPix(intersection.getLongitude());
         double pickupY = latToPix(intersection.getLatitude());
+        long id = intersection.getId();
 
         Rectangle rectangle = new Rectangle(pointX-size,pickupY-size, size*2, size*2);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(StrokeSize);
         rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
-        rectangle.setUserData(intersection.getId());
-        circles.remove(intersection.getId());
-        rectangles.put(intersection.getId(),rectangle);
+
+        rectangle.setUserData(id);
+        circles.remove(id);
+        if(rectangles.get(id)!=null) {
+            id +=1;
+            rectangle.setUserData(id);
+            rectangle.setHeight(rectangle.getHeight() / 2);
+            rectangle.setWidth(rectangle.getWidth() / 2);
+        }
+        else
+        rectangles.put(id,rectangle);
     }
 
     private void addNodesToOverlay(){
