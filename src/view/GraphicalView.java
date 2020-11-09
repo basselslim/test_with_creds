@@ -193,7 +193,6 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
-
     private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
         double originX = longToPix(origin.getLongitude());
