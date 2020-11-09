@@ -112,7 +112,7 @@ public class Controller {
         File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
 
         if (exportLocation != null) {
-            map.getTour().generateRoadMap(exportLocation.getPath());
+            map.getDeliveryTour().generateRoadMap(exportLocation.getPath());
         }
     }
 

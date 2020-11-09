@@ -23,12 +23,4 @@ public class Depot extends Step{
     }
 
     public String getDepartureTime() { return departureTime; }
-
-    @Override
-    public String toString() {
-        return "Depot{" +
-                "id=" + id +
-                ", departureTime=" + departureTime +
-                '}';
-    }
 }

@@ -43,10 +43,6 @@ public class Request extends Observable {
         return order;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
     public PickUpPoint getPickUpPoint() {
         return pickUpPoint;
     }
@@ -63,12 +59,4 @@ public class Request extends Observable {
         this.deliveryPoint = deliveryPoint;
     }
 
-    @Override
-    public String toString() {
-        return "Request{" +
-                "order=" + order +
-                ", pickUpPoint=" + pickUpPoint +
-                ", deliveryPoint=" + deliveryPoint +
-                '}';
-    }
 }

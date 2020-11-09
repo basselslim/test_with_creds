@@ -144,7 +144,7 @@ public class InitialState implements State {
         algo.computeOptimalTour(mapSmallestPaths);
         controller.Tview.setMessage("Optimal tour computed !");
         controller.addRequest.setDisable(false);
-        controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        controller.Tview.setTourInfo("Tour length : " + map.getDeliveryTour().getTourLength());
     }
 
     /**

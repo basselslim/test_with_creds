@@ -61,17 +61,13 @@ public class Path {
         return idArrival;
     }
 
+    public void setPathLength(int pathLength) {
+        this.pathLength = pathLength;
+    }
+
     public Step getDeparture() { return departure; }
 
     public Step getArrival() { return arrival; }
 
 
-    @Override
-    public String toString() {
-        return "Path{" +
-                "pathLength=" + pathLength +
-                ", idDeparture=" + idDeparture +
-                ", idArrival=" + idArrival +
-                '}';
-    }
 }

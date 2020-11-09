@@ -20,6 +20,7 @@ public class Tour {
     protected Map map;
     protected String roadMapFilePath;
     protected HashMap<Long,ArrayList<Intersection>> listRequestsIntersection;
+    protected int tourLength;
     /**
      * Default constructor
      *
@@ -39,7 +40,9 @@ public class Tour {
         this.listTimes = new LinkedList<int[]>();
         this.map = map;
         this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
-        populateListTimes();
+        if (!listPaths.isEmpty()) {
+            populateListTimes();
+        }
     }
     /**
      * addRequestToTour
@@ -370,5 +373,21 @@ public class Tour {
             time -= 86400;
         }
         return time;
+    }
+
+    public void setListPaths(List<Path> listPaths) {
+        this.listPaths = listPaths;
+    }
+
+    public void setListTimes(List<int[]> listTimes) {
+        this.listTimes = listTimes;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public HashMap<Long, ArrayList<Intersection>> getListRequestsIntersection() {
+        return listRequestsIntersection;
     }
 }
