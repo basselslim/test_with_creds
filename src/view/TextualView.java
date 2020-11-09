@@ -159,7 +159,7 @@ public class TextualView implements observer.Observer {
                     return new ReadOnlyObjectWrapper("Not computed yet");
                 } else {
                     int index = 0;
-                    for (Path path: map.getTour().getListPaths()) {
+                    for (Path path: map.getDeliveryTour().getListPaths()) {
                         if (path.getArrival() == p.getValue()) {
                             break;
                         } else {

@@ -245,6 +245,137 @@ class TourTest {
         //Assert
         assertEquals(stringReference,str1);
     }
+    @Test
+    void checkTimeUnderOneDayWorking() {
+        //Arrange
+        Tour t = new Tour();
+        int timeOk = 12600;
+        int timeNotOk = 132000;
+        int referenceNotOk = 45600;
 
+
+        //Act
+        int res1 = t.checkTimeUnderOneDay(timeOk);
+        int res2 = t.checkTimeUnderOneDay(timeNotOk);
+
+
+        //Assert
+        assertEquals(timeOk, res1);
+        assertEquals(referenceNotOk, res2);
+    }
+    @Test
+    void timeToStringWorking() {
+        //Arrange
+        Tour t = new Tour();
+        int time1 = 14400;
+        int time2 = 14460;
+        int time3 = 16200;
+        String reference1 = "4:00";
+        String reference2 = "4:01";
+        String reference3 = "4:30";
+
+
+        //Act
+        String res1 = t.timeToString(time1);
+        String res2 = t.timeToString(time2);
+        String res3 = t.timeToString(time3);
+
+
+        //Assert
+        assertEquals(reference1, res1);
+        assertEquals(reference2, res2);
+        assertEquals(reference3, res3);
+    }
+    @Test
+    void stringToTimeWorking() {
+        //Arrange
+        Tour t = new Tour();
+        String str1 = "8:0:0";
+        String str2 = "12:30";
+        int reference1 = 28800;
+        int reference2 = 45000;
+
+
+        //Act
+        int res1 = t.stringToTime(str1);
+        int res2 = t.stringToTime(str2);
+
+
+        //Assert
+        assertEquals(reference1, res1);
+        assertEquals(reference2, res2);
+    }
+    @Test
+    void populateListTimesWorking() {
+        //Arrange
+        Map m = new Map();
+
+        Depot d = new Depot(1, "12:00");
+        m.setDepot(d);
+
+        ArrayList<Request> lisRequest = new ArrayList<Request>();
+        PickUpPoint p1 = new PickUpPoint(2, 3, 3, 60);
+        DeliveryPoint d1 = new DeliveryPoint(3, 3, 3, 120);
+        Request r = new Request(p1, d1);
+        lisRequest.add(r);
+        m.setListRequest(lisRequest);
+
+        Intersection i1 = new Intersection(1, 2, 3);
+        Intersection i2 = new Intersection(2, 2, 3);
+        Intersection i3 = new Intersection(3, 2, 3);
+        HashMap<Long, Intersection> list = new HashMap<Long, Intersection>();
+        ArrayList<Intersection> list1 = new ArrayList<Intersection>();
+        ArrayList<Intersection> list2 = new ArrayList<Intersection>();
+        ArrayList<Intersection> list3 = new ArrayList<Intersection>();
+        list.put(1l, i1);
+        list.put(2l, i2);
+        list.put(3l, i3);
+        list1.add(i1);
+        list2.add(p1);
+        list3.add(d1);
+        m.setListIntersections(list);
+
+        Segment s1 = new Segment(167, "Rue1", 2);
+        List<Segment> listSegments1 = new LinkedList<Segment>();
+        listSegments1.add(s1);
+        Segment s2 = new Segment(167, "Rue2", 3);
+        List<Segment> listSegments2 = new LinkedList<Segment>();
+        listSegments2.add(s2);
+        Segment s3 = new Segment(167, "Rue3", 1);
+        List<Segment> listSegments3 = new LinkedList<Segment>();
+        listSegments3.add(s3);
+        Path pa1 = new Path(listSegments1, d, p1);
+        Path pa2 = new Path(listSegments2, p1, d1);
+        Path pa3 = new Path(listSegments3, d1, d);
+        List<Path> listPaths = new LinkedList<Path>();
+        listPaths.add(pa1);
+        listPaths.add(pa2);
+        listPaths.add(pa3);
+
+        Tour t = new Tour(m);
+        t.setListPaths(listPaths);
+        t.groupRequestIntersections();
+
+        int reference00 = 43200;
+        int reference01 = 43260;
+        int reference10 = 43320;
+        int reference11 = 43380;
+        int reference20 = 43500;
+        int reference21 = 43560;
+
+
+        //Act
+        t.populateListTimes();
+        List<int[]> listTimes = t.getListTimes();
+
+
+        //Assert
+        assertEquals(reference00, listTimes.get(0)[0]);
+        assertEquals(reference01, listTimes.get(0)[1]);
+        assertEquals(reference10, listTimes.get(1)[0]);
+        assertEquals(reference11, listTimes.get(1)[1]);
+        assertEquals(reference20, listTimes.get(2)[0]);
+        assertEquals(reference21, listTimes.get(2)[1]);
+    }
 
 }
