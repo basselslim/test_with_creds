@@ -74,7 +74,6 @@ public class Map extends observer.Observable {
         deliveryTour.listPaths.clear();
         deliveryTour.listRequestsIntersection.clear();
         deliveryTour.listTimes.clear();
-        deliveryTour.tourLength = 0;
     }
 
     public double getMinLat() {

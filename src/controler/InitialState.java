@@ -114,6 +114,7 @@ public class InitialState implements State {
 
         XMLLoader xmlloader = new XMLLoader();
         xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+        controller.addRequest.setDisable(true);
         controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
         controller.Gview.enableSelection();
     }
