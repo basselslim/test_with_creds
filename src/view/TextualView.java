@@ -265,18 +265,18 @@ public class TextualView implements observer.Observer {
     }
 
     public int durationPopup() {
-        TextInputDialog popup = new TextInputDialog("0");
+        TextInputDialog popup = new TextInputDialog("6");
         popup.initStyle(StageStyle.UNDECORATED);
         popup.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
         popup.setTitle("Duration");
         popup.setHeaderText("");
-        popup.setContentText("Please enter the duration (in seconds):");
+        popup.setContentText("Please enter the duration (in minutes):");
         Button okButton = (Button) popup.getDialogPane().lookupButton(ButtonType.OK);
         TextField input = popup.getEditor();
         BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> durationIsInvalid(input.getText()), input.textProperty());
         okButton.disableProperty().bind(isInvalid);
         Optional<String> resultat = popup.showAndWait();
-        int res = Integer.parseInt(resultat.get());
+        int res = Integer.parseInt(resultat.get()) * 60;
         return res;
     }
 
