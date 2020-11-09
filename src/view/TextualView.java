@@ -1,5 +1,7 @@
 package view;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import controler.Controller;
@@ -7,10 +9,18 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TableViewSkin;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.PopupWindow;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import model.*;
@@ -27,12 +37,11 @@ public class TextualView implements observer.Observer {
     TextArea TextArea;
     Label TourInfos;
     TableView requestsTable;
-    TableColumn<Intersection, Long> intersectionColumn;
-    TableColumn<Intersection, String> durationColumn;
-    TableColumn<Intersection, String> typeColumn;
-    TableColumn<Intersection, Integer> requestIndexColumn;
-    TableColumn<Intersection, String> arrivalTimeColumn;
-    TableColumn<Intersection, String> crossroadColumn;
+    TableColumn<Step, String> durationColumn;
+    TableColumn<Step, String> typeColumn;
+    TableColumn<Step, Integer> requestIndexColumn;
+    TableColumn<Step, String> arrivalTimeColumn;
+    TableColumn<Step, String> crossroadColumn;
 
     public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos, Controller controller) {
         this.controller = controller;
@@ -47,35 +56,26 @@ public class TextualView implements observer.Observer {
 
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
-        //requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         requestsTable.prefHeightProperty().bind(pane.heightProperty());
         requestsTable.prefWidthProperty().bind(pane.widthProperty());
 
         requestsTable.setRowFactory( tableView -> {
-            final TableRow<Intersection> row = new TableRow<>();
+            final TableRow<Step> row = new TableRow<>();
             row.setOnMousePressed(event -> {
                 if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY) {
-                    Intersection intersection = row.getItem();
-                    Request request = null;
-                    if (intersection instanceof DeliveryPoint) {
-                        request = ((DeliveryPoint) intersection).getRequest();
-                    } else if (intersection instanceof PickUpPoint) {
-                        request = ((PickUpPoint) intersection).getRequest();
-                    }
+                    Step step = row.getItem();
+                    Request request = step.getRequest();
                     selectRequest(request,true);
                 }
             });
             return row;
         });
 
-        intersectionColumn = new TableColumn<>("Intersection Id");
-        intersectionColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        intersectionColumn.setSortable(false);
-
         durationColumn = new TableColumn<>("Duration");
-        durationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+        durationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Step, String> p) {
                 String res = "";
                 int minutes = 0;
                 if (p.getValue() instanceof DeliveryPoint) {
@@ -92,11 +92,13 @@ public class TextualView implements observer.Observer {
             }
         });
         durationColumn.setSortable(false);
+        //durationColumn.setResizable(false);
+        //durationColumn.setMaxWidth(100);
 
         typeColumn = new TableColumn<>("Type");
-        typeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+        typeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Step, String> p) {
                 if (p.getValue() instanceof DeliveryPoint) {
                     return new ReadOnlyObjectWrapper("Delivery");
                 } else if (p.getValue() instanceof PickUpPoint) {
@@ -107,22 +109,49 @@ public class TextualView implements observer.Observer {
             }
         });
         typeColumn.setSortable(false);
+        //typeColumn.setResizable(false);
+        //typeColumn.setMaxWidth(100);
 
-        requestIndexColumn = new TableColumn<>("RI");
-        requestIndexColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, Integer>, ObservableValue<Integer>>() {
+        requestIndexColumn = new TableColumn<>("");
+        requestIndexColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, Integer>, ObservableValue<Integer>>() {
             @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Intersection, Integer> p) {
-                Request req = map.getRequestByIntersectionId(p.getValue().getId());
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Step, Integer> p) {
+                Request req = p.getValue().getRequest();
                 int index = map.getListRequests().indexOf(req) + 1;
                 return new ReadOnlyObjectWrapper(index);
             }
         });
+        requestIndexColumn.setCellFactory(new Callback<TableColumn<Step, Integer>,
+                TableCell<Step, Integer>>()
+        {
+            @Override
+            public TableCell<Step, Integer> call(
+                    TableColumn<Step, Integer> param) {
+                return new TableCell<Step, Integer>() {
+                    @Override
+                    protected void updateItem(Integer i, boolean empty) {
+                        if (!empty) {
+                            setText(Integer.toString(i));
+                            Step step = (Step)requestsTable.getItems().get(indexProperty().getValue());
+                            Random generator = new Random(step.getRequest().getPickUpPoint().getId());
+                            int rand = generator.nextInt(150);
+                            int rand2 = generator.nextInt(150);
+                            int rand3 = generator.nextInt(150);
+                            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+                            setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+                        }
+                    }
+                };
+            }
+        });
         requestIndexColumn.setSortable(false);
+        //requestIndexColumn.setResizable(false);
+        //requestIndexColumn.setMaxWidth(20);
 
         arrivalTimeColumn = new TableColumn<>("Arrival Time");
-        arrivalTimeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+        arrivalTimeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Step, String> p) {
                 if (map.getTour().getListPaths().isEmpty()) {
                     return new ReadOnlyObjectWrapper("Not computed yet");
                 } else {
@@ -144,14 +173,14 @@ public class TextualView implements observer.Observer {
         });
         arrivalTimeColumn.setVisible(false);
         arrivalTimeColumn.setSortable(false);
+        //arrivalTimeColumn.setResizable(false);
 
         crossroadColumn = new TableColumn<>("Crossroad");
-        crossroadColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
+        crossroadColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Step, String> p) {
                 long id = p.getValue().getId();
                 List<Segment> segments = map.getListIntersections().get(id).getListSegments();
-                System.out.println(segments);
                 String res = "";
                 int i = 0;
                 while (i < segments.size()) {
@@ -173,7 +202,21 @@ public class TextualView implements observer.Observer {
                 return new ReadOnlyObjectWrapper(res);
             }
         });
+        crossroadColumn.setCellFactory(tc -> {
+            TableCell<Step, String> cell = new TableCell<>();
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            cell.textProperty().bind(cell.itemProperty());
+            cell.setOnMouseEntered(event -> {
+                if (cell.getText() != null && cell.getText() != "") {
+                    Tooltip tooltip = new Tooltip(cell.getText());
+                    cell.setTooltip(tooltip);
+                }
+            });
+            return cell ;
+        });
         crossroadColumn.setSortable(false);
+        //crossroadColumn.setResizable(true);
+        //crossroadColumn.setPrefWidth(260);
 
         requestsTable.getColumns().add(requestIndexColumn);
         requestsTable.getColumns().add(durationColumn);
@@ -206,7 +249,6 @@ public class TextualView implements observer.Observer {
     }
 
     public void selectRequest(Request req, Boolean local) {
-
         requestsTable.getSelectionModel().clearSelection();
         int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
         requestsTable.getSelectionModel().select(index);
@@ -259,4 +301,5 @@ public class TextualView implements observer.Observer {
             arrivalTimeColumn.setVisible(true);
         }
     }
+
 }
