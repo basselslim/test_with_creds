@@ -182,10 +182,12 @@ public class GraphicalView implements observer.Observer {
         }
 
         List<Rectangle> RectangleList = rectangles.get(step.getId());
-        for (Rectangle rectangle : RectangleList) {
-            if (rectangle.getUserData() == step) {
-                rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
-                rectangle.setStroke(Color.RED);
+        if(RectangleList != null) {
+            for (Rectangle rectangle : RectangleList) {
+                if (rectangle.getUserData() == step) {
+                    rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
+                    rectangle.setStroke(Color.RED);
+                }
             }
         }
     }
@@ -201,26 +203,23 @@ public class GraphicalView implements observer.Observer {
         }
 
         List<Rectangle> RectangleList = rectangles.get(step.getId());
-        for (Rectangle rectangle : RectangleList) {
-            if (rectangle.getUserData() == step) {
-                rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
-                rectangle.setStroke(Color.BLACK);
+        if (RectangleList != null) {
+            for (Rectangle rectangle : RectangleList) {
+                if (rectangle.getUserData() == step) {
+                    rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
+                    rectangle.setStroke(Color.BLACK);
+                }
             }
         }
     }
 
     public void undrawMouseSelection(long NodeId) {
         Circle circle = circles.get(NodeId).get(0);
-        Rectangle rectangle = rectangles.get(NodeId).get(0);
+
         if (circle != null) {
             //circle.setFill(Color.BLACK);
             circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
             circle.setStroke(Color.BLACK);
-        }
-        if (rectangle != null) {
-            //rectangle.setFill(Color.BLACK);
-            rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
-            rectangle.setStroke(Color.BLACK);
         }
     }
 
@@ -272,6 +271,7 @@ public class GraphicalView implements observer.Observer {
 
         double pointX = longToPix(step.getLongitude());
         double pickupY = latToPix(step.getLatitude());
+        long id = step.getId();
 
         Circle circle = new Circle(size);
         circle.setStroke(Color.BLACK);
@@ -280,34 +280,31 @@ public class GraphicalView implements observer.Observer {
         circle.relocate(pointX - size, pickupY - size);
         circle.setUserData(step.getRequest().getDeliveryPoint());
         circle.setViewOrder(-1.0);
-        if(circles.containsKey(step.getId())) {
-            circle.setTranslateX(1.0);
-            circle.setTranslateY(1.0);
-            circles.get(step.getId()).add(circle);
+        for (int i = 1; i < circles.get(id).size(); i++) {
+            circle.relocate(pointX - 10, pickupY - 10);
         }
+            circles.get(id).add(circle);
     }
 
     private void drawRectangle(Step step, Color color, double size) {
-
         double pointX = longToPix(step.getLongitude());
-        double pickupY = latToPix(step.getLatitude());
+        double pointY = latToPix(step.getLatitude());
         long id = step.getId();
 
-        Rectangle rectangle = new Rectangle(pointX-size,pickupY-size, size*2, size*2);
+        Rectangle rectangle = new Rectangle(pointX-size,pointY-size, size*2, size*2);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(StrokeSize);
         rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
 
-        rectangle.setUserData(step.getRequest().getPickUpPoint());
-        circles.get(id).remove(0);
-        if(rectangles.containsKey(step.getId())) {
-            rectangle.setTranslateX(1.0);
-            rectangle.setTranslateY(1.0);
-            rectangles.get(step.getId()).add(rectangle);
+        rectangle.setUserData(step);
+        //circles.get(id).remove(0);
+        if(rectangles.containsKey(id)) {
+            rectangle.relocate(pointX - 10,pointY - 10 );
+            rectangles.get(id).add(rectangle);
         } else {
             List<Rectangle> RectangleList = new ArrayList<Rectangle>();
             RectangleList.add(rectangle);
-            rectangles.put(step.getId(),RectangleList);
+            rectangles.put(id,RectangleList);
         }
     }
 
@@ -317,17 +314,19 @@ public class GraphicalView implements observer.Observer {
         }
 
         Circle depot = new Circle();
-        for (HashMap.Entry mapentry : circles.entrySet()) {
-            Circle circle = (Circle)mapentry.getValue();
-            if ((long)mapentry.getKey() == m_map.getDepot().getId()) {
-                depot = circle;
-                depot.setRadius(pointSize * 2);
-                depot.setFill(Color.RED);
-                depot.setStroke(Color.BLACK);
-                depot.setStrokeWidth(StrokeSize * 1.5);
-                depot.setViewOrder(-1.0);
-            } else
-                m_overlay.getChildren().add(circle);
+        for (HashMap.Entry<Long,List<Circle>> mapentry : circles.entrySet()) {
+            List<Circle> CircleList = mapentry.getValue();
+            for (Circle circle: CircleList) {
+                if ((long) mapentry.getKey() == m_map.getDepot().getId()) {
+                    depot = circle;
+                    depot.setRadius(pointSize * 2);
+                    depot.setFill(Color.RED);
+                    depot.setStroke(Color.BLACK);
+                    depot.setStrokeWidth(StrokeSize * 1.5);
+                    depot.setViewOrder(-1.0);
+                } else
+                    m_overlay.getChildren().add(circle);
+            }
         }
         m_overlay.getChildren().add(depot);
 
@@ -335,9 +334,11 @@ public class GraphicalView implements observer.Observer {
             m_overlay.getChildren().add(arrow);
         }
 
-        for (HashMap.Entry mapentry : rectangles.entrySet()) {
-            Rectangle rectangle = (Rectangle) mapentry.getValue();
-            m_overlay.getChildren().add(rectangle);
+        for (HashMap.Entry<Long,List<Rectangle>> mapentry : rectangles.entrySet()) {
+            List<Rectangle> RectangleList = mapentry.getValue();
+            for (Rectangle rectangle : RectangleList) {
+                m_overlay.getChildren().add(rectangle);
+            }
         }
     }
 
@@ -361,10 +362,12 @@ public class GraphicalView implements observer.Observer {
 
     private void updateTranslation(double XValue, double YValue) {
 
-        for (HashMap.Entry mapentry : circles.entrySet()) {
-            Circle circle = (Circle) mapentry.getValue();
-            circle.setTranslateX(XValue);
-            circle.setTranslateY(YValue);
+        for (HashMap.Entry<Long,List<Circle>> mapentry : circles.entrySet()) {
+            List<Circle> CircleList = mapentry.getValue();
+            for (Circle circle: CircleList) {
+                circle.setTranslateX(XValue);
+                circle.setTranslateY(YValue);
+            }
         }
 
         for (Line line : lines) {
@@ -376,10 +379,13 @@ public class GraphicalView implements observer.Observer {
             arrow.setTranslateY(YValue);
         }
 
-        for (HashMap.Entry mapentry : rectangles.entrySet()) {
-            Rectangle rectangle = (Rectangle) mapentry.getValue();
-            rectangle.setTranslateX(XValue);
-            rectangle.setTranslateY(YValue);
+        for (HashMap.Entry<Long,List<Rectangle>> mapentry : rectangles.entrySet()) {
+            List<Rectangle> RectangleList = mapentry.getValue();
+            for (Rectangle rectangle: RectangleList) {
+                rectangle.setTranslateX(XValue);
+                rectangle.setTranslateY(YValue);
+            }
+
         }
         mouseGestures.newTranslateX += zoomTranslateX / 2;
         mouseGestures.newTranslateY += zoomTranslateY / 2;

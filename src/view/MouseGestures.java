@@ -81,13 +81,14 @@ public class MouseGestures {
                 Circle circle = ((Circle) (t.getSource()));
                 currentcolor = (Color) circle.getFill();
                 circle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
-                controller.mouseOn((long) circle.getUserData());
+
+
             } else if (t.getSource() instanceof Rectangle) {
 
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
                 currentcolor = (Color) rectangle.getFill();
                 rectangle.setFill(Color.GREY.deriveColor(1, 1, 1, 0.9));
-                controller.mouseOn((long) rectangle.getUserData());
+
             }
         }
     };
@@ -142,10 +143,13 @@ public class MouseGestures {
 
             //if(XBlocking && YBlocking){
 
-            for (HashMap.Entry mapentry : circles.entrySet()) {
-                Circle circle = (Circle) mapentry.getValue();
-                circle.setTranslateX(newTranslateX);
-                circle.setTranslateY(newTranslateY);
+            for (HashMap.Entry<Long,List<Circle>> mapentry : circles.entrySet()) {
+                List<Circle> CircleList = mapentry.getValue();
+                for (Circle circle:CircleList) {
+                    circle.setTranslateX(newTranslateX);
+                    circle.setTranslateY(newTranslateY);
+                }
+
             }
 
             for (Line line : lines) {
@@ -158,11 +162,12 @@ public class MouseGestures {
                 arrow.setTranslateY(newTranslateY);
 
             }
-            for (HashMap.Entry mapentry : rectangles.entrySet()) {
-                Rectangle rectangle = (Rectangle) mapentry.getValue();
-                rectangle.setTranslateX(newTranslateX);
-                rectangle.setTranslateY(newTranslateY);
-
+            for (HashMap.Entry<Long,List<Rectangle>> mapentry : rectangles.entrySet()) {
+                List<Rectangle> RectangleList = mapentry.getValue();
+                for (Rectangle rectangle: RectangleList) {
+                    rectangle.setTranslateX(newTranslateX);
+                    rectangle.setTranslateY(newTranslateY);
+                }
             }
         }
         //}

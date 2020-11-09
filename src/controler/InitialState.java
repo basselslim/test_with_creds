@@ -17,6 +17,7 @@ import java.util.*;
 public class InitialState implements State {
 
     List<Long> CurrentIdList;
+    List<Step> CurrentStepList;
 
     Request request = new Request();
     Boolean isTourComputed = false;
@@ -26,6 +27,7 @@ public class InitialState implements State {
      */
     public InitialState() {
         CurrentIdList = new ArrayList<>();
+        CurrentStepList = new ArrayList<>();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class InitialState implements State {
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
         unSelectPoints(controller);
+        unSelectSteps(controller);
 
         //Select current point
         controller.Gview.drawMouseSelection(i.getId());
@@ -66,21 +69,20 @@ public class InitialState implements State {
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
         unSelectPoints(controller);
+        unSelectSteps(controller);
 
         Request request = step.getRequest();
         //Select both Delivery and Pickup points if the point is a request
-        controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
-        controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Gview.drawMouseSelection(request.getPickUpPoint());
+        controller.Gview.drawMouseSelection(request.getDeliveryPoint());
         controller.Tview.selectRequest(request,false);
-        CurrentIdList.add(request.getPickUpPoint().getId());
-        CurrentIdList.add(request.getDeliveryPoint().getId());
+        CurrentStepList.add(request.getPickUpPoint());
+        CurrentStepList.add(request.getDeliveryPoint());
         controller.deleteRequest.setDisable(false);
 
     }
 
-    @Override
-    public void mouseOn(long idIntersection, Controller controller) {
-    }
+
 
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
@@ -138,6 +140,13 @@ public class InitialState implements State {
             controller.Gview.undrawMouseSelection(id);
         }
         CurrentIdList.clear();
+    }
+
+    private void unSelectSteps(Controller controller){
+        for (Step step:CurrentStepList) {
+            controller.Gview.undrawMouseSelection(step);
+        }
+        CurrentStepList.clear();
     }
 
 

@@ -138,9 +138,6 @@ public class Controller {
         Gview.unZoom();
     }
 
-    public void mouseOn(long idIntersection) {
-        currentState.mouseOn(idIntersection, this);
-    }
 
     public void addDuration(int duration) {
         currentState.addDuration(duration, this);
