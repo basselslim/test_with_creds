@@ -11,9 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="1050.0" maxWidth="1680.0" style="-fx-background-color: Whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
-    <HBox alignment="CENTER_LEFT" minHeight="60.0" style="-fx-background-color: Seashell;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER_LEFT" minHeight="60.0" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
       <children>
         <Button fx:id="LoadMap" mnemonicParsing="false" onAction="#LoadMap" prefHeight="40.0" prefWidth="200.0" text="Load Map">
@@ -37,12 +36,9 @@
     </HBox>
    <SplitPane dividerPositions="0.6005004170141784" maxHeight="800.0">
      <items>
-
-       <AnchorPane style="-fx-background-color: SNOW;" prefHeight="800.0" prefWidth="805.0">
+       <AnchorPane style="-fx-background-color: Whitesmoke;" prefHeight="800.0" prefWidth="805.0">
             <children>
-                <Pane fx:id="overlay" onZoom="#Zoom" style="-fx-background-color: SNOW;">
-
-
+                <Pane fx:id="overlay" onZoom="#Zoom" style="-fx-background-color: Whitesmoke;">
                </Pane>
             </children>
          </AnchorPane>
@@ -63,7 +59,7 @@
           <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="70.0" translateY="-50.0" />
       </children>
    </Pane>
-   <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: Seashell;" VBox.vgrow="ALWAYS">
+   <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: whitesmoke;" VBox.vgrow="ALWAYS">
       <children>
           <VBox alignment="CENTER">
               <children>
