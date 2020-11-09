@@ -53,7 +53,7 @@ public class Tour {
 
         //Find the place to insert the pickUp
         for (Path path : listPaths) {
-            if (path.getDeparture().getRequest() == precedingPickUp.getRequest()) {
+            if (path.getDeparture().getRequest() == precedingPickUp.getRequest() && path.getIdDeparture() == precedingPickUp.getId()) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
 
                 List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(path.getDeparture(), newRequest.getPickUpPoint());
@@ -79,7 +79,7 @@ public class Tour {
 
         //Find the place to insert the Delivery
         for (Path path : listPaths) {
-            if (path.getDeparture().getRequest() == precedingDelivery.getRequest()) {
+            if (path.getDeparture().getRequest() == precedingDelivery.getRequest() && path.getIdDeparture() == precedingDelivery.getId()) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
 
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(path.getDeparture(),newRequest.getDeliveryPoint());
