@@ -81,7 +81,7 @@ public class GraphicalView implements observer.Observer {
 
             Step pickupStep = request.getPickUpPoint();
             Step deliveryStep = request.getDeliveryPoint();
-            Color color = generateColor(pickupStep.getId());
+            Color color = generateColor(pickupStep.getRequest());
             drawRectangle(pickupStep, color, ReqpointSize);
             drawRequestPoint(deliveryStep, color, ReqpointSize);
 
@@ -288,10 +288,11 @@ public class GraphicalView implements observer.Observer {
             circle.relocate(pointX - size, pointY - size);
             circle.setUserData(step.getRequest().getDeliveryPoint());
             circle.setViewOrder(-1.0);
-            int order = circles.get(id).size();
+            int order = circles.get(id).size()-1;
             if(rectangles.get(id)!=null)
-                    order += rectangles.get(id).size() - 1;
-            circle.relocate(pointX - order*StepSiding, pointY - order*StepSiding);
+                    order += rectangles.get(id).size();
+            System.out.println(order);
+            circle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
             circles.get(id).add(circle);
         }
 
@@ -309,12 +310,12 @@ public class GraphicalView implements observer.Observer {
             //circles.get(id).remove(0);
             if (rectangles.containsKey(id)) {
                 int order = circles.get(id).size() + rectangles.get(id).size()-1;
-                rectangle.relocate(pointX - order*StepSiding, pointY - order*StepSiding);
+                rectangle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
                 rectangles.get(id).add(rectangle);
             } else {
                 List<Rectangle> RectangleList = new ArrayList<Rectangle>();
-                int order = circles.get(id).size();
-                rectangle.relocate(pointX - order*StepSiding, pointY - order*StepSiding);
+                int order = circles.get(id).size()-1;
+                rectangle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
                 RectangleList.add(rectangle);
                 rectangles.put(id, RectangleList);
             }
@@ -336,6 +337,7 @@ public class GraphicalView implements observer.Observer {
                         depot.setStroke(Color.BLACK);
                         depot.setStrokeWidth(StrokeSize * 1.5);
                         depot.setViewOrder(-1.0);
+                        depot.setUserData(m_map.getDepot());
                     } else
                         m_overlay.getChildren().add(circle);
                 }
@@ -370,7 +372,7 @@ public class GraphicalView implements observer.Observer {
             pointSize = 0.00030 * coeffX;
             ReqpointSize = 0.0007 * coeffX;
             StrokeSize = 0.00016 * coeffX;
-            StepSiding = 0.00015 * coeffX;
+            StepSiding = 0.00050 * coeffX;
         }
 
         private void updateTranslation ( double XValue, double YValue){
@@ -414,8 +416,8 @@ public class GraphicalView implements observer.Observer {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
     }
 
-    private Color generateColor(long seed){
-        Random generator = new Random(seed);
+    private Color generateColor(Request req){
+        Random generator = new Random(req.getDeliveryPoint().getId() + req.getPickUpPoint().getId()+1);
         int rand = generator.nextInt(150);
         int rand2 = generator.nextInt(150);
         int rand3 = generator.nextInt(150);
