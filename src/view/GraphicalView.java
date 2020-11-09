@@ -180,12 +180,12 @@ public class GraphicalView implements observer.Observer {
         if (circle != null) {
             //circle.setFill(Color.BLACK);
             circle.setStrokeWidth(circle.getStrokeWidth() / 2.0);
-            circle.setStroke(Color.BLACK);
+            circle.setStroke(Color.DIMGRAY);
         }
         if (rectangle != null) {
             //rectangle.setFill(Color.BLACK);
             rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 2.0);
-            rectangle.setStroke(Color.BLACK);
+            rectangle.setStroke(Color.DIMGRAY);
         }
     }
 
