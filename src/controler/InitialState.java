@@ -7,6 +7,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import model.*;
 import model.Map;
+import view.GraphicalView;
+import view.TextualView;
 
 import java.io.File;
 import java.util.*;
@@ -96,15 +98,25 @@ public class InitialState implements State {
 
     @Override
     public void LoadMap(ActionEvent event, Controller controller, Map map) {
+        controller.Gview = new GraphicalView(map, controller.overlay, controller.mg);
+        controller.Tview = new TextualView(map, controller.myPane, controller.TextArea, controller.TextTour, controller);
+        map.addObserver(controller.Gview);
+        map.addObserver(controller.Tview);
 
         FileChooser mapFileChooser = new FileChooser();
         mapFileChooser.setTitle("Load Map");
         mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File mapFile = mapFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
-        controller.Tview.setMessage("Please load a request list");
+        if(mapFile != null) {
+            XMLLoader xmlloader = new XMLLoader();
+            xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
+
+            controller.Tview.setMessage("Please load a request list");
+            controller.LoadRequests.setDisable(false);
+            controller.addRequest.setDisable(true);
+            controller.deleteRequest.setDisable(true);
+        }
     }
 
     @Override

@@ -34,13 +34,13 @@ public class Controller {
     protected TextualView Tview;
 
     @FXML
-    private Pane overlay;
+    protected Pane overlay;
     @FXML
-    private Pane myPane;
+    protected Pane myPane;
     @FXML
-    private javafx.scene.control.TextArea TextArea;
+    protected javafx.scene.control.TextArea TextArea;
     @FXML
-    private Label TextTour;
+    protected Label TextTour;
     @FXML
     protected Button confirmAction;
     @FXML
@@ -124,14 +124,9 @@ public class Controller {
     }
 
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg);
-        Tview = new TextualView(map, myPane, TextArea, TextTour, this);
-        map.addObserver(Gview);
-        map.addObserver(Tview);
+
         currentState.LoadMap(event, this, map);
-        LoadRequests.setDisable(false);
-        addRequest.setDisable(true);
-        deleteRequest.setDisable(true);
+
     }
 
     public void Zoom(ActionEvent event) { Gview.zoom(); }

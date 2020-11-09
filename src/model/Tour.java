@@ -121,11 +121,11 @@ public class Tour {
 
         for (Path path : listPaths) {
 
-            if (path.getArrival().getRequest() == request.getPickUpPoint().getRequest()) {
+            if (path.getArrival().getRequest() == request.getPickUpPoint().getRequest() && path.getIdArrival() == request.getPickUpPoint().getId()) {
                 departure = path.getDeparture();
             }
 
-            if (path.getDeparture().getRequest() == request.getPickUpPoint().getRequest()) {
+            if (path.getDeparture().getRequest() == request.getPickUpPoint().getRequest() && path.getIdDeparture() == request.getPickUpPoint().getId()) {
                 List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,path.getArrival());
                 Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeletePickUp);
@@ -137,10 +137,10 @@ public class Tour {
         }
 
         for (Path path : listPaths) {
-            if (path.getArrival().getRequest() == request.getDeliveryPoint().getRequest()) {
+            if (path.getArrival().getRequest() == request.getDeliveryPoint().getRequest() && path.getIdArrival() == request.getDeliveryPoint().getId()) {
                 departure = path.getDeparture();
             }
-            if (path.getDeparture().getRequest() == request.getDeliveryPoint().getRequest()) {
+            if (path.getDeparture().getRequest() == request.getDeliveryPoint().getRequest() && path.getIdDeparture() == request.getDeliveryPoint().getId()) {
                 List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,path.getArrival());
                 Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeleteDelivery);

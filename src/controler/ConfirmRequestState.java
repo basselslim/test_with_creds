@@ -23,15 +23,12 @@ public class ConfirmRequestState implements State {
  *
  */
         if(request != null) {
-
-
+            
             AddCommand addRequestCommand = new AddCommand(controller. map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
             int errorCode = controller.getListOfCommand().add(addRequestCommand);
             if(errorCode!=0) {
                 controller.initialState.undo(controller.getListOfCommand(), controller);
             }
-
-
             controller.initialState.entryAction(controller);
             controller.setCurrentState(controller.initialState);
             unDrawSelection(controller);
@@ -40,9 +37,9 @@ public class ConfirmRequestState implements State {
             controller.addRequest.setDisable(false);
             controller.Gview.disableSelection();
 
-            if (errorCode == 0) {
+
                 controller.Tview.setMessage("Request added");
-            } else if (errorCode == 1) {
+            if (errorCode == 1) {
                 controller.Tview.setMessage("Error : Can't find a path to the new pick up point.");
             }else if (errorCode == 2) {
                 controller.Tview.setMessage("Error : Can't find a path to the new delivery point.");
