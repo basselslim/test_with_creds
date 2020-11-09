@@ -13,8 +13,8 @@ public class Path {
     protected List<Segment> listSegments;
     protected long idDeparture;
     protected long idArrival;
-    protected Intersection departure;
-    protected Intersection arrival;
+    protected Step departure;
+    protected Step arrival;
 
     /**
      * Default constructor
@@ -22,7 +22,7 @@ public class Path {
     public Path() {
     }
 
-    public Path(List<Segment> listSegments, Intersection a, Intersection b) {
+    public Path(List<Segment> listSegments, Step a, Step b) {
         departure = a;
         arrival = b;
         this.idDeparture = a.getId();
@@ -61,9 +61,9 @@ public class Path {
         return idArrival;
     }
 
-    public Intersection getDeparture() { return departure; }
+    public Step getDeparture() { return departure; }
 
-    public Intersection getArrival() { return arrival; }
+    public Step getArrival() { return arrival; }
 
 
     @Override

@@ -86,7 +86,7 @@ class ComputeSmallestPathTest {
 
         // Act
 
-        listSegment = CSP.computeSmallestPath(from, to);
+        //listSegment = CSP.computeSmallestPath(from, to);
 
 
         // Assert

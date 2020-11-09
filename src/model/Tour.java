@@ -96,13 +96,15 @@ public class Tour {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToDeletePickUp = 0;
         int pathIndexToDeleteDelivery = 0;
-        Intersection departure = null;
+        Step departure = null;
 
         for (Path path : listPaths) {
-            if (path.getIdArrival() == request.getPickUpPoint().getId()) {
+
+            if (path.getArrival().getRequest() == request.getPickUpPoint().getRequest()) {
                 departure = path.getDeparture();
             }
-            if (path.getIdDeparture() == request.getPickUpPoint().getId()) {
+
+            if (path.getDeparture().getRequest() == request.getPickUpPoint().getRequest()) {
                 List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,path.getArrival());
                 Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeletePickUp);
@@ -114,10 +116,10 @@ public class Tour {
         }
 
         for (Path path : listPaths) {
-            if (path.getIdArrival() == request.getDeliveryPoint().getId()) {
+            if (path.getArrival().getRequest() == request.getDeliveryPoint().getRequest()) {
                 departure = path.getDeparture();
             }
-            if (path.getIdDeparture() == request.getDeliveryPoint().getId()) {
+            if (path.getDeparture().getRequest() == request.getDeliveryPoint().getRequest()) {
                 List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,path.getArrival());
                 Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeleteDelivery);

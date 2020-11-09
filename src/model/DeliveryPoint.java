@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 
  */
-public class DeliveryPoint extends Intersection {
+public class DeliveryPoint extends Step {
     /**
      *
      */
