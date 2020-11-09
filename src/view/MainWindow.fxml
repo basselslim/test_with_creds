@@ -55,7 +55,7 @@
       <children>
          <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="20.0" translateY="-50.0" />
           <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="70.0" translateY="-50.0" />
-         <Button fx:id="resetView" mnemonicParsing="false" onAction="#resetView" prefHeight="30.0" text="Reset view" translateX="680.0" translateY="-50.0">
+         <Button fx:id="resetView" mnemonicParsing="false" onAction="#resetView" prefHeight="30.0" text="Reset view" translateX="120.0" translateY="-50.0">
             <font>
                <Font size="12.0" />
             </font>
