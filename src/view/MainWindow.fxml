@@ -33,11 +33,11 @@
         </Button>
       </children>
     </HBox>
-   <SplitPane dividerPositions="0.65" maxHeight="800.0">
+   <SplitPane dividerPositions="0.6005004170141784" maxHeight="800.0">
      <items>
-       <AnchorPane>
+       <AnchorPane prefHeight="800.0" prefWidth="805.0">
             <children>
-                <Pane fx:id="overlay" onZoom="#Zoom" prefHeight="800.0" prefWidth="1000.0">
+                <Pane fx:id="overlay" onZoom="#Zoom">
 
                </Pane>
             </children>
