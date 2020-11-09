@@ -11,7 +11,7 @@ public class TravellingSalesmanProblem {
     protected int numberOfStep = 0;
     protected model.Map map;
     protected HashMap<Long, HashMap<Long, Path>> adjacencyMatrixOfShortestPath;
-    protected HashMap<Long,Long> precedenceOrderMatrix;
+    protected HashMap<Long,List<Long>> precedenceOrderMatrix;
     // final_path stores the final solution ie, the
     // path of the salesman.
     protected Tour final_tour;
@@ -37,9 +37,16 @@ public class TravellingSalesmanProblem {
     }
 
     private void initialisePrecedenceMatrix() {
-        precedenceOrderMatrix = new HashMap<Long,Long>();
+        precedenceOrderMatrix = new HashMap<Long,List<Long>>();
         for (Request r : map.getListRequests()) {
-            precedenceOrderMatrix.put(r.getDeliveryPoint().getId(),r.getPickUpPoint().getId());
+            if (precedenceOrderMatrix.containsKey(r.getDeliveryPoint().getId())) {
+                precedenceOrderMatrix.get(r.getDeliveryPoint().getId()).add(r.getPickUpPoint().getId());
+            } else {
+                List<Long> pickUpList = new LinkedList<Long>();
+                pickUpList.add(r.getPickUpPoint().getId());
+                precedenceOrderMatrix.put(r.getDeliveryPoint().getId(),pickUpList);
+            }
+
         }
     }
 
@@ -160,8 +167,13 @@ public class TravellingSalesmanProblem {
             // check if not visited already
             boolean precedenceRespected = false;
             if (precedenceOrderMatrix.containsKey(pathStartingAtCurrentStep.getKey()) ) {
-                if (visited.containsKey(precedenceOrderMatrix.get(pathStartingAtCurrentStep.getKey()))) {
-                    precedenceRespected = true;
+                for (Long id : precedenceOrderMatrix.get(pathStartingAtCurrentStep.getKey())) {
+                    if (visited.containsKey(id)) {
+                        precedenceRespected = true;
+                    } else {
+                        precedenceRespected = false;
+                        break;
+                    }
                 }
             } else {
                 precedenceRespected = true;
