@@ -3,7 +3,7 @@ package model;
 import java.util.*;
 
 /**
- * 
+ *
  */
 public class Path {
     /**
@@ -13,6 +13,8 @@ public class Path {
     protected List<Segment> listSegments;
     protected long idDeparture;
     protected long idArrival;
+    protected Intersection departure;
+    protected Intersection arrival;
 
     /**
      * Default constructor
@@ -20,13 +22,15 @@ public class Path {
     public Path() {
     }
 
-    public Path(List<Segment> listSegments, long departure, long arrival) {
-        this.idDeparture = departure;
-        this.idArrival = arrival;
+    public Path(List<Segment> listSegments, Intersection a, Intersection b) {
+        departure = a;
+        arrival = b;
+        this.idDeparture = a.getId();
+        this.idArrival = b.getId();
         this.pathLength = 0;
         if (listSegments != null) {
             this.listSegments = listSegments;
-            for(Segment s: listSegments) {
+            for (Segment s : listSegments) {
                 this.pathLength += s.getLength();
             }
         } else {
@@ -46,7 +50,7 @@ public class Path {
     }
 
     public int getDuration() {
-        return (int) (((double) pathLength/15.0)*3.6);
+        return (int) (((double) pathLength / 15.0) * 3.6);
     }
 
     public long getIdDeparture() {
@@ -56,6 +60,11 @@ public class Path {
     public long getIdArrival() {
         return idArrival;
     }
+
+    public Intersection getDeparture() { return departure; }
+
+    public Intersection getArrival() { return arrival; }
+
 
     @Override
     public String toString() {

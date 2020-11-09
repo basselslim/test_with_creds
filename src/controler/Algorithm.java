@@ -32,11 +32,11 @@ public class Algorithm {
         }
 
         for (Request r: this.listRequests) {
-            point = map.getListIntersections().get(r.getDeliveryPoint().getId());
+            point = r.getDeliveryPoint();
             if (!listPoints.contains(point) && point != null) {
                 listPoints.add(point);
             }
-            point = map.getListIntersections().get(r.getPickUpPoint().getId());
+            point = r.getPickUpPoint();
             if (!listPoints.contains(point) && point != null) {
                 listPoints.add(point);
             }
@@ -47,7 +47,7 @@ public class Algorithm {
             for (Intersection p2: listPoints) {
                 if (p1.getId() != p2.getId()) {
                     List<Segment> listSegments = algorithmSmallestPath.computeSmallestPath(p1, p2);
-                    mapSmallestPathPerPoint.put(p2.getId(), new Path(listSegments, p1.getId(), p2.getId()));
+                    mapSmallestPathPerPoint.put(p2.getId(), new Path(listSegments, p1, p2));
                 }
             }
             mapSmallestPaths.put(p1.getId(), mapSmallestPathPerPoint);

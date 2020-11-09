@@ -13,7 +13,9 @@ public class ComputeSmallestPath {
         this.map = map;
     }
 
-    public List<Segment> computeSmallestPath(Intersection from, Intersection to) {
+    public List<Segment> computeSmallestPath(Intersection a, Intersection b) {
+        Intersection from = map.getListIntersections().get(a.getId());
+        Intersection to = map.getListIntersections().get(b.getId());
         List<Intersection> computedPath;
         Queue<Intersection> openSet = new PriorityQueue<>();
         Intersection start = new Intersection(from, null, 0, computeCost(from, to));
