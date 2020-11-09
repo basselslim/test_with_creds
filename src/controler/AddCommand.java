@@ -23,16 +23,19 @@ public class AddCommand implements Command {
     }
 
     @Override
-    public void doCommand() {
+    public int doCommand() {
+        int errorCode = 0;
         if(precedingDeliveryId !=0 && precedingPickUpId != 0)
-            map.addRequest(request,precedingPickUpId,precedingDeliveryId);
+            errorCode = map.addRequest(request,precedingPickUpId,precedingDeliveryId);
         else
-            map.addRequest(request);
+            errorCode= map.addRequest(request);
+        return errorCode;
     }
 
 
     @Override
-    public void undoCommand() {
+    public int undoCommand() {
         map.removeRequest(request);
+        return 0;
     }
 }
