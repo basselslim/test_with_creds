@@ -222,7 +222,7 @@ public class Tour extends Observable {
         int i = 0;
         totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
         for(Path p: listPaths) {
-            String PathTitle = "Step n°" + (i+1) + ":  Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
+            String PathTitle = "Step n°" + (i+1) + "\n\n";
             totalText+=PathTitle;
             int j = 0;
             for(Segment s: p.getListSegments()) {
@@ -239,9 +239,11 @@ public class Tour extends Observable {
 
                 j++;
             }
+            totalText += "   - Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
             totalText+=this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
+        totalText += "   - Arrival at depot, your tour have ended. Congratulations";
         totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
         return totalText;
     }
@@ -250,12 +252,16 @@ public class Tour extends Observable {
     {
         try {
             File roadMap = new File(path);
-            if (roadMap.createNewFile()) {
+
+            if (roadMap.exists()) {
+                roadMap.createNewFile();
                 System.out.println("File created: " + roadMap.getName());
                 System.out.println("Absolute path: " + roadMap.getAbsolutePath());
                 this.roadMapFilePath = roadMap.getAbsolutePath();
             } else {
                 System.out.println("File already exists.");
+                roadMap.delete();
+                roadMap.createNewFile();
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
