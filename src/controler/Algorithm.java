@@ -62,8 +62,8 @@ public class Algorithm {
     public void computeOptimalTour(HashMap<Long, HashMap<Long,Path>> mapSmallestPaths) {
         this.timeZero = System.currentTimeMillis();
         System.out.println("Computing the optimal tour...");
-        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths,TIMELIMIT);
-        travellingSalesmanProblem.TSP();
+        TravellingSalesmanProblem travellingSalesmanProblem = new TravellingSalesmanProblem(map,mapSmallestPaths);
+        travellingSalesmanProblem.TSP(TIMELIMIT);
         System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
     }
 }

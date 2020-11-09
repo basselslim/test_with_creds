@@ -28,16 +28,20 @@ class TravellingSalesmanProblemTest {
 
     @BeforeEach
     void dataInitialisation() {
-        map = new Map();
-        adjacencyMatrixOfShortestPath = new HashMap<Long, HashMap<Long,Path>>();
         System.out.println("Data Initialisation");
 
-        Depot depot = new Depot(1l,"");
+        //Arrange
+        map = new Map();
+        adjacencyMatrixOfShortestPath = new HashMap<Long, HashMap<Long,Path>>();
+
+
+        Depot depot = new Depot(1l,"8:30:200");
         Intersection a = new Intersection(1l,0,0);
         Intersection b = new Intersection(4l,0,0);
         Intersection c = new Intersection(7l,0,0);
         Intersection d = new Intersection(9l,0,0);
 
+        //don't touch a intersection in order to keep the test succes
         a.getListSegments().add(new Segment(10.0,"",4l));
         a.getListSegments().add(new Segment(25.0,"",7l));
         a.getListSegments().add(new Segment(35.0,"",9l));
@@ -69,12 +73,13 @@ class TravellingSalesmanProblemTest {
             }
             adjacencyMatrixOfShortestPath.put(mapentry.getKey(),adjacencyList);
         }
-        TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath,10000);
+        TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath);
     }
 
     @Test
     void testCopyToFinal() {
         System.out.println("CopyToFinalTest");
+        //Arrange
         Path aToB = adjacencyMatrixOfShortestPath.get(1l).get(4l);
         Path bToC = adjacencyMatrixOfShortestPath.get(4l).get(7l);
         Path cToD = adjacencyMatrixOfShortestPath.get(7l).get(9l);
@@ -84,9 +89,12 @@ class TravellingSalesmanProblemTest {
         tour.add(aToB);
         tour.add(bToC);
         tour.add(cToD);
-
         Tour randomTour = new Tour(map,tour);
+
+        //Act
         TSP.copyToFinal(randomTour);
+
+        //Assert
         assert(TSP.final_tour.getTourLength() == finalpathLengthExpected);
 
     }
@@ -94,22 +102,30 @@ class TravellingSalesmanProblemTest {
     @Test
     void testFirstMin() {
         System.out.println("FirstMinTest");
+        //Act
         int min  = TSP.firstMin(1l);
+        //Assert
         assert (min == 10);
     }
 
     @Test
     void testSecondMin() {
         System.out.println("SecondMinTest");
+        //Act
         int secondMin  = TSP.secondMin(1l);
+        //Assert
         assert (secondMin == 25);
     }
 
     @Test
     void testTSP() {
         System.out.println("TSPTest");
-        TSP.TSP();
-        System.out.println(TSP.final_res);
-        System.out.println(TSP.final_tour.getListPaths());
+        //Arrange
+        int a, b;
+        //Act
+        //TSP.TSP(50);
+        //int a = TSP.final_res;
+        //TSP.TSP(200);
+        //int b = TSP.final_res;
     }
 }

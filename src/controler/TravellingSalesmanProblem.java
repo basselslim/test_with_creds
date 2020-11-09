@@ -23,9 +23,8 @@ public class TravellingSalesmanProblem {
     // Stores the final minimum weight of shortest tour.
     protected int final_res = Integer.MAX_VALUE;
     protected long timeZero;
-    protected long TIMELIMIT;
 
-    public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths,long t) {
+    public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths) {
         numberOfStep = mapSmallestPaths.size();
         map = newMap;
         final_tour = new Tour(map);
@@ -33,7 +32,6 @@ public class TravellingSalesmanProblem {
         visited = new HashMap<Long, Boolean>();
         initialisePrecedenceMatrix();
         timeZero = System.currentTimeMillis();
-        TIMELIMIT = t;
     }
 
     private void initialisePrecedenceMatrix() {
@@ -88,7 +86,7 @@ public class TravellingSalesmanProblem {
 
 
     // This function sets up final_tour
-    public void TSP() {
+    public void TSP(long timelimit) {
         Tour curr_tour = new Tour(map);
 
         // Calculate initial lower bound for the root node
@@ -111,7 +109,7 @@ public class TravellingSalesmanProblem {
 
         // Call to TSPRec for curr_weight equal to
         // 0 and level 1
-        TSPRec(curr_bound, 0, 1, curr_tour);
+        TSPRec(curr_bound, 0, 1, curr_tour,timelimit);
         map.setDeliveryTour(final_tour);
     }
 
@@ -123,8 +121,7 @@ public class TravellingSalesmanProblem {
     //         space tree
     // curr_path[] -> where the solution is being stored which
     //             would later be copied to final_tour
-    protected void TSPRec(int curr_bound, int curr_weight, int level, Tour curr_tour) {
-
+    protected void TSPRec(int curr_bound, int curr_weight, int level, Tour curr_tour,long timelimit) {
         // base case is when we have reached level N which
         // means we have covered all the nodes once
         if (level == numberOfStep) {
@@ -181,12 +178,12 @@ public class TravellingSalesmanProblem {
                 // for the node that we have arrived on
                 // If current lower bound < final_res, we need to explore
                 // the node further
-                if (curr_bound + curr_weight < final_res && System.currentTimeMillis() - timeZero < TIMELIMIT) {
+                if (curr_bound + curr_weight < final_res && System.currentTimeMillis() - timeZero < timelimit) {
                     curr_tour.addPath(pathStartingAtCurrentStep.getValue());
                     visited.put(pathStartingAtCurrentStep.getKey(), true);
                     // call TSPRec for the next level
                     TSPRec(curr_bound, curr_weight, level + 1,
-                            curr_tour);
+                            curr_tour,timelimit);
                 } else {
                     return;
                 }
