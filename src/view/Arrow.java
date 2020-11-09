@@ -22,7 +22,7 @@ public class Arrow extends Path{
         getElements().add(new LineTo(endX, endY));
 
         //ArrowHead
-        double angle = Math.atan2((endY - startY), (endX - startX)) - Math.PI / 2.0;
+        double angle = Math.atan2(((endY - startY)), ((endX - startX))) - Math.PI / 2.0;
         double sin = Math.sin(angle);
         double cos = Math.cos(angle);
         //point1

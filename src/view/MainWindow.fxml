@@ -34,47 +34,49 @@
             </Button>
         </children>
     </HBox>
-    <SplitPane dividerPositions="0.6005004170141784" maxHeight="800.0">
-        <items>
-            <AnchorPane style="-fx-background-color: Whitesmoke;" prefHeight="800.0" prefWidth="805.0">
-                <children>
-                    <Pane fx:id="overlay" onZoom="#Zoom" style="-fx-background-color: Whitesmoke;">
-                    </Pane>
-                </children>
-            </AnchorPane>
-            <VBox>
-                <AnchorPane fx:id="myPane" maxHeight="800.0" minHeight="200.0" minWidth="300.0" VBox.vgrow="ALWAYS" />
-                <HBox alignment="CENTER" maxHeight="30.0">
-                    <Button fx:id="addRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addRequest" prefHeight="30.0" prefWidth="120.0" text="Add request" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="deleteRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="30.0" prefWidth="120.0" text="Delete Request" HBox.hgrow="ALWAYS" />
-                </HBox>
-            </VBox>
-        </items>
-    </SplitPane>
-
+   <SplitPane dividerPositions="0.6005004170141784" maxHeight="800.0">
+     <items>
+       <AnchorPane prefHeight="800.0" prefWidth="805.0" style="-fx-background-color: Whitesmoke;">
+            <children>
+                <Pane fx:id="overlay" onZoom="#Zoom" style="-fx-background-color: Whitesmoke;">
+               </Pane>
+            </children>
+         </AnchorPane>
+       <VBox>
+           <AnchorPane fx:id="myPane" maxHeight="800.0" minHeight="200.0" minWidth="300.0" VBox.vgrow="ALWAYS" />
+           <HBox alignment="CENTER" maxHeight="30.0">
+               <Button fx:id="addRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addRequest" prefHeight="30.0" prefWidth="120.0" text="Add request" HBox.hgrow="ALWAYS" />
+               <Button fx:id="deleteRequest" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteRequest" prefHeight="30.0" prefWidth="120.0" text="Delete Request" HBox.hgrow="ALWAYS" />
+           </HBox>
+       </VBox>
+     </items>
+   </SplitPane>
     <Pane maxHeight="0.0" maxWidth="0.0" prefHeight="0.0" prefWidth="0.0">
-
-        <children>
-            <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="20.0" translateY="-50.0" />
-            <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="70.0" translateY="-50.0" />
-        </children>
-    </Pane>
-    <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: whitesmoke;" VBox.vgrow="ALWAYS">
-        <children>
-            <VBox alignment="CENTER">
-                <children>
-                    <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo">
-                        <VBox.margin>
-                            <Insets bottom="5.0" />
-                        </VBox.margin></Button>
-                    <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo">
-                        <VBox.margin>
-                            <Insets top="5.0" />
-                        </VBox.margin>
-                    </Button>
-                </children>
-            </VBox>
-
+      <children>
+         <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="20.0" translateY="-50.0" />
+          <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="70.0" translateY="-50.0" />
+         <Button fx:id="resetView" mnemonicParsing="false" onAction="#resetView" text="Reset view" translateX="620.0" translateY="-50.0">
+            <font>
+               <Font size="12.0" />
+            </font>
+         </Button>
+      </children>
+   </Pane>
+   <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: whitesmoke;" VBox.vgrow="ALWAYS">
+      <children>
+          <VBox alignment="CENTER">
+              <children>
+                  <Button fx:id="undo" mnemonicParsing="false" onAction="#undo" text="Undo">
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin></Button>
+                  <Button fx:id="redo" mnemonicParsing="false" onAction="#redo" text="Redo">
+                  <VBox.margin>
+                     <Insets top="5.0" />
+                  </VBox.margin>
+               </Button>
+              </children>
+          </VBox>
             <TextArea fx:id="TextArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="64.0" prefWidth="514.0" text="Please load a map">
                 <font>
                     <Font name="System Bold" size="18.0" />

@@ -60,6 +60,7 @@ public class AddPickupState implements State {
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.initialState.entryAction(controller);
+        controller.Tview.setMessage("Compute Tour, export Roadmap, load a new map or new requests");
         controller.setCurrentState(controller.initialState);
 
     }

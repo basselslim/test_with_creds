@@ -1,5 +1,6 @@
 package view;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -35,6 +36,7 @@ public class GraphicalView implements observer.Observer {
     double pointSize;
     double ReqpointSize;
     double StrokeSize;
+    double RequestStrokeSize;
     double StepSiding;
     Boolean isMapClickable = false;
     Boolean setScreenSize = false;
@@ -77,8 +79,6 @@ public class GraphicalView implements observer.Observer {
 
         //draw request points
         for (Request request : m_map.getListRequests()) {
-
-
             Step pickupStep = request.getPickUpPoint();
             Step deliveryStep = request.getDeliveryPoint();
             Color color = generateColor(pickupStep.getRequest());
@@ -162,6 +162,16 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    public void resetView() {
+        zoomVal = 1.0;
+        long id = (long)circles.keySet().toArray()[0];
+        zoomTranslateX = 0;
+        zoomTranslateY = 0;
+        mouseGestures.newTranslateX = 0;
+        mouseGestures.newTranslateY = 0;
+        refreshMap();
+    }
+
     public void drawMouseSelection(long NodeId) {
         Circle circle = circles.get(NodeId).get(0);
         if (circle != null) {
@@ -214,8 +224,6 @@ public class GraphicalView implements observer.Observer {
                 }
             }
         }
-
-
 
         public void undrawMouseSelection ( long NodeId){
             Circle circle = circles.get(NodeId).get(0);
@@ -283,12 +291,14 @@ public class GraphicalView implements observer.Observer {
 
             Circle circle = new Circle(size);
             circle.setStroke(Color.BLACK);
-            circle.setStrokeWidth(StrokeSize);
+            circle.setStrokeWidth(RequestStrokeSize);
             circle.setFill(color.deriveColor(1, 1, 1, 1.0));
             circle.relocate(pointX - size, pointY - size);
             circle.setUserData(step.getRequest().getDeliveryPoint());
             circle.setViewOrder(-1.0);
             int order = circles.get(id).size()-1;
+            if(m_map.getDepot().getId() == id)
+                order++;
             if(rectangles.get(id)!=null)
                     order += rectangles.get(id).size();
             System.out.println(order);
@@ -303,13 +313,15 @@ public class GraphicalView implements observer.Observer {
 
             Rectangle rectangle = new Rectangle(pointX - size, pointY - size, size * 2, size * 2);
             rectangle.setStroke(Color.BLACK);
-            rectangle.setStrokeWidth(StrokeSize);
+            rectangle.setStrokeWidth(RequestStrokeSize);
             rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
 
             rectangle.setUserData(step);
             //circles.get(id).remove(0);
             if (rectangles.containsKey(id)) {
                 int order = circles.get(id).size() + rectangles.get(id).size()-1;
+                if(m_map.getDepot().getId() == id)
+                    order++;
                 rectangle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
                 rectangles.get(id).add(rectangle);
             } else {
@@ -337,11 +349,14 @@ public class GraphicalView implements observer.Observer {
                         depot.setStroke(Color.BLACK);
                         depot.setStrokeWidth(StrokeSize * 1.5);
                         depot.setViewOrder(-1.0);
-                        depot.setUserData(m_map.getDepot());
+                        depot.setUserData(m_map.getDepot().getId());
                     } else
                         m_overlay.getChildren().add(circle);
                 }
             }
+            List<Circle> DepotCircleList = new ArrayList<>();
+            circles.put(m_map.getDepot().getId(),DepotCircleList);
+            circles.get(m_map.getDepot().getId()).add(depot);
             m_overlay.getChildren().add(depot);
 
             for (Arrow arrow : arrows) {
@@ -372,7 +387,8 @@ public class GraphicalView implements observer.Observer {
             pointSize = 0.00030 * coeffX;
             ReqpointSize = 0.0007 * coeffX;
             StrokeSize = 0.00016 * coeffX;
-            StepSiding = 0.00050 * coeffX;
+            RequestStrokeSize = 0.00032 * coeffX/zoomVal;
+            StepSiding = 0.00040 * coeffX;
         }
 
         private void updateTranslation ( double XValue, double YValue){
@@ -429,4 +445,6 @@ public class GraphicalView implements observer.Observer {
     public void update(observer.Observable observed, Object arg) {
         refreshMap();
     }
+
+
 }

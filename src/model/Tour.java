@@ -56,7 +56,7 @@ public class Tour {
 
         //Find the place to insert the pickUp
         for (Path path : listPaths) {
-            if (path.getDeparture().getRequest() == precedingPickUp.getRequest()) {
+            if (path.getDeparture().getRequest() == precedingPickUp.getRequest() && path.getIdDeparture() == precedingPickUp.getId()) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
 
                 List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(path.getDeparture(), newRequest.getPickUpPoint());
@@ -82,7 +82,7 @@ public class Tour {
 
         //Find the place to insert the Delivery
         for (Path path : listPaths) {
-            if (path.getDeparture().getRequest() == precedingDelivery.getRequest()) {
+            if (path.getDeparture().getRequest() == precedingDelivery.getRequest() && path.getIdDeparture() == precedingDelivery.getId()) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
 
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(path.getDeparture(),newRequest.getDeliveryPoint());
@@ -165,6 +165,12 @@ public class Tour {
             tourLength += p.getPathLength();
         }
         return tourLength;
+    }
+
+    public String getDuration() {
+        String duration = "";
+        duration = timeToString(getListTimes().get(getListTimes().size()-1)[1]-getListTimes().get(0)[0]);
+        return duration;
     }
 
     public List<Path> getListPaths() {
@@ -251,7 +257,7 @@ public class Tour {
         int i = 0;
         totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
         for(Path p: listPaths) {
-            String PathTitle = "Step n°" + (i+1) + ":  Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
+            String PathTitle = "Step n°" + (i+1) + "\n\n";
             totalText+=PathTitle;
             int j = 0;
             for(Segment s: p.getListSegments()) {
@@ -268,9 +274,11 @@ public class Tour {
 
                 j++;
             }
+            totalText += "   - Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
             totalText+=this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
+        totalText += "   - Arrival at depot, your tour have ended. Congratulations";
         totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
         return totalText;
     }
@@ -279,12 +287,17 @@ public class Tour {
     {
         try {
             File roadMap = new File(path);
-            if (roadMap.createNewFile()) {
+
+            if (roadMap.exists()) {
+                roadMap.createNewFile();
                 System.out.println("File created: " + roadMap.getName());
                 System.out.println("Absolute path: " + roadMap.getAbsolutePath());
                 this.roadMapFilePath = roadMap.getAbsolutePath();
             } else {
                 System.out.println("File already exists.");
+                roadMap.delete();
+                roadMap.createNewFile();
+                this.roadMapFilePath = roadMap.getAbsolutePath();
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
