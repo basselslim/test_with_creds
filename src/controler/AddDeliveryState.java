@@ -30,7 +30,7 @@ public class AddDeliveryState implements State {
                 controller.Tview.setMessage("Select the delivery point");
             }
         } else {
-            if (map.getRequestByIntersectionId(i.getId()) == null) {
+            if (map.getRequestByIntersectionId(i.getId()) == null || map.getRequestByIntersectionId(i.getId()) != null) {
                 DeliveryPoint delivery = new DeliveryPoint(i, 0);
                 request.setDeliveryPoint(delivery);
 
