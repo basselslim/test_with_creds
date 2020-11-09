@@ -22,14 +22,15 @@ public class ListOfCommand {
      *
      * @param c the command to add
      */
-    public void add(Command c) {
-        int i = currentIndex + 1;
-        while (i < list.size()) {
+    public int add(Command c){
+        int i = currentIndex+1;
+        while(i<list.size()){
             list.remove(i);
         }
         currentIndex++;
         list.add(currentIndex, c);
-        c.doCommand();
+        int errorCode = c.doCommand();
+        return errorCode;
     }
 
     /**
@@ -58,12 +59,14 @@ public class ListOfCommand {
     /**
      * Reinsert the last command removed by undo.
      */
-    public void redo() {
-        if (currentIndex < list.size() - 1) {
+    public int redo(){
+        int errorCode = 0;
+        if (currentIndex < list.size()-1){
             currentIndex++;
             Command cde = list.get(currentIndex);
-            cde.doCommand();
+            errorCode = cde.doCommand();
         }
+        return errorCode;
     }
 
     /**

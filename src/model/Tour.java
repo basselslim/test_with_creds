@@ -53,13 +53,9 @@ public class Tour extends Observable {
     }
 
     /**
-     * Add a request to the tour.
-     *
-     * @param newRequest          request to add
-     * @param precedingPickUpId   id of the preceding pick up point
-     * @param precedingDeliveryId id of the preceding delivery point
-     */
-    public void addRequestToTour(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
+     * addRequestToTour
+     **/
+    public int addRequestToTour(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
         ComputeSmallestPath calculator = new ComputeSmallestPath(map);
         int pathIndexToInsertPickUp = 0;
         int pathIndexToInsertDelivery = 0;
@@ -69,7 +65,14 @@ public class Tour extends Observable {
             if (path.getIdDeparture() == precedingPickUpId) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
                 List<Segment> roadDeparturetoNewPickUp = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getPickUpPoint().getId()));
+                if (roadDeparturetoNewPickUp == null) {
+                    return 1; /* can't find a path to the new pick up point*/
+                }
                 List<Segment> roadNewPickUptoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getPickUpPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
+                if (roadNewPickUptoArrival == null) {
+                    return 1; /* can't find a path to from new pick up point*/
+                }
+
                 // Create the path and insert them into the tour List
                 Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getIdDeparture(), newRequest.getPickUpPoint().getId());
                 Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint().getId(), path.getIdArrival());
@@ -86,7 +89,14 @@ public class Tour extends Observable {
             if (path.getIdDeparture() == precedingDeliveryId) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
                 List<Segment> roadDeparturetoNewDelivery = calculator.computeSmallestPath(map.getListIntersections().get(path.getIdDeparture()), map.getListIntersections().get(newRequest.getDeliveryPoint().getId()));
+                if (roadDeparturetoNewDelivery == null) {
+                    return 2; /* can't find a path to the new delivery point*/
+                }
                 List<Segment> roadNewDeliverytoArrival = calculator.computeSmallestPath(map.getListIntersections().get(newRequest.getDeliveryPoint().getId()), map.getListIntersections().get(path.getIdArrival()));
+                if (roadNewDeliverytoArrival == null) {
+                    return 2; /* can't find a path from the new delivery point*/
+                }
+
                 // Create the paths and insert them into the tour List
                 Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getIdDeparture(), newRequest.getDeliveryPoint().getId());
                 Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint().getId(), path.getIdArrival());
@@ -99,6 +109,7 @@ public class Tour extends Observable {
         }
 
         populateListTimes();
+        return 0;
     }
 
     /**
@@ -256,15 +267,15 @@ public class Tour extends Observable {
         int nbIntersections =  0;
 
         int i = 0;
-        totalText += "   - Departure from depot at " + this.timeToString(this.listTimes.get(0)[0]) + "\n\n";
-        for (Path p : listPaths) {
-            String PathTitle = "Step n°" + (i + 1) + ":  Arrive at " + this.timeToString(this.listTimes.get(i)[1]) + "\n\n";
-            totalText += PathTitle;
+        totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
+        for(Path p: listPaths) {
+            String PathTitle = "Step n°" + (i+1) + "\n\n";
+            totalText+=PathTitle;
             int j = 0;
             for(Segment s: p.getListSegments()) {
                 newStreetName = s.getStreetName();
                 if ((!(newStreetName.equals(actualStreetName)))&&(!(actualStreetName.equals("")))){
-                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersections\n\n";
+                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersection(s)\n\n";
                     nbIntersections =0;
                     lengthTotalOnStreet=0;
                     totalText+=SegmentDescription;
@@ -275,10 +286,12 @@ public class Tour extends Observable {
 
                 j++;
             }
-            totalText += this.writeTextForInterestPoint(p.idArrival);
+            totalText += "   - Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
+            totalText+=this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
-        totalText += this.writeTextForInterestPoint(listPaths.get(i - 1).idArrival);
+        totalText += "   - Arrival at depot, your tour has ended. Congratulations";
+        totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
         return totalText;
     }
 
@@ -290,12 +303,16 @@ public class Tour extends Observable {
     public void generateRoadMap(String path) {
         try {
             File roadMap = new File(path);
-            if (roadMap.createNewFile()) {
+
+            if (roadMap.exists()) {
+                roadMap.createNewFile();
                 System.out.println("File created: " + roadMap.getName());
                 System.out.println("Absolute path: " + roadMap.getAbsolutePath());
                 this.roadMapFilePath = roadMap.getAbsolutePath();
             } else {
                 System.out.println("File already exists.");
+                roadMap.delete();
+                roadMap.createNewFile();
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");

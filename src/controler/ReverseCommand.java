@@ -21,15 +21,15 @@ public class ReverseCommand implements Command {
      * Do.
      */
     @Override
-    public void doCommand() {
-        cmd.undoCommand();
+    public int doCommand() {
+        return cmd.undoCommand();
     }
 
     /**
      * Temporary remove the last added command (this command may be reinserted again with redo).
      */
     @Override
-    public void undoCommand() {
-        cmd.doCommand();
+    public int undoCommand() {
+        return cmd.doCommand();
     }
 }
