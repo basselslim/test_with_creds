@@ -70,6 +70,13 @@ public class Map extends observer.Observable {
         listRequests.clear();
     }
 
+    public void clearTour() {
+        deliveryTour.listPaths.clear();
+        deliveryTour.listRequestsIntersection.clear();
+        deliveryTour.listTimes.clear();
+        deliveryTour.tourLength = 0;
+    }
+
     public double getMinLat() {
         double min = 100;
         for (HashMap.Entry mapentry : listIntersections.entrySet()) {
