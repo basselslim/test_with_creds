@@ -160,10 +160,9 @@ public class Map extends observer.Observable {
         Step precedingPoint = null;
 
         for (Path path : deliveryTour.getListPaths()) {
-            if (path.getArrival().getRequest() == RequestPoint.getRequest())
+            if (path.getArrival().getRequest() == RequestPoint.getRequest() && path.getIdArrival() == RequestPoint.getId())
                 precedingPoint = path.getDeparture();
             }
-
         return precedingPoint;
     }
 
