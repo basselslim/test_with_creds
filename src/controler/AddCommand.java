@@ -33,7 +33,10 @@ public class AddCommand implements Command {
      */
     @Override
     public void doCommand() {
-        map.addRequest(request,precedingPickUpId,precedingDeliveryId);
+        if(precedingDeliveryId !=0 && precedingPickUpId != 0)
+            map.addRequest(request,precedingPickUpId,precedingDeliveryId);
+        else
+            map.addRequest(request);
     }
 
     /**

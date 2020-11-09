@@ -2,6 +2,7 @@ package view;
 
 import java.util.*;
 
+import controler.Controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -25,6 +26,7 @@ import static java.lang.String.valueOf;
 public class TextualView implements observer.Observer {
 
     Map map;
+    Controller controller;
     Pane pane;
     TextArea TextArea;
     Label TourInfos;
@@ -35,15 +37,8 @@ public class TextualView implements observer.Observer {
     TableColumn<Intersection, Integer> requestIndexColumn;
     TableColumn<Intersection, String> arrivalTimeColumn;
 
-    /**
-     * Constructor.
-     *
-     * @param map
-     * @param pane
-     * @param textArea
-     * @param tourInfos
-     */
-    public TextualView(Map map, Pane pane, TextArea textArea, Label tourInfos) {
+    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos, Controller controller) {
+        this.controller = controller;
         this.map = map;
         this.pane = pane;
         this.TextArea = textArea;
@@ -59,12 +54,12 @@ public class TextualView implements observer.Observer {
         requestsTable = new TableView();
         requestsTable.setPlaceholder(new Label("No request to display"));
         requestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        //requestsTable.prefHeightProperty().bind(pane.heightProperty());
+        requestsTable.prefHeightProperty().bind(pane.heightProperty());
         requestsTable.prefWidthProperty().bind(pane.widthProperty());
 
         requestsTable.setRowFactory( tableView -> {
             final TableRow<Intersection> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
+            row.setOnMousePressed(event -> {
                 if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY) {
                     Intersection intersection = row.getItem();
                     Request request = null;
@@ -73,7 +68,7 @@ public class TextualView implements observer.Observer {
                     } else if (intersection instanceof PickUpPoint) {
                         request = ((PickUpPoint) intersection).getRequest();
                     }
-                    selectRequest(request);
+                    selectRequest(request,true);
                 }
             });
             return row;
@@ -145,6 +140,9 @@ public class TextualView implements observer.Observer {
                             index++;
                         }
                     }
+                    if (index >= map.getTour().getListTimes().size()) {
+                        return new ReadOnlyObjectWrapper("an error occurred");
+                    }
                     int time = map.getTour().getListTimes().get(index)[1];
                     return new ReadOnlyObjectWrapper(map.getTour().timeToString(time));
                 }
@@ -185,12 +183,16 @@ public class TextualView implements observer.Observer {
         }
     }
 
-    public void selectRequest(Request req) {
+    public void selectRequest(Request req, Boolean local) {
+
         requestsTable.getSelectionModel().clearSelection();
         int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
         requestsTable.getSelectionModel().select(index);
         int index2 = requestsTable.getItems().indexOf(req.getDeliveryPoint());
         requestsTable.getSelectionModel().select(index2);
+        if(local) {
+            controller.leftClick(req.getDeliveryPoint().getId());
+        }
     }
 
     /**
@@ -217,7 +219,7 @@ public class TextualView implements observer.Observer {
     public boolean durationIsInvalid(String str) {
         try {
             int res = Integer.parseInt(str);
-            if (res <= 0) {
+            if (res < 0) {
                 return true;
             }
         } catch (NumberFormatException nfe) {

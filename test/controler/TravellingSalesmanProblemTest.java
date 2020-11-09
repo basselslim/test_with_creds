@@ -69,7 +69,7 @@ class TravellingSalesmanProblemTest {
             }
             adjacencyMatrixOfShortestPath.put(mapentry.getKey(),adjacencyList);
         }
-        TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath);
+        TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath,10000);
     }
 
     @Test

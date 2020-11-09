@@ -1,5 +1,4 @@
 package controler;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -22,17 +21,16 @@ import java.io.File;
 import java.util.*;
 
 /**
- * Controller.
- *
- * @author T-REXANOME
+ * 
  */
 public class Controller {
-
+    
     protected MouseGestures mg;
     protected ListOfCommand listOfCommand;
     protected State currentState;
     protected Map map;
     protected Rectangle2D screenBounds;
+
     protected GraphicalView Gview;
     protected TextualView Tview;
 
@@ -46,6 +44,20 @@ public class Controller {
     private javafx.scene.control.TextArea TextArea;
     @FXML
     private Label TextTour;
+    @FXML
+    protected Button confirmAction;
+    @FXML
+    protected Button LoadMap;
+    @FXML
+    protected Button LoadRequests;
+    @FXML
+    protected Button ComputeTour;
+    @FXML
+    protected Button ExportTour;
+    @FXML
+    protected Button addRequest;
+    @FXML
+    protected Button deleteRequest;
 
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
@@ -54,10 +66,10 @@ public class Controller {
     protected final DeleteState deleteState = new DeleteState();
 
     /**
-     * Default constructor.
+     * Default constructor
      */
     public Controller() {
-        screenBounds = Screen.getPrimary().getBounds();
+
         mg = new MouseGestures(this);
         map = new Map();
         listOfCommand = new ListOfCommand();
@@ -77,139 +89,81 @@ public class Controller {
         currentState = newState;
     }
 
+    protected void disableButtons(Boolean bool){
+        LoadMap.setDisable(bool);
+        LoadRequests.setDisable(bool);
+        ComputeTour.setDisable(bool);
+        ExportTour.setDisable(bool);
+    }
+
     //Public Methods
-
-    /**
-     * @param event
-     */
     public void LoadRequests(ActionEvent event) {
-        currentState.LoadRequests(event, this, map);
+        currentState.LoadRequests(event,this,map);
+        deleteRequest.setDisable(false);
     }
 
-    /**
-     * Compute optimal tour.
-     *
-     * @param event
-     */
     public void computeTour(ActionEvent event) {
-        Algorithm algo = new Algorithm(map);
-        HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
-        algo.computeOptimalTour(mapSmallestPaths);
-        Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        currentState.computeTour(this,map);
     }
 
-    /**
-     * @param event
-     */
-    public void ExportRoadMap(ActionEvent event) {
+    public void ExportRoadMap (ActionEvent event) {
         FileChooser exportFileChooser = new FileChooser();
         exportFileChooser.setTitle("Export RoadMap");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         exportFileChooser.getExtensionFilters().add(extFilter);
-        File exportLocation = exportFileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+        File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
 
         map.getTour().generateRoadMap(exportLocation.getPath());
     }
 
-    /**
-     * Left click.
-     *
-     * @param idIntersection
-     */
-    public void leftClick(long idIntersection) {
+    public void leftClick(long idIntersection){
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
-    /**
-     * Load map.
-     *
-     * @param event
-     */
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg, screenBounds);
-        Tview = new TextualView(map, myPane, TextArea, TextTour);
+        Gview = new GraphicalView(map, overlay, mg);
+        Tview = new TextualView(map, myPane, TextArea, TextTour, this);
         map.addObserver(Gview);
         map.addObserver(Tview);
         currentState.LoadMap(event, this, map);
-        btn_load_requests.setDisable(false);
+        LoadRequests.setDisable(false);
+        addRequest.setDisable(true);
+        deleteRequest.setDisable(true);
     }
 
-    /**
-     * Zoom.
-     *
-     * @param event
-     */
-    public void Zoom(ActionEvent event) {
-        Gview.zoom();
-    }
+    public void Zoom(ActionEvent event) { Gview.zoom(); }
 
-    /**
-     * Unzoom.
-     *
-     * @param event
-     */
     public void UnZoom(ActionEvent event) {
         Gview.unZoom();
     }
 
-    /**
-     * @param idIntersection
-     */
     public void mouseOn(long idIntersection) {
         currentState.mouseOn(idIntersection, this);
     }
 
-    /**
-     * Add duration.
-     *
-     * @param duration duration to add.
-     */
     public void addDuration(int duration) {
         currentState.addDuration(duration, this);
     }
 
-    /**
-     * Add a request.
-     *
-     * @param event
-     */
     public void addRequest(ActionEvent event) {
         currentState.addRequest(this);
-        confirmRequest();
     }
 
-    /**
-     * Delete a request.
-     *
-     * @param event
-     */
-    public void deleteRequest(ActionEvent event) {
+    public void deleteRequest(ActionEvent event){
         currentState.deleteRequest(this);
     }
 
-    /**
-     *
-     */
-    public void confirmRequest() {
-        currentState.confirmRequest(this, map);
+    public void confirmAction() {
+        currentState.confirmAction(this, map);
     }
 
-    /**
-     * Undo.
-     *
-     * @param event
-     */
     public void undo(ActionEvent event) {
         currentState.undo(listOfCommand, this);
     }
 
-    /**
-     * Redo.
-     *
-     * @param event
-     */
     public void redo(ActionEvent event) {
-        currentState.redo(listOfCommand, this);
+        currentState.redo(listOfCommand,this);
     }
+
 }

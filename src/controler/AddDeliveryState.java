@@ -46,7 +46,6 @@ public class AddDeliveryState implements State {
                 controller.Tview.setMessage("Enter duration");
                 controller.addDuration(controller.Tview.durationPopup());
             }
-
         }
     }
 

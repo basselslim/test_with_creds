@@ -13,25 +13,29 @@ public class TravellingSalesmanProblem {
     protected int numberOfStep = 0;
     protected model.Map map;
     protected HashMap<Long, HashMap<Long, Path>> adjacencyMatrixOfShortestPath;
-    protected HashMap<Long, Long> precedenceOrderMatrix;
+    protected HashMap<Long,Long> precedenceOrderMatrix;
+    // final_path stores the final solution ie, the
+    // path of the salesman.
+    protected Tour final_tour;
 
-    protected Tour final_tour; /* stores the final solution ie, the path of the salesman. */
-    protected HashMap<Long, Boolean> visited; /* keeps track of the already visited nodes in a particular path */
-    protected int final_res = Integer.MAX_VALUE; /* stores the final minimum weight of shortest tour */
+    // visited[] keeps track of the already visited nodes
+    // in a particular path
+    protected HashMap<Long, Boolean> visited;
 
-    /**
-     * Constructor.
-     *
-     * @param newMap
-     * @param mapSmallestPaths
-     */
-    public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths) {
+    // Stores the final minimum weight of shortest tour.
+    protected int final_res = Integer.MAX_VALUE;
+    protected long timeZero;
+    protected long TIMELIMIT;
+
+    public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths,long t) {
         numberOfStep = mapSmallestPaths.size();
         map = newMap;
         final_tour = new Tour(map);
         adjacencyMatrixOfShortestPath = mapSmallestPaths;
         visited = new HashMap<Long, Boolean>();
         initialisePrecedenceMatrix();
+        timeZero = System.currentTimeMillis();
+        TIMELIMIT = t;
     }
 
     /**
@@ -118,7 +122,6 @@ public class TravellingSalesmanProblem {
         // Rounding off the lower bound to an integer
         curr_bound = (curr_bound == 1) ? curr_bound / 2 + 1 :
                 curr_bound / 2;
-
         // We start at vertex 1 so the first vertex
         // in curr_path[] is 0
         visited.put(map.getDepot().getId(), true);
@@ -150,9 +153,9 @@ public class TravellingSalesmanProblem {
                 // solution we got
                 int curr_res = curr_weight +
                         lengthfromLastStepToFirst;
-                System.out.println(final_res);
                 // Update final result and final path if
                 // current result is better.
+
                 if (curr_res < final_res) {
                     copyToFinal(curr_tour);
                     final_res = curr_res;
@@ -195,12 +198,14 @@ public class TravellingSalesmanProblem {
                 // for the node that we have arrived on
                 // If current lower bound < final_res, we need to explore
                 // the node further
-                if (curr_bound + curr_weight < final_res) {
+                if (curr_bound + curr_weight < final_res && System.currentTimeMillis() - timeZero < TIMELIMIT) {
                     curr_tour.addPath(pathStartingAtCurrentStep.getValue());
                     visited.put(pathStartingAtCurrentStep.getKey(), true);
                     // call TSPRec for the next level
                     TSPRec(curr_bound, curr_weight, level + 1,
                             curr_tour);
+                } else {
+                    return;
                 }
 
                 if (curr_tour.getListPaths().size() == level) {

@@ -14,7 +14,6 @@ import java.util.*;
  * @author T-REXANOME
  */
 public class Tour extends Observable {
-
     protected List<Path> listPaths;
     protected List<int[]> listTimes;
     protected Map map;
@@ -49,7 +48,7 @@ public class Tour extends Observable {
         this.listPaths = listPaths;
         this.listTimes = new LinkedList<int[]>();
         this.map = map;
-        this.listRequestsIntersection = new HashMap<Long, ArrayList<Intersection>>();
+        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
         populateListTimes();
     }
 
@@ -98,6 +97,8 @@ public class Tour extends Observable {
             }
             pathIndexToInsertDelivery++;
         }
+
+        populateListTimes();
     }
 
     /**
@@ -140,6 +141,7 @@ public class Tour extends Observable {
             }
             pathIndexToDeleteDelivery++;
         }
+        populateListTimes();
     }
 
     /*
@@ -152,8 +154,8 @@ public class Tour extends Observable {
      * @return tour length
      */
     public int getTourLength() {
-        int tourLength = 0;
-        for (Path p : this.listPaths) {
+        int tourLength =0;
+        for (Path p : listPaths) {
             tourLength += p.getPathLength();
         }
         return tourLength;
