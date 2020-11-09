@@ -35,6 +35,7 @@ public class GraphicalView implements observer.Observer {
     double pointSize;
     double ReqpointSize;
     double StrokeSize;
+    double StepSiding;
     Boolean isMapClickable = false;
     Boolean setScreenSize = false;
 
@@ -277,19 +278,20 @@ public class GraphicalView implements observer.Observer {
         private void drawRequestPoint (Step step, Color color,double size){
 
             double pointX = longToPix(step.getLongitude());
-            double pickupY = latToPix(step.getLatitude());
+            double pointY = latToPix(step.getLatitude());
             long id = step.getId();
 
             Circle circle = new Circle(size);
             circle.setStroke(Color.BLACK);
             circle.setStrokeWidth(StrokeSize);
             circle.setFill(color.deriveColor(1, 1, 1, 1.0));
-            circle.relocate(pointX - size, pickupY - size);
+            circle.relocate(pointX - size, pointY - size);
             circle.setUserData(step.getRequest().getDeliveryPoint());
             circle.setViewOrder(-1.0);
-            for (int i = 1; i < circles.get(id).size(); i++) {
-                circle.relocate(pointX - 10, pickupY - 10);
-            }
+            int order = circles.get(id).size();
+            if(rectangles.get(id)!=null)
+                    order += rectangles.get(id).size() - 1;
+            circle.relocate(pointX - order*StepSiding, pointY - order*StepSiding);
             circles.get(id).add(circle);
         }
 
@@ -306,10 +308,13 @@ public class GraphicalView implements observer.Observer {
             rectangle.setUserData(step);
             //circles.get(id).remove(0);
             if (rectangles.containsKey(id)) {
-                rectangle.relocate(pointX - 10, pointY - 10);
+                int order = circles.get(id).size() + rectangles.get(id).size()-1;
+                rectangle.relocate(pointX - order*StepSiding, pointY - order*StepSiding);
                 rectangles.get(id).add(rectangle);
             } else {
                 List<Rectangle> RectangleList = new ArrayList<Rectangle>();
+                int order = circles.get(id).size();
+                rectangle.relocate(pointX - order*StepSiding, pointY - order*StepSiding);
                 RectangleList.add(rectangle);
                 rectangles.put(id, RectangleList);
             }
@@ -365,6 +370,7 @@ public class GraphicalView implements observer.Observer {
             pointSize = 0.00030 * coeffX;
             ReqpointSize = 0.0007 * coeffX;
             StrokeSize = 0.00016 * coeffX;
+            StepSiding = 0.00015 * coeffX;
         }
 
         private void updateTranslation ( double XValue, double YValue){
