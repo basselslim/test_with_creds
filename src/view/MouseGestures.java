@@ -154,7 +154,6 @@ public class MouseGestures {
                     circle.setTranslateX(newTranslateX);
                     circle.setTranslateY(newTranslateY);
                 }
-
             }
 
             for (Line line : lines) {

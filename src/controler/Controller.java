@@ -137,6 +137,9 @@ public class Controller {
         Gview.unZoom();
     }
 
+    public void resetView(ActionEvent event) {
+        Gview.resetView();
+    }
 
     public void addDuration(int duration) {
         currentState.addDuration(duration, this);
