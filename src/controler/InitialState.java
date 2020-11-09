@@ -115,6 +115,7 @@ public class InitialState implements State {
             controller.Tview.setMessage("Please load a request list");
             controller.LoadRequests.setDisable(false);
             controller.addRequest.setDisable(true);
+            controller.ExportTour.setDisable(true);
             controller.deleteRequest.setDisable(true);
         }
     }
@@ -130,6 +131,7 @@ public class InitialState implements State {
             XMLLoader xmlloader = new XMLLoader();
             xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
             controller.addRequest.setDisable(true);
+            controller.ExportTour.setDisable(true);
             controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
             controller.Gview.enableSelection();
         }
@@ -144,7 +146,8 @@ public class InitialState implements State {
         algo.computeOptimalTour(mapSmallestPaths);
         controller.Tview.setMessage("Optimal tour computed !");
         controller.addRequest.setDisable(false);
-        controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        controller.ExportTour.setDisable(false);
+        controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength() +"meters.\nTour duration (mn:s) : " + map.getTour().getDuration());
     }
 
     /**
@@ -166,7 +169,7 @@ public class InitialState implements State {
 
 
     public void entryAction(Controller controller) {
-        controller.Tview.setTourInfo("Tour length : " + controller.map.getTour().getTourLength());
+        controller.Tview.setTourInfo("Tour length : " + controller.map.getTour().getTourLength()+"meters");
         if (isTourComputed)
             controller.addRequest.setDisable(false);
         controller.disableButtons(false);
