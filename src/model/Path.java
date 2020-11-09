@@ -25,8 +25,12 @@ public class Path {
         this.idDeparture = departure;
         this.idArrival = arrival;
         this.pathLength = 0;
-        for(Segment s: listSegments) {
-            this.pathLength += s.getLength();
+        if (listSegments != null) {
+            for(Segment s: listSegments) {
+                this.pathLength += s.getLength();
+            }
+        } else {
+            listSegments = new LinkedList<Segment>();
         }
     }
 
