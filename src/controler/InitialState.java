@@ -174,6 +174,7 @@ public class InitialState implements State {
             controller.addRequest.setDisable(false);
         controller.disableButtons(false);
         CurrentIdList.clear();
+        CurrentStepList.clear();
     }
 
 
