@@ -43,10 +43,6 @@ public class Request extends Observable {
         return order;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
     public PickUpPoint getPickUpPoint() {
         return pickUpPoint;
     }

@@ -126,7 +126,7 @@ public class InitialState implements State {
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
         controller.addRequest.setDisable(false);
-        controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        controller.Tview.setTourInfo("Tour length : " + map.getDeliveryTour().getTourLength());
     }
 
     /**

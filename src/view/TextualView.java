@@ -122,22 +122,22 @@ public class TextualView implements observer.Observer {
         arrivalTimeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Intersection, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Intersection, String> p) {
-                if (map.getTour().getListPaths().isEmpty()) {
+                if (map.getDeliveryTour().getListPaths().isEmpty()) {
                     return new ReadOnlyObjectWrapper("Not computed yet");
                 } else {
                     int index = 0;
-                    for (Path path: map.getTour().getListPaths()) {
+                    for (Path path: map.getDeliveryTour().getListPaths()) {
                         if (path.getIdArrival() == p.getValue().getId()) {
                             break;
                         } else {
                             index++;
                         }
                     }
-                    if (index >= map.getTour().getListTimes().size()) {
+                    if (index >= map.getDeliveryTour().getListTimes().size()) {
                         return new ReadOnlyObjectWrapper("an error occurred");
                     }
-                    int time = map.getTour().getListTimes().get(index)[1];
-                    return new ReadOnlyObjectWrapper(map.getTour().timeToString(time));
+                    int time = map.getDeliveryTour().getListTimes().get(index)[1];
+                    return new ReadOnlyObjectWrapper(map.getDeliveryTour().timeToString(time));
                 }
             }
         });

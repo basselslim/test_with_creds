@@ -60,4 +60,16 @@ class DeliveryPointTest {
         assertEquals(2,d.getDeliveryDuration());
     }
 
+    @Test
+    void getRequest(){
+        //Arrange
+        DeliveryPoint d = new DeliveryPoint();
+        Request r1 = new Request();
+        d.setRequest(r1);
+        //Act
+        Request r2 = d.getRequest();
+        //Assert
+        assertEquals(r1,r2);
+    }
+
 }

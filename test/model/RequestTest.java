@@ -44,11 +44,25 @@ class RequestTest {
         assertEquals(d1,r1.getDeliveryPoint());
     }
     @Test
-    void setOrder(){
+    void setPickUpPoint()
+    {
         //Arrange
+        PickUpPoint p1 = new PickUpPoint(1,2,3,4);
         Request r1 = new Request();
         //Act
-        r1.setOrder(2);
-
+        r1.setPickUpPoint(p1);
+        //Assert
+        assertEquals(p1,r1.getPickUpPoint());
+    }
+    @Test
+    void setDeliveryPoint()
+    {
+        //Arrange
+        DeliveryPoint d1 = new DeliveryPoint(2,2,3,4);
+        Request r1 = new Request();
+        //Act
+        r1.setDeliveryPoint(d1);
+        //Assert
+        assertEquals(d1,r1.getDeliveryPoint());
     }
 }
