@@ -81,6 +81,9 @@ public class Tour extends Observable {
                 }
                 Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getIdDeparture(), newRequest.getDeliveryPoint().getId());
                 Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint().getId(), path.getIdArrival());
+                System.out.println(pathDeparturetoNewDelivery);
+                System.out.println(pathNewDeliverytoArrival);
+
                 listPaths.remove(pathIndexToInsertDelivery);
                 listPaths.add(pathIndexToInsertDelivery, pathDeparturetoNewDelivery);
                 listPaths.add(pathIndexToInsertDelivery + 1, pathNewDeliverytoArrival);
