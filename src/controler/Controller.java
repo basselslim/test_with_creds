@@ -101,6 +101,7 @@ public class Controller {
     }
 
     public void computeTour(ActionEvent event) {
+        Tview.setMessage("Computing optimal tour...");
         currentState.computeTour(this,map);
     }
 

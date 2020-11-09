@@ -125,6 +125,7 @@ public class InitialState implements State {
         Algorithm algo = new Algorithm(map);
         HashMap<Long, HashMap<Long, Path>> mapSmallestPaths = algo.computeSmallestPaths();
         algo.computeOptimalTour(mapSmallestPaths);
+        controller.Tview.setMessage("Optimal tour computed !");
         controller.addRequest.setDisable(false);
         controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
     }
