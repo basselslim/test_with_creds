@@ -39,8 +39,6 @@ public class Controller {
     @FXML
     private Pane myPane;
     @FXML
-    private Button btn_load_requests;
-    @FXML
     private javafx.scene.control.TextArea TextArea;
     @FXML
     private Label TextTour;
