@@ -255,21 +255,12 @@ public class TextualView implements observer.Observer {
     public void selectRequest(Request req, Boolean local) {
         requestsTable.getSelectionModel().clearSelection();
         int index = requestsTable.getItems().indexOf(req.getPickUpPoint());
-        /*int test = 0;
-        while (test < requestsTable.getItems().size()) {
-            Step step = (Step)requestsTable.getItems().get(test);
-            if (step == req.getPickUpPoint() && step.getRequest() == req) {
-                break;
-            }
-            test++;
-        }
-        System.out.println(index);
-        System.out.println(test);*/
+
         requestsTable.getSelectionModel().select(index);
         int index2 = requestsTable.getItems().indexOf(req.getDeliveryPoint());
         requestsTable.getSelectionModel().select(index2);
         if(local) {
-            //controller.leftClick(req.getDeliveryPoint());
+            controller.leftClick(req.getDeliveryPoint());
         }
     }
 
