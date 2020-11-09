@@ -78,11 +78,7 @@ public class GraphicalView implements observer.Observer {
 
             Intersection pickup = request.getPickUpPoint();
             Intersection delivery = request.getDeliveryPoint();
-            Random generator = new Random(pickup.getId());
-            int rand = generator.nextInt(150);
-            int rand2 = generator.nextInt(150);
-            int rand3 = generator.nextInt(150);
-            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+            Color color = generateColor(pickup.getId());
             drawRectangle(pickup, color, ReqpointSize);
             drawPoint(delivery, color, ReqpointSize,true);
 
@@ -335,6 +331,15 @@ public class GraphicalView implements observer.Observer {
 
     private double longToPix(double lon) {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
+    }
+
+    private Color generateColor(long seed){
+        Random generator = new Random(seed);
+        int rand = generator.nextInt(150);
+        int rand2 = generator.nextInt(150);
+        int rand3 = generator.nextInt(150);
+        Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+        return  color;
     }
 
     @Override
