@@ -14,7 +14,6 @@ public class AddPickupState implements State {
     public AddPickupState() {
     }
 
-
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
         if (precedingPoint == null) {
@@ -51,7 +50,6 @@ public class AddPickupState implements State {
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getPickUpPoint().setPickUpDuration(duration);
-        //controller.Gview.disableSelection();
 
         controller.addDeliveryState.entryAction(controller, request, precedingPoint);
         controller.setCurrentState(controller.addDeliveryState);
@@ -61,7 +59,7 @@ public class AddPickupState implements State {
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.initialState.entryAction(controller);
         if(precedingPoint!=null) {
-            controller.Gview.undrawMouseSelection(precedingPoint.getRequest().getPickUpPoint());
+            controller.Gview.undrawMouseSelection(precedingPoint);
         }
         if(request.getPickUpPoint() !=null)
             controller.Gview.undrawMouseSelection(request.getPickUpPoint());
