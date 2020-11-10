@@ -38,6 +38,7 @@ public class InitialState implements State {
         controller.deleteRequest.setDisable(true);
         controller.addRequest.setDisable(true);
         unSelectPoints(controller);
+        unSelectSteps(controller);
 
         if(!controller.map.getListRequests().isEmpty()) {
             controller.disableButtons(true);
@@ -109,9 +110,9 @@ public class InitialState implements State {
         File mapFile = mapFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
         if(mapFile != null) {
+            controller.listOfCommand.reset();
             XMLLoader xmlloader = new XMLLoader();
             xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
-
             controller.Tview.setMessage("Please load a request list");
             controller.LoadRequests.setDisable(false);
             controller.addRequest.setDisable(true);
@@ -128,6 +129,7 @@ public class InitialState implements State {
         File requestsFile = requestsFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
         if (requestsFile != null) {
+            controller.listOfCommand.reset();
             XMLLoader xmlloader = new XMLLoader();
             xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
             controller.addRequest.setDisable(true);

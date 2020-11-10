@@ -62,8 +62,8 @@ public class AddDeliveryState implements State {
 
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
-        controller.addPickupState.reverseAction(controller);
         unDrawSelections(controller);
+        controller.addPickupState.reverseAction(controller);
         controller.setCurrentState(controller.addPickupState);
     }
 
