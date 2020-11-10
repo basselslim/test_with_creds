@@ -148,8 +148,8 @@ public class TextualView implements observer.Observer {
         });
         requestIndexColumn.setSortable(false);
         requestIndexColumn.setResizable(false);
-        requestIndexColumn.setMinWidth(20);
-        requestIndexColumn.setMaxWidth(20);
+        requestIndexColumn.setMinWidth(30);
+        requestIndexColumn.setMaxWidth(30);
 
         arrivalTimeColumn = new TableColumn<>("Arrival Time");
         arrivalTimeColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Step, String>, ObservableValue<String>>() {
@@ -302,7 +302,10 @@ public class TextualView implements observer.Observer {
         TextArea.setText(message);
     }
 
-    public void setTourInfo(String info){TourInfos.setText(info);}
+    public void setTourInfo(){
+        TourInfos.setVisible(true);
+        TourInfos.setText("Tour length: " + map.getDeliveryTour().getTourLength()+" meters\nTour duration (h:min) : " + map.getDeliveryTour().getDuration());
+    }
 
     @Override
     public void update(observer.Observable observed, Object arg) {
@@ -310,6 +313,9 @@ public class TextualView implements observer.Observer {
         if (!map.getDeliveryTour().getListPaths().isEmpty()) {
             sortRequestsTable();
             arrivalTimeColumn.setVisible(true);
+            setTourInfo();
+        } else {
+            TourInfos.setVisible(false);
         }
     }
 

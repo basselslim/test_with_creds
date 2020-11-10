@@ -147,7 +147,6 @@ public class InitialState implements State {
         controller.Tview.setMessage("Optimal tour computed !");
         controller.addRequest.setDisable(false);
         controller.ExportTour.setDisable(false);
-        controller.Tview.setTourInfo("Tour length : " + map.getDeliveryTour().getTourLength() +"meters.\nTour duration (mn:s) : " + map.getDeliveryTour().getDuration());
     }
 
     /**
@@ -169,7 +168,6 @@ public class InitialState implements State {
 
 
     public void entryAction(Controller controller) {
-        controller.Tview.setTourInfo("Tour length : " + controller.map.getDeliveryTour().getTourLength()+"meters");
         if (isTourComputed)
             controller.addRequest.setDisable(false);
         controller.disableButtons(false);
