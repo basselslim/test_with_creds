@@ -26,9 +26,7 @@ public class ConfirmRequestState implements State {
             
             AddCommand addRequestCommand = new AddCommand(controller. map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
             int errorCode = controller.getListOfCommand().add(addRequestCommand);
-            if(errorCode!=0) {
-                controller.initialState.undo(controller.getListOfCommand(), controller);
-            }
+
             controller.initialState.entryAction(controller);
             controller.setCurrentState(controller.initialState);
             unDrawSelection(controller);
@@ -67,7 +65,7 @@ public class ConfirmRequestState implements State {
         request = new Request(r);
         PickupPrecedingPoint = new Step(controller.addDeliveryState.PickupPrecedingPoint);
         DeliveryPrecedingPoint = new Step(controller.addDeliveryState.DeliveryPrecedingPoint);
-        controller.Tview.setMessage("Confirm adding the request ?");
+        controller.confirmAction();
     }
 
     protected void reverseAction(Controller controller) {

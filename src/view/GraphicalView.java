@@ -1,6 +1,5 @@
 package view;
 
-import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -186,44 +185,56 @@ public class GraphicalView implements observer.Observer {
     public void drawMouseSelection(Step step) {
         List<Circle> CircleList = circles.get(step.getId());
         for (Circle circle : CircleList) {
-            if (circle.getUserData() == step) {
+            if (circle.getUserData() instanceof Step){
+                Step MapStep = (Step) circle.getUserData();
+            if (MapStep.getRequest() == step.getRequest()) {
                 circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
                 circle.setStroke(Color.RED);
             }
+        }
 
-            }
+        }
 
-            List<Rectangle> RectangleList = rectangles.get(step.getId());
-            if (RectangleList != null) {
-                for (Rectangle rectangle : RectangleList) {
-                    if (rectangle.getUserData() == step) {
+        List<Rectangle> RectangleList = rectangles.get(step.getId());
+        if (RectangleList != null) {
+            for (Rectangle rectangle : RectangleList) {
+                if (rectangle.getUserData() instanceof Step) {
+                    Step MapStep = (Step) rectangle.getUserData();
+                    if (MapStep.getRequest() == step.getRequest()) {
                         rectangle.setStrokeWidth(rectangle.getStrokeWidth() * 1.5);
                         rectangle.setStroke(Color.RED);
                     }
                 }
             }
         }
+    }
 
 
-        public void undrawMouseSelection (Step step){
-            List<Circle> CircleList = circles.get(step.getId());
-            for (Circle circle : CircleList) {
-                if (circle.getUserData() == step) {
+    public void undrawMouseSelection(Step step) {
+        List<Circle> CircleList = circles.get(step.getId());
+        for (Circle circle : CircleList) {
+            if (circle.getUserData() instanceof Step) {
+                Step MapStep = (Step) circle.getUserData();
+                if (MapStep.getRequest() == step.getRequest()) {
                     circle.setStrokeWidth(circle.getStrokeWidth() / 1.5);
                     circle.setStroke(Color.BLACK);
                 }
             }
+        }
 
-            List<Rectangle> RectangleList = rectangles.get(step.getId());
-            if (RectangleList != null) {
-                for (Rectangle rectangle : RectangleList) {
-                    if (rectangle.getUserData() == step) {
+        List<Rectangle> RectangleList = rectangles.get(step.getId());
+        if (RectangleList != null) {
+            for (Rectangle rectangle : RectangleList) {
+                if (rectangle.getUserData() instanceof Step) {
+                    Step MapStep = (Step) rectangle.getUserData();
+                    if (MapStep.getRequest() == step.getRequest()) {
                         rectangle.setStrokeWidth(rectangle.getStrokeWidth() / 1.5);
                         rectangle.setStroke(Color.BLACK);
                     }
                 }
             }
         }
+    }
 
         public void undrawMouseSelection ( long NodeId){
             Circle circle = circles.get(NodeId).get(0);
