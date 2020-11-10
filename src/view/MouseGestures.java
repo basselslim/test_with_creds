@@ -143,10 +143,6 @@ public class MouseGestures {
             newTranslateX = orgTranslateX + offsetX;
             newTranslateY = orgTranslateY + offsetY;
 
-            //Boolean XBlocking = newTranslateX+controller.getMap().findMinLat() > 1200 ;
-            //Boolean YBlocking = newTranslateY+controller.getMap().findMinLong() > 800 ;
-
-            //if(XBlocking && YBlocking){
 
             for (HashMap.Entry<Long,List<Circle>> mapentry : circles.entrySet()) {
                 List<Circle> CircleList = mapentry.getValue();
@@ -174,7 +170,6 @@ public class MouseGestures {
                 }
             }
         }
-        //}
 
     };
 

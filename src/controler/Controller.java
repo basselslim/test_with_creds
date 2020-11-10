@@ -55,6 +55,10 @@ public class Controller {
     protected Button addRequest;
     @FXML
     protected Button deleteRequest;
+    @FXML
+    protected Button undo;
+    @FXML
+    protected Button redo;
 
 
     protected final InitialState initialState = new InitialState();
@@ -92,6 +96,8 @@ public class Controller {
         LoadRequests.setDisable(bool);
         ComputeTour.setDisable(bool);
         ExportTour.setDisable(bool);
+        undo.setDisable(bool);
+        redo.setDisable(bool);
     }
 
     //Public Methods

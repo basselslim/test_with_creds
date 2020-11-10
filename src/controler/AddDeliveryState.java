@@ -55,8 +55,8 @@ public class AddDeliveryState implements State {
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getDeliveryPoint().setDeliveryDuration(duration);
-        controller.confirmRequestState.entryAction(request, controller);
         controller.setCurrentState(controller.confirmRequestState);
+        controller.confirmRequestState.entryAction(request, controller);
 
     }
 
