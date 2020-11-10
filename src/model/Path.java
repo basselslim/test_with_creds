@@ -72,6 +72,8 @@ public class Path {
                 "pathLength=" + pathLength +
                 ", idDeparture=" + idDeparture +
                 ", idArrival=" + idArrival +
+                ", Arrival=" + arrival +
+                ", Departure=" + departure +
                 '}';
     }
 }
