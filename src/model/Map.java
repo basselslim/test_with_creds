@@ -150,9 +150,9 @@ public class Map extends observer.Observable {
 
     public int addRequest(Request newRequest,Step precedingPickUpId,Step precedingDeliveryId) {
         int errorCode = this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
-        //if (errorCode == 0) {
+        if (errorCode == 0) {
             this.listRequests.add(newRequest);
-        //}
+        }
         notifyObservers();
         return errorCode;
     }
