@@ -38,6 +38,7 @@ public class InitialState implements State {
         controller.deleteRequest.setDisable(true);
         controller.addRequest.setDisable(true);
         unSelectPoints(controller);
+        unSelectSteps(controller);
 
         if(!controller.map.getListRequests().isEmpty()) {
             controller.disableButtons(true);
