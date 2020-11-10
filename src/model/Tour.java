@@ -72,8 +72,6 @@ public class Tour {
 
         //Find the place to insert the pickUp
         for (Path path : listPaths) {
-            System.out.println(path.getDeparture().getRequest());
-            System.out.println(path.getArrival().getRequest());
             if (precedingPickUp.getRequest().equals(path.getDeparture().getRequest()) && path.getIdDeparture() == precedingPickUp.getId()) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
                 List<Segment> roadDeparturetoNewPickUp;
@@ -100,9 +98,6 @@ public class Tour {
 
                 Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getDeparture(), newRequest.getPickUpPoint());
                 Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint(), path.getArrival());
-
-                System.out.println(pathDeparturetoNewPickUp);
-                System.out.println(pathNewPickUptoArrival);
 
                 listPaths.remove(pathIndexToInsertPickUp);
                 listPaths.add(pathIndexToInsertPickUp, pathDeparturetoNewPickUp);
@@ -140,8 +135,6 @@ public class Tour {
                 // Create the paths and insert them into the tour List
                 Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getDeparture(), newRequest.getDeliveryPoint());
                 Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint(), path.getArrival());
-                System.out.println(pathDeparturetoNewDelivery);
-                System.out.println(pathNewDeliverytoArrival);
 
                 listPaths.remove(pathIndexToInsertDelivery);
                 listPaths.add(pathIndexToInsertDelivery, pathDeparturetoNewDelivery);
