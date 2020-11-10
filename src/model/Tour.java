@@ -56,7 +56,9 @@ public class Tour {
 
         //Find the place to insert the pickUp
         for (Path path : listPaths) {
-            if (path.getDeparture().getRequest() == precedingPickUp.getRequest() && path.getIdDeparture() == precedingPickUp.getId()) {
+            System.out.println(path.getDeparture().getRequest());
+            System.out.println(path.getArrival().getRequest());
+            if (precedingPickUp.getRequest().equals(path.getDeparture().getRequest()) && path.getIdDeparture() == precedingPickUp.getId()) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
                 List<Segment> roadDeparturetoNewPickUp;
                 if (path.getIdDeparture() == newRequest.getPickUpPoint().getId()) {
@@ -79,8 +81,13 @@ public class Tour {
                 }
 
                 // Create the path and insert them into the tour List
+
                 Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getDeparture(), newRequest.getPickUpPoint());
                 Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint(), path.getArrival());
+
+                System.out.println(pathDeparturetoNewPickUp);
+                System.out.println(pathNewPickUptoArrival);
+
                 listPaths.remove(pathIndexToInsertPickUp);
                 listPaths.add(pathIndexToInsertPickUp, pathDeparturetoNewPickUp);
                 listPaths.add(pathIndexToInsertPickUp + 1, pathNewPickUptoArrival);
@@ -91,7 +98,7 @@ public class Tour {
 
         //Find the place to insert the Delivery
         for (Path path : listPaths) {
-            if (path.getDeparture().getRequest() == precedingDelivery.getRequest() && path.getIdDeparture() == precedingDelivery.getId()) {
+            if (precedingDelivery.getRequest().equals(path.getDeparture().getRequest()) && path.getIdDeparture() == precedingDelivery.getId()) {
                 //Compute the shortest path between the Step preceding the Delivery and the Request Delivery
 
                 List<Segment> roadDeparturetoNewDelivery;
