@@ -196,7 +196,13 @@ public class TextualView implements observer.Observer {
                             res += " - ";
                         }
                     } else {
-                        if (segment.getStreetName() != "" && segment.getStreetName() != null && !segment.getStreetName().equals(segments.get(i-1).getStreetName())) {
+                        int count = 0;
+                        for (int j = 0; j < i; j++) {
+                            if (segment.getStreetName().equals(segments.get(j).getStreetName())) {
+                                count++;
+                            }
+                        }
+                        if (segment.getStreetName() != "" && segment.getStreetName() != null && count == 0) {
                             res += segment.getStreetName();
                             res += " - ";
                         }
