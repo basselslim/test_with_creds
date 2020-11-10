@@ -22,6 +22,13 @@ public class ComputeSmallestPath {
         this.map = map;
     }
 
+    /**
+     * Compute the smallest path between two request points.
+     *
+     * @param a first request point
+     * @param b second request point
+     * @return smallest path
+     */
     public List<Segment> computeSmallestPath(Step a, Step b) {
         Intersection from = map.getListIntersections().get(a.getId());
         Intersection to = map.getListIntersections().get(b.getId());

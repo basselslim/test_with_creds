@@ -1,4 +1,5 @@
 package controler;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -25,7 +26,7 @@ import java.util.*;
  * @author T-REXANOME
  */
 public class Controller {
-    
+
     protected MouseGestures mg;
     protected ListOfCommand listOfCommand;
     protected State currentState;
@@ -62,7 +63,6 @@ public class Controller {
     @FXML
     protected Button redo;
 
-
     protected final InitialState initialState = new InitialState();
     protected final AddPickupState addPickupState = new AddPickupState();
     protected final AddDeliveryState addDeliveryState = new AddDeliveryState();
@@ -93,7 +93,7 @@ public class Controller {
         currentState = newState;
     }
 
-    protected void disableButtons(Boolean bool){
+    protected void disableButtons(Boolean bool) {
         LoadMap.setDisable(bool);
         LoadRequests.setDisable(bool);
         ComputeTour.setDisable(bool);
@@ -110,7 +110,7 @@ public class Controller {
      * @param event
      */
     public void LoadRequests(ActionEvent event) {
-        currentState.LoadRequests(event,this,map);
+        currentState.LoadRequests(event, this, map);
     }
 
     /**
@@ -120,7 +120,7 @@ public class Controller {
      */
     public void computeTour(ActionEvent event) {
         Tview.setMessage("Computing optimal tour...");
-        currentState.computeTour(this,map);
+        currentState.computeTour(this, map);
     }
 
     /**
@@ -128,12 +128,12 @@ public class Controller {
      *
      * @param event
      */
-    public void ExportRoadMap (ActionEvent event) {
+    public void ExportRoadMap(ActionEvent event) {
         FileChooser exportFileChooser = new FileChooser();
         exportFileChooser.setTitle("Export RoadMap");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         exportFileChooser.getExtensionFilters().add(extFilter);
-        File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
+        File exportLocation = exportFileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
 
         if (exportLocation != null) {
             map.getDeliveryTour().generateRoadMap(exportLocation.getPath());
@@ -143,14 +143,14 @@ public class Controller {
     /**
      * Left click.
      *
-     * @param idIntersection
+     * @param idIntersection id of the intersection
      */
-    public void leftClick(long idIntersection){
+    public void leftClick(long idIntersection) {
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
-    public void leftClick(Step step){
+    public void leftClick(Step step) {
         currentState.leftClick(this, map, listOfCommand, step);
     }
 
@@ -166,11 +166,13 @@ public class Controller {
     }
 
     /**
-     * Zoom.
+     * Zoom into the map.
      *
      * @param event
      */
-    public void Zoom(ActionEvent event) { Gview.zoom(); }
+    public void Zoom(ActionEvent event) {
+        Gview.zoom();
+    }
 
     /**
      * Unzoom.
@@ -208,7 +210,7 @@ public class Controller {
      *
      * @param event
      */
-    public void deleteRequest(ActionEvent event){
+    public void deleteRequest(ActionEvent event) {
         currentState.deleteRequest(this);
     }
 
@@ -234,6 +236,6 @@ public class Controller {
      * @param event
      */
     public void redo(ActionEvent event) {
-        currentState.redo(listOfCommand,this);
+        currentState.redo(listOfCommand, this);
     }
 }

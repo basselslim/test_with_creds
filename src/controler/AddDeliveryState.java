@@ -4,7 +4,6 @@ import model.*;
 import model.Map;
 
 /**
- *
  * @author T-REXANOME
  */
 public class AddDeliveryState implements State {
@@ -23,9 +22,9 @@ public class AddDeliveryState implements State {
      * Left click.
      *
      * @param controller
-     * @param map
+     * @param map           map object
      * @param listOfCommand
-     * @param i
+     * @param step          request point
      */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
@@ -46,6 +45,14 @@ public class AddDeliveryState implements State {
         }
     }
 
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map           map object
+     * @param listOfCommand
+     * @param i             intersection
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
         if (DeliveryPrecedingPoint != null) {
@@ -63,7 +70,7 @@ public class AddDeliveryState implements State {
     /**
      * Add a duration.
      *
-     * @param duration duration to add
+     * @param duration   duration to add
      * @param controller
      */
     @Override
@@ -106,8 +113,8 @@ public class AddDeliveryState implements State {
     /**
      *
      * @param controller
-     * @param r request
-     * @param pickuppredecingPoint
+     * @param r                    request
+     * @param pickuppredecingPoint preceding pick up point
      */
     protected void entryAction(Controller controller, Request r, Step pickuppredecingPoint) {
         request = new Request(r);
@@ -132,12 +139,12 @@ public class AddDeliveryState implements State {
      *
      * @param controller
      */
-    private void unDrawSelections(Controller controller){
-        if(DeliveryPrecedingPoint !=null)
+    private void unDrawSelections(Controller controller) {
+        if (DeliveryPrecedingPoint != null)
             controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
-        else if(controller.confirmRequestState.DeliveryPrecedingPoint !=null)
+        else if (controller.confirmRequestState.DeliveryPrecedingPoint != null)
             controller.Gview.undrawMouseSelection(controller.confirmRequestState.DeliveryPrecedingPoint);
-        if(request.getDeliveryPoint()!=null)
+        if (request.getDeliveryPoint() != null)
             controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
         controller.Gview.undrawMouseSelection(controller.addPickupState.request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(PickupPrecedingPoint);

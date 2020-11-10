@@ -11,34 +11,34 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1050.0" maxWidth="1680.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
-    <HBox alignment="CENTER_LEFT" minHeight="60.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-      <children>
-        <Button fx:id="LoadMap" mnemonicParsing="false" onAction="#LoadMap" prefHeight="40.0" prefWidth="200.0" text="Load Map">
-            <font>
-                <Font size="18.0" />
-            </font>
-            <HBox.margin>
-               <Insets left="20.0" />
-            </HBox.margin>
-        </Button>
-         <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-        <Button fx:id="LoadRequests" disable="true" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="40.0" prefWidth="203.0" text="Load Requests">
-          <font>
-              <Font size="18.0" />
-          </font>
-            <HBox.margin>
-               <Insets right="100.0" />
-            </HBox.margin>
-        </Button>
-      </children>
-    </HBox>
-   <SplitPane dividerPositions="0.6573676680972819" maxHeight="800.0">
-     <items>
-       <AnchorPane>
-            <children>
-                <Pane fx:id="overlay" onZoom="#Zoom" prefHeight="800.0" prefWidth="1000.0" translateX="30.0">
+<VBox maxHeight="1050.0" maxWidth="1680.0" style="-fx-background-color: Whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controler.Controller">
+    <HBox alignment="CENTER_LEFT" minHeight="60.0" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
+        <children>
+            <Button fx:id="LoadMap" mnemonicParsing="false" onAction="#LoadMap" prefHeight="40.0" prefWidth="200.0" text="Load Map">
+                <font>
+                    <Font size="18.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </Button>
+            <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="LoadRequests" disable="true" mnemonicParsing="false" onAction="#LoadRequests" prefHeight="40.0" prefWidth="203.0" text="Load Requests">
+                <font>
+                    <Font size="18.0" />
+                </font>
+                <HBox.margin>
+                    <Insets right="100.0" />
+                </HBox.margin>
+            </Button>
+        </children>
+    </HBox>
+   <SplitPane dividerPositions="0.6005004170141784" maxHeight="800.0">
+     <items>
+       <AnchorPane prefHeight="800.0" prefWidth="805.0" style="-fx-background-color: Whitesmoke;">
+            <children>
+                <Pane fx:id="overlay" onZoom="#Zoom" style="-fx-background-color: Whitesmoke;">
                </Pane>
             </children>
          </AnchorPane>
@@ -51,13 +51,18 @@
        </VBox>
      </items>
    </SplitPane>
-   <Pane maxHeight="0.0" maxWidth="0.0" prefHeight="0.0" prefWidth="0.0">
+    <Pane maxHeight="0.0" maxWidth="0.0" prefHeight="0.0" prefWidth="0.0">
       <children>
          <Button fx:id="btn_zoom" onAction="#Zoom" prefHeight="30.0" prefWidth="30.0" text="+" translateX="20.0" translateY="-50.0" />
           <Button fx:id="btn_unzoom" onAction="#UnZoom" prefHeight="30.0" prefWidth="30.0" text="-" translateX="70.0" translateY="-50.0" />
+         <Button fx:id="resetView" mnemonicParsing="false" onAction="#resetView" prefHeight="30.0" text="Reset view" translateX="120.0" translateY="-50.0">
+            <font>
+               <Font size="12.0" />
+            </font>
+         </Button>
       </children>
    </Pane>
-   <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: darkgrey;" VBox.vgrow="ALWAYS">
+   <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: whitesmoke;" VBox.vgrow="ALWAYS">
       <children>
           <VBox alignment="CENTER">
               <children>
@@ -72,42 +77,41 @@
                </Button>
               </children>
           </VBox>
-
-         <TextArea fx:id="TextArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="64.0" prefWidth="514.0" text="Please load a map">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font>
-            <HBox.margin>
-               <Insets left="10.0" />
-            </HBox.margin>
-         </TextArea>
-         <Button fx:id="confirmAction" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#confirmAction" prefHeight="50.0" prefWidth="88.0" text="Confirm" visible="false" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-               <Insets left="10.0" />
-            </HBox.margin></Button>
-         <Button fx:id="ComputeTour" mnemonicParsing="false" onAction="#computeTour" prefHeight="40.0" prefWidth="150.0" style="-fx-border-color: black;" text="Compute">
-            <font>
-               <Font size="17.0" />
-            </font>
-            <HBox.margin>
-               <Insets left="10.0" />
-            </HBox.margin>
-         </Button>
-         <Button fx:id="ExportTour" mnemonicParsing="false" onAction="#ExportRoadMap" prefHeight="38.0" prefWidth="161.0" style="-fx-border-color: black;" text="Export RoadMap">
-            <font>
-               <Font size="17.0" />
-            </font>
-            <HBox.margin>
-               <Insets left="10.0" />
-            </HBox.margin>
-         </Button>
-         <Label fx:id="TextTour" prefWidth="150.0" text="Tour length :">
-            <HBox.margin>
-               <Insets left="10.0" right="20.0" />
-            </HBox.margin></Label>
-      </children>
-      <padding>
-         <Insets bottom="20.0" left="20.0" top="20.0" />
-      </padding>
-   </HBox>
+            <TextArea fx:id="TextArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="64.0" prefWidth="450.0" text="Please load a map">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="10.0" />
+                </HBox.margin>
+            </TextArea>
+            <Button fx:id="confirmAction" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#confirmAction" prefHeight="50.0" prefWidth="88.0" text="Confirm" visible="false">
+                <HBox.margin>
+                    <Insets left="10.0" />
+                </HBox.margin></Button>
+            <Label fx:id="TextTour" maxWidth="1.7976931348623157E308" text="" HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets left="10.0" />
+                </HBox.margin></Label>
+            <Button fx:id="ComputeTour" mnemonicParsing="false" onAction="#computeTour" prefHeight="40.0" prefWidth="150.0" style="-fx-border-color: black;" text="Compute">
+                <font>
+                    <Font size="17.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="10.0" />
+                </HBox.margin>
+            </Button>
+            <Button fx:id="ExportTour" mnemonicParsing="false" onAction="#ExportRoadMap" prefHeight="38.0" prefWidth="161.0" style="-fx-border-color: black;" text="Export RoadMap">
+                <font>
+                    <Font size="17.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="10.0" right="20.0" />
+                </HBox.margin>
+            </Button>
+        </children>
+        <padding>
+            <Insets bottom="20.0" left="20.0" top="20.0" />
+        </padding>
+    </HBox>
 </VBox>

@@ -1,6 +1,7 @@
 package controler;
 
 import model.*;
+
 import java.util.*;
 
 /**
@@ -13,7 +14,7 @@ public class TravellingSalesmanProblem {
     protected int numberOfStep = 0;
     protected model.Map map;
     protected HashMap<Long, HashMap<Long, Path>> adjacencyMatrixOfShortestPath;
-    protected HashMap<Long,List<Long>> precedenceOrderMatrix;
+    protected HashMap<Long, List<Long>> precedenceOrderMatrix;
     // final_path stores the final solution ie, the
     // path of the salesman.
     protected Tour final_tour;
@@ -32,9 +33,9 @@ public class TravellingSalesmanProblem {
      *
      * @param newMap
      * @param mapSmallestPaths map of all smallest paths between intersections of the requests
-     * @param t time limit for the algorithm
+     * @param t                time limit for the algorithm
      */
-    public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths,long t) {
+    public TravellingSalesmanProblem(model.Map newMap, HashMap<Long, HashMap<Long, Path>> mapSmallestPaths, long t) {
         numberOfStep = mapSmallestPaths.size();
         map = newMap;
         final_tour = new Tour(map);
@@ -49,14 +50,14 @@ public class TravellingSalesmanProblem {
      *
      */
     private void initialisePrecedenceMatrix() {
-        precedenceOrderMatrix = new HashMap<Long,List<Long>>();
+        precedenceOrderMatrix = new HashMap<Long, List<Long>>();
         for (Request r : map.getListRequests()) {
             if (precedenceOrderMatrix.containsKey(r.getDeliveryPoint().getId())) {
                 precedenceOrderMatrix.get(r.getDeliveryPoint().getId()).add(r.getPickUpPoint().getId());
             } else {
                 List<Long> pickUpList = new LinkedList<Long>();
                 pickUpList.add(r.getPickUpPoint().getId());
-                precedenceOrderMatrix.put(r.getDeliveryPoint().getId(),pickUpList);
+                precedenceOrderMatrix.put(r.getDeliveryPoint().getId(), pickUpList);
             }
 
         }
@@ -82,7 +83,7 @@ public class TravellingSalesmanProblem {
      * Function to find the minimum edge cost having an end at the vertex i.
      *
      * @param id
-     * @return
+     * @return minimum edge cost
      */
     protected int firstMin(long id) {
         int min = Integer.MAX_VALUE;
@@ -99,7 +100,7 @@ public class TravellingSalesmanProblem {
      * Function to find the second minimum edge cost having an end at the vertex i.
      *
      * @param id
-     * @return
+     * @return second minimum edge cost
      */
     protected int secondMin(long id) {
         int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
@@ -190,7 +191,7 @@ public class TravellingSalesmanProblem {
         for (java.util.Map.Entry<Long, Path> pathStartingAtCurrentStep : adjacencyMatrixOfShortestPath.get(currentStepId).entrySet()) {
             // check if not visited already
             boolean precedenceRespected = false;
-            if (precedenceOrderMatrix.containsKey(pathStartingAtCurrentStep.getKey()) ) {
+            if (precedenceOrderMatrix.containsKey(pathStartingAtCurrentStep.getKey())) {
                 for (Long id : precedenceOrderMatrix.get(pathStartingAtCurrentStep.getKey())) {
                     if (visited.containsKey(id)) {
                         precedenceRespected = true;

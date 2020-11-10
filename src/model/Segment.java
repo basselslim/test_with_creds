@@ -12,13 +12,13 @@ public class Segment {
     protected long destination;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Segment() {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param length      length of the street in meters
      * @param streetName  street name

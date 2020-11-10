@@ -8,7 +8,7 @@ package model;
 public class PickUpPoint extends Step {
 
     protected int pickUpDuration;
-    
+
     /**
      * Default constructor.
      */

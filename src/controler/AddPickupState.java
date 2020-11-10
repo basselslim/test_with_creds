@@ -17,34 +17,42 @@ public class AddPickupState implements State {
     public AddPickupState() {
     }
 
-
     /**
      * Left click.
      *
      * @param controller
-     * @param map
+     * @param map           map object
      * @param listOfCommand
-     * @param i
+     * @param step          request point
      */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
         if (precedingPoint == null) {
-            if(map.getRequestByIntersectionId(step.getId()) != null || step.getId() == map.getDepot().getId()) {
+            if (map.getRequestByIntersectionId(step.getId()) != null || step.getId() == map.getDepot().getId()) {
                 precedingPoint = new Step(step);
 
                 controller.Gview.drawMouseSelection(step);
                 controller.Tview.setMessage("Select the pickup point");
             }
         } else {
-                PickUpPoint pickup = new PickUpPoint(step, 0);
-                request.setPickUpPoint(pickup);
+            PickUpPoint pickup = new PickUpPoint(step, 0);
+            request.setPickUpPoint(pickup);
 
-                controller.Gview.drawMouseSelection(step);
-                controller.Tview.setMessage("Enter duration");
-                controller.addDuration(controller.Tview.durationPopup());
+            controller.Gview.drawMouseSelection(step);
+            controller.Tview.setMessage("Enter duration");
+            controller.addDuration(controller.Tview.durationPopup());
 
-}
+        }
     }
+
+    /**
+     * Left click.
+     *
+     * @param controller
+     * @param map           map object
+     * @param listOfCommand
+     * @param i             intersection
+     */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
         if (precedingPoint != null) {
@@ -62,7 +70,7 @@ public class AddPickupState implements State {
     /**
      * Add duration.
      *
-     * @param duration duration to add
+     * @param duration   duration to add
      * @param controller
      */
     @Override
@@ -97,16 +105,15 @@ public class AddPickupState implements State {
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
         Request nextReq = controller.addDeliveryState.request;
-        if (controller.addDeliveryState.PickupPrecedingPoint != null && nextReq.getPickUpPoint() != null && nextReq.getPickUpPoint().getPickUpDuration() != 0){
+        if (controller.addDeliveryState.PickupPrecedingPoint != null && nextReq.getPickUpPoint() != null && nextReq.getPickUpPoint().getPickUpDuration() != 0) {
             controller.addDeliveryState.reverseAction(controller);
             controller.setCurrentState(controller.addDeliveryState);
         }
     }
 
     /**
-     *
      * @param controller
-     * @param r request
+     * @param r          request
      */
     protected void entryAction(Controller controller, Request r) {
         request = new Request(r);
@@ -116,7 +123,6 @@ public class AddPickupState implements State {
     }
 
     /**
-     *
      * @param controller
      */
     protected void reverseAction(Controller controller) {

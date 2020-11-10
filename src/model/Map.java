@@ -208,7 +208,7 @@ public class Map extends observer.Observable {
      * Add a request.
      *
      * @param newRequest request to add
-     * @return errorcode
+     * @return error code
      */
     public int addRequest(Request newRequest) {
         this.listRequests.add(newRequest);

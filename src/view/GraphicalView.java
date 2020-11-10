@@ -14,9 +14,10 @@ import model.Map;
 import java.util.*;
 
 /**
+ * Graphical interface of the application.
  *
+ * @author T-REXANOME
  */
-
 public class GraphicalView implements observer.Observer {
 
     MouseGestures mouseGestures;
@@ -40,6 +41,13 @@ public class GraphicalView implements observer.Observer {
     Boolean isMapClickable = false;
     Boolean setScreenSize = false;
 
+    /**
+     * Constructor.
+     *
+     * @param map     map object
+     * @param overlay
+     * @param mg      mouse gestures
+     */
     public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
         m_map = map;
         mouseGestures = mg;
@@ -48,18 +56,21 @@ public class GraphicalView implements observer.Observer {
         mg.newTranslateY = 0;
         m_overlay = overlay;
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        screenX = (int)((screenBounds.getMaxX()-150)*0.595);
-        screenY = (int)((screenBounds.getMaxY()-150)*0.762);
+        screenX = (int) ((screenBounds.getMaxX() - 150) * 0.595);
+        screenY = (int) ((screenBounds.getMaxY() - 150) * 0.762);
     }
 
-    public static HashMap<Long,List<Circle>> circles = new HashMap<Long,List<Circle>>();
+    public static HashMap<Long, List<Circle>> circles = new HashMap<Long, List<Circle>>();
 
     public static List<Line> lines = new ArrayList<Line>();
 
     public static List<Arrow> arrows = new ArrayList<Arrow>();
 
-    public static HashMap<Long,List<Rectangle>> rectangles = new HashMap<Long,List<Rectangle>>();
+    public static HashMap<Long, List<Rectangle>> rectangles = new HashMap<Long, List<Rectangle>>();
 
+    /**
+     * Draw the map.
+     */
     public void drawMap() {
         if (!setScreenSize) {
             m_overlay.setPrefWidth(screenX);
@@ -109,11 +120,14 @@ public class GraphicalView implements observer.Observer {
 
         addNodesToOverlay();
 
-        if(isMapClickable = true)
+        if (isMapClickable = true)
             enableSelection();
 
     }
 
+    /**
+     * Refresh map.
+     */
     public void refreshMap() {
         m_overlay.getChildren().clear();
         lines.clear();
@@ -123,6 +137,9 @@ public class GraphicalView implements observer.Observer {
         drawMap();
     }
 
+    /**
+     *
+     */
     public void enableSelection() {
         isMapClickable = true;
         for (Node node : m_overlay.getChildren()) {
@@ -131,11 +148,17 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     *
+     */
     public void disableSelection() {
         isMapClickable = false;
         refreshMap();
     }
 
+    /**
+     * Zoom into the map.
+     */
     public void zoom() {
 
         if (zoomVal < 3.5) {
@@ -148,8 +171,12 @@ public class GraphicalView implements observer.Observer {
             zoomTranslateY = 0;
         }
     }
+
+    /**
+     * Unzoom.
+     */
     public void unZoom() {
-        double width = latToPix(m_map.getMinLat())-latToPix(m_map.getMaxLat());
+        double width = latToPix(m_map.getMinLat()) - latToPix(m_map.getMaxLat());
         if (width > screenY) {
             zoomVal -= zoomStep;
             updateCoeff();
@@ -161,9 +188,12 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
+    /**
+     * Reset the view.
+     */
     public void resetView() {
         zoomVal = 1.0;
-        long id = (long)circles.keySet().toArray()[0];
+        long id = (long) circles.keySet().toArray()[0];
         zoomTranslateX = 0;
         zoomTranslateY = 0;
         mouseGestures.newTranslateX = 0;
@@ -171,6 +201,9 @@ public class GraphicalView implements observer.Observer {
         refreshMap();
     }
 
+    /**
+     * @param NodeId
+     */
     public void drawMouseSelection(long NodeId) {
         Circle circle = circles.get(NodeId).get(0);
         if (circle != null) {
@@ -178,20 +211,21 @@ public class GraphicalView implements observer.Observer {
             circle.setStrokeWidth(circle.getStrokeWidth() * 2.0);
             circle.setStroke(Color.RED);
         }
-
-
     }
 
+    /**
+     * @param step request point
+     */
     public void drawMouseSelection(Step step) {
         List<Circle> CircleList = circles.get(step.getId());
         for (Circle circle : CircleList) {
-            if (circle.getUserData() instanceof Step){
+            if (circle.getUserData() instanceof Step) {
                 Step MapStep = (Step) circle.getUserData();
-            if (MapStep.getRequest() == step.getRequest()) {
-                circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
-                circle.setStroke(Color.RED);
+                if (MapStep.getRequest() == step.getRequest()) {
+                    circle.setStrokeWidth(circle.getStrokeWidth() * 1.5);
+                    circle.setStroke(Color.RED);
+                }
             }
-        }
 
         }
 
@@ -209,7 +243,9 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
-
+    /**
+     * @param step request point
+     */
     public void undrawMouseSelection(Step step) {
         List<Circle> CircleList = circles.get(step.getId());
         for (Circle circle : CircleList) {
@@ -236,222 +272,289 @@ public class GraphicalView implements observer.Observer {
         }
     }
 
-        public void undrawMouseSelection ( long NodeId){
-            Circle circle = circles.get(NodeId).get(0);
+    /**
+     * @param NodeId
+     */
+    public void undrawMouseSelection(long NodeId) {
+        Circle circle = circles.get(NodeId).get(0);
 
-            if (circle != null) {
-                //circle.setFill(Color.BLACK);
-                circle.setStrokeWidth(circle.getStrokeWidth() / 2.0);
-                circle.setStroke(Color.DIMGRAY);
-            }
-
+        if (circle != null) {
+            //circle.setFill(Color.BLACK);
+            circle.setStrokeWidth(circle.getStrokeWidth() / 2.0);
+            circle.setStroke(Color.DIMGRAY);
         }
 
-        private void drawMultipleLines (Intersection origin, List < Segment > segmentList){
+    }
 
-            double originX = longToPix(origin.getLongitude());
-            double originY = latToPix(origin.getLatitude());
+    /**
+     * Draw lines from an origin intersection.
+     *
+     * @param origin      origin intersection
+     * @param segmentList list of segments
+     */
+    private void drawMultipleLines(Intersection origin, List<Segment> segmentList) {
 
-            for (Segment segment : segmentList) {
-                Intersection destination = m_map.getListIntersections().get(segment.getDestination());
-                double destinationX = longToPix(destination.getLongitude());
-                double destinationY = latToPix(destination.getLatitude());
-                double length = Math.sqrt(Math.pow(destinationX - originX, 2) + Math.pow(destinationY - originY, 2));
-                Line line = new Line(originX, originY, destinationX, destinationY);
-                line.setStroke(Color.GREY);
-                line.setStrokeWidth(StrokeSize);
-                lines.add(line);
-            }
-        }
+        double originX = longToPix(origin.getLongitude());
+        double originY = latToPix(origin.getLatitude());
 
-        private void drawArrow (Intersection origin, Intersection destination,double size){
-
-            double originX = longToPix(origin.getLongitude());
-            double originY = latToPix(origin.getLatitude());
+        for (Segment segment : segmentList) {
+            Intersection destination = m_map.getListIntersections().get(segment.getDestination());
             double destinationX = longToPix(destination.getLongitude());
             double destinationY = latToPix(destination.getLatitude());
-            Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, 6.0);
-            arrow.setFill(Color.BLUE);
-            arrow.setStrokeWidth(StrokeSize * 1.5);
-            arrows.add(arrow);
+            double length = Math.sqrt(Math.pow(destinationX - originX, 2) + Math.pow(destinationY - originY, 2));
+            Line line = new Line(originX, originY, destinationX, destinationY);
+            line.setStroke(Color.GREY);
+            line.setStrokeWidth(StrokeSize);
+            lines.add(line);
         }
+    }
 
-        private void drawPoint (Intersection intersection, Color color,double size){
+    /**
+     * Draw an arrow.
+     *
+     * @param origin      origin intersection
+     * @param destination destination intersection
+     * @param size        size of the arrow
+     */
+    private void drawArrow(Intersection origin, Intersection destination, double size) {
 
-            double pointX = longToPix(intersection.getLongitude());
-            double pickupY = latToPix(intersection.getLatitude());
+        double originX = longToPix(origin.getLongitude());
+        double originY = latToPix(origin.getLatitude());
+        double destinationX = longToPix(destination.getLongitude());
+        double destinationY = latToPix(destination.getLatitude());
+        Arrow arrow = new Arrow(originX, originY, destinationX, destinationY, 6.0);
+        arrow.setFill(Color.BLUE);
+        arrow.setStrokeWidth(StrokeSize * 1.5);
+        arrows.add(arrow);
+    }
 
-            Circle circle = new Circle(size);
-            circle.setStroke(Color.DIMGRAY);
-            circle.setStrokeWidth(StrokeSize);
-            circle.setFill(color.deriveColor(1, 1, 1, 1.0));
-            circle.relocate(pointX - size, pickupY - size);
-            circle.setUserData(intersection.getId());
+    /**
+     * Draw a point.
+     *
+     * @param intersection point intersection
+     * @param color        color of the point
+     * @param size         size of the point
+     */
+    private void drawPoint(Intersection intersection, Color color, double size) {
 
-            List<Circle> CircleList = new ArrayList<Circle>();
-            CircleList.add(circle);
-            circles.put(intersection.getId(), CircleList);
+        double pointX = longToPix(intersection.getLongitude());
+        double pickupY = latToPix(intersection.getLatitude());
 
-        }
+        Circle circle = new Circle(size);
+        circle.setStroke(Color.DIMGRAY);
+        circle.setStrokeWidth(StrokeSize);
+        circle.setFill(color.deriveColor(1, 1, 1, 1.0));
+        circle.relocate(pointX - size, pickupY - size);
+        circle.setUserData(intersection.getId());
 
-        private void drawRequestPoint (Step step, Color color,double size){
+        List<Circle> CircleList = new ArrayList<Circle>();
+        CircleList.add(circle);
+        circles.put(intersection.getId(), CircleList);
 
-            double pointX = longToPix(step.getLongitude());
-            double pointY = latToPix(step.getLatitude());
-            long id = step.getId();
+    }
 
-            Circle circle = new Circle(size);
-            circle.setStroke(Color.BLACK);
-            circle.setStrokeWidth(RequestStrokeSize);
-            circle.setFill(color.deriveColor(1, 1, 1, 1.0));
-            circle.relocate(pointX - size, pointY - size);
-            circle.setUserData(step.getRequest().getDeliveryPoint());
-            circle.setViewOrder(-1.0);
-            int order = circles.get(id).size()-1;
-            if(m_map.getDepot().getId() == id)
+    /**
+     * Draw a request point.
+     *
+     * @param step  request point
+     * @param color color of the point
+     * @param size  size of the point
+     */
+    private void drawRequestPoint(Step step, Color color, double size) {
+
+        double pointX = longToPix(step.getLongitude());
+        double pointY = latToPix(step.getLatitude());
+        long id = step.getId();
+
+        Circle circle = new Circle(size);
+        circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(RequestStrokeSize);
+        circle.setFill(color.deriveColor(1, 1, 1, 1.0));
+        circle.relocate(pointX - size, pointY - size);
+        circle.setUserData(step.getRequest().getDeliveryPoint());
+        circle.setViewOrder(-1.0);
+        int order = circles.get(id).size() - 1;
+        if (m_map.getDepot().getId() == id)
+            order++;
+        if (rectangles.get(id) != null)
+            order += rectangles.get(id).size();
+        System.out.println(order);
+        circle.relocate(pointX - size + order * StepSiding, pointY - size + order * StepSiding);
+        circles.get(id).add(circle);
+    }
+
+    /**
+     * Draw a rectangle.
+     *
+     * @param step  request point
+     * @param color color of the rectangle
+     * @param size  size of the rectangle
+     */
+    private void drawRectangle(Step step, Color color, double size) {
+        double pointX = longToPix(step.getLongitude());
+        double pointY = latToPix(step.getLatitude());
+        long id = step.getId();
+
+        Rectangle rectangle = new Rectangle(pointX - size, pointY - size, size * 2, size * 2);
+        rectangle.setStroke(Color.BLACK);
+        rectangle.setStrokeWidth(RequestStrokeSize);
+        rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
+
+        rectangle.setUserData(step);
+        //circles.get(id).remove(0);
+        if (rectangles.containsKey(id)) {
+            int order = circles.get(id).size() + rectangles.get(id).size() - 1;
+            if (m_map.getDepot().getId() == id)
                 order++;
-            if(rectangles.get(id)!=null)
-                    order += rectangles.get(id).size();
-            System.out.println(order);
-            circle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
-            circles.get(id).add(circle);
+            rectangle.relocate(pointX - size + order * StepSiding, pointY - size + order * StepSiding);
+            rectangles.get(id).add(rectangle);
+        } else {
+            List<Rectangle> RectangleList = new ArrayList<Rectangle>();
+            int order = circles.get(id).size() - 1;
+            rectangle.relocate(pointX - size + order * StepSiding, pointY - size + order * StepSiding);
+            RectangleList.add(rectangle);
+            rectangles.put(id, RectangleList);
+        }
+    }
+
+    /**
+     *
+     */
+    private void addNodesToOverlay() {
+        for (Line line : lines) {
+            m_overlay.getChildren().add(line);
         }
 
-        private void drawRectangle (Step step, Color color,double size){
-            double pointX = longToPix(step.getLongitude());
-            double pointY = latToPix(step.getLatitude());
-            long id = step.getId();
+        Circle depot = new Circle();
+        for (HashMap.Entry<Long, List<Circle>> mapentry : circles.entrySet()) {
+            List<Circle> CircleList = mapentry.getValue();
+            for (Circle circle : CircleList) {
+                if ((long) mapentry.getKey() == m_map.getDepot().getId()) {
+                    depot = circle;
+                    depot.setRadius(pointSize * 2);
+                    depot.setFill(Color.RED);
+                    depot.setStroke(Color.BLACK);
+                    depot.setStrokeWidth(StrokeSize * 1.5);
+                    depot.setViewOrder(-1.0);
+                    depot.setUserData(m_map.getDepot().getId());
+                } else
+                    m_overlay.getChildren().add(circle);
+            }
+        }
+        List<Circle> DepotCircleList = new ArrayList<>();
+        circles.put(m_map.getDepot().getId(), DepotCircleList);
+        circles.get(m_map.getDepot().getId()).add(depot);
+        m_overlay.getChildren().add(depot);
 
-            Rectangle rectangle = new Rectangle(pointX - size, pointY - size, size * 2, size * 2);
-            rectangle.setStroke(Color.BLACK);
-            rectangle.setStrokeWidth(RequestStrokeSize);
-            rectangle.setFill(color.deriveColor(1, 1, 1, 1.0));
+        for (Arrow arrow : arrows) {
+            m_overlay.getChildren().add(arrow);
+        }
 
-            rectangle.setUserData(step);
-            //circles.get(id).remove(0);
-            if (rectangles.containsKey(id)) {
-                int order = circles.get(id).size() + rectangles.get(id).size()-1;
-                if(m_map.getDepot().getId() == id)
-                    order++;
-                rectangle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
-                rectangles.get(id).add(rectangle);
-            } else {
-                List<Rectangle> RectangleList = new ArrayList<Rectangle>();
-                int order = circles.get(id).size()-1;
-                rectangle.relocate(pointX - size + order*StepSiding, pointY - size + order*StepSiding);
-                RectangleList.add(rectangle);
-                rectangles.put(id, RectangleList);
+        for (HashMap.Entry<Long, List<Rectangle>> mapentry : rectangles.entrySet()) {
+            List<Rectangle> RectangleList = mapentry.getValue();
+            for (Rectangle rectangle : RectangleList) {
+                m_overlay.getChildren().add(rectangle);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private void updateCoeff() {
+        double maxHeigth = ((-1 * m_map.getMaxLat()) + 90) * (screenY / 180);
+        double minHeigth = ((-1 * m_map.getMinLat()) + 90) * (screenY / 180);
+
+        double maxWidth = (m_map.getMaxLong() + 180) * (screenX / 360);
+        double minWidth = (m_map.getMinLong() + 180) * (screenX / 360);
+
+        coeffX = (double) screenX / (maxWidth - minWidth) * zoomVal;
+        coeffY = -(double) screenY / (maxHeigth - minHeigth) * zoomVal;
+
+        ordonneeX = minWidth * coeffX;
+        ordonneeY = maxHeigth * coeffY;
+
+        pointSize = 0.00030 * coeffX;
+        ReqpointSize = 0.0007 * coeffX;
+        StrokeSize = 0.00016 * coeffX;
+        RequestStrokeSize = 0.00032 * coeffX / zoomVal;
+        StepSiding = 0.00040 * coeffX;
+    }
+
+    /**
+     * @param XValue
+     * @param YValue
+     */
+    private void updateTranslation(double XValue, double YValue) {
+
+        for (HashMap.Entry<Long, List<Circle>> mapentry : circles.entrySet()) {
+            List<Circle> CircleList = mapentry.getValue();
+            for (Circle circle : CircleList) {
+                circle.setTranslateX(XValue);
+                circle.setTranslateY(YValue);
             }
         }
 
-        private void addNodesToOverlay () {
-            for (Line line : lines) {
-                m_overlay.getChildren().add(line);
-            }
-
-            Circle depot = new Circle();
-            for (HashMap.Entry<Long, List<Circle>> mapentry : circles.entrySet()) {
-                List<Circle> CircleList = mapentry.getValue();
-                for (Circle circle : CircleList) {
-                    if ((long) mapentry.getKey() == m_map.getDepot().getId()) {
-                        depot = circle;
-                        depot.setRadius(pointSize * 2);
-                        depot.setFill(Color.RED);
-                        depot.setStroke(Color.BLACK);
-                        depot.setStrokeWidth(StrokeSize * 1.5);
-                        depot.setViewOrder(-1.0);
-                        depot.setUserData(m_map.getDepot().getId());
-                    } else
-                        m_overlay.getChildren().add(circle);
-                }
-            }
-            List<Circle> DepotCircleList = new ArrayList<>();
-            circles.put(m_map.getDepot().getId(),DepotCircleList);
-            circles.get(m_map.getDepot().getId()).add(depot);
-            m_overlay.getChildren().add(depot);
-
-            for (Arrow arrow : arrows) {
-                m_overlay.getChildren().add(arrow);
-            }
-
-            for (HashMap.Entry<Long, List<Rectangle>> mapentry : rectangles.entrySet()) {
-                List<Rectangle> RectangleList = mapentry.getValue();
-                for (Rectangle rectangle : RectangleList) {
-                    m_overlay.getChildren().add(rectangle);
-                }
-            }
+        for (Line line : lines) {
+            line.setTranslateX(XValue);
+            line.setTranslateY(YValue);
+        }
+        for (Arrow arrow : arrows) {
+            arrow.setTranslateX(XValue);
+            arrow.setTranslateY(YValue);
         }
 
-        private void updateCoeff () {
-            double maxHeigth = ((-1 * m_map.getMaxLat()) + 90) * (screenY / 180);
-            double minHeigth = ((-1 * m_map.getMinLat()) + 90) * (screenY / 180);
+        for (HashMap.Entry<Long, List<Rectangle>> mapentry : rectangles.entrySet()) {
+            List<Rectangle> RectangleList = mapentry.getValue();
+            for (Rectangle rectangle : RectangleList) {
+                rectangle.setTranslateX(XValue);
+                rectangle.setTranslateY(YValue);
+            }
 
-            double maxWidth = (m_map.getMaxLong() + 180) * (screenX / 360);
-            double minWidth = (m_map.getMinLong() + 180) * (screenX / 360);
-
-            coeffX = (double) screenX / (maxWidth - minWidth) * zoomVal;
-            coeffY = -(double) screenY / (maxHeigth - minHeigth) * zoomVal;
-
-            ordonneeX = minWidth * coeffX;
-            ordonneeY = maxHeigth * coeffY;
-
-            pointSize = 0.00030 * coeffX;
-            ReqpointSize = 0.0007 * coeffX;
-            StrokeSize = 0.00016 * coeffX;
-            RequestStrokeSize = 0.00032 * coeffX/zoomVal;
-            StepSiding = 0.00040 * coeffX;
         }
+        mouseGestures.newTranslateX += zoomTranslateX / 2;
+        mouseGestures.newTranslateY += zoomTranslateY / 2;
+    }
 
-        private void updateTranslation ( double XValue, double YValue){
-
-            for (HashMap.Entry<Long, List<Circle>> mapentry : circles.entrySet()) {
-                List<Circle> CircleList = mapentry.getValue();
-                for (Circle circle : CircleList) {
-                    circle.setTranslateX(XValue);
-                    circle.setTranslateY(YValue);
-                }
-            }
-
-            for (Line line : lines) {
-                line.setTranslateX(XValue);
-                line.setTranslateY(YValue);
-            }
-            for (Arrow arrow : arrows) {
-                arrow.setTranslateX(XValue);
-                arrow.setTranslateY(YValue);
-            }
-
-            for (HashMap.Entry<Long, List<Rectangle>> mapentry : rectangles.entrySet()) {
-                List<Rectangle> RectangleList = mapentry.getValue();
-                for (Rectangle rectangle : RectangleList) {
-                    rectangle.setTranslateX(XValue);
-                    rectangle.setTranslateY(YValue);
-                }
-
-            }
-            mouseGestures.newTranslateX += zoomTranslateX / 2;
-            mouseGestures.newTranslateY += zoomTranslateY / 2;
-        }
-
-
-
+    /**
+     * Convert latitude into pixel coordinates.
+     *
+     * @param lat latitude to convert
+     * @return pixel coordinates
+     */
     private double latToPix(double lat) {
         return ((-1 * lat) + 90) * (screenY / 180) * coeffY - ordonneeY;
     }
 
+    /**
+     * Convert longitude into pixel coordinates.
+     *
+     * @param lon longitude to convert
+     * @return pixel coordinate
+     */
     private double longToPix(double lon) {
         return (lon + 180) * (screenX / 360) * coeffX - ordonneeX;
     }
 
-    private Color generateColor(Request req){
-        Random generator = new Random(req.getDeliveryPoint().getId() + req.getPickUpPoint().getId()+1);
+    /**
+     * Generate a random color for a request.
+     *
+     * @param req request
+     * @return
+     */
+    private Color generateColor(Request req) {
+        Random generator = new Random(req.getDeliveryPoint().getId() + req.getPickUpPoint().getId() + 1);
         int rand = generator.nextInt(150);
         int rand2 = generator.nextInt(150);
         int rand3 = generator.nextInt(150);
-        Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
-        return  color;
+        Color color = Color.rgb(rand + 100, (rand2 + 100), (rand3 + 100));
+        return color;
     }
 
+    /**
+     * @param observed
+     * @param arg      argument
+     */
     @Override
     public void update(observer.Observable observed, Object arg) {
         refreshMap();

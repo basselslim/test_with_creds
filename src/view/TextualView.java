@@ -50,13 +50,13 @@ public class TextualView implements observer.Observer {
     /**
      * Constructor.
      *
-     * @param map
+     * @param map        map object
      * @param pane
      * @param textArea
      * @param tourInfos
      * @param controller
      */
-    public TextualView(Map map, Pane pane, TextArea textArea,Label tourInfos, Controller controller) {
+    public TextualView(Map map, Pane pane, TextArea textArea, Label tourInfos, Controller controller) {
         this.controller = controller;
         this.map = map;
         this.pane = pane;
@@ -66,7 +66,7 @@ public class TextualView implements observer.Observer {
     }
 
     /**
-     *
+     * Create the request list view.
      */
     public void createRequestList() {
 
@@ -76,13 +76,13 @@ public class TextualView implements observer.Observer {
         requestsTable.prefHeightProperty().bind(pane.heightProperty());
         requestsTable.prefWidthProperty().bind(pane.widthProperty());
 
-        requestsTable.setRowFactory( tableView -> {
+        requestsTable.setRowFactory(tableView -> {
             final TableRow<Step> row = new TableRow<>();
             row.setOnMousePressed(event -> {
-                if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY) {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
                     Step step = row.getItem();
                     Request request = step.getRequest();
-                    selectRequest(request,true);
+                    selectRequest(request, true);
                 }
             });
             return row;
@@ -95,7 +95,7 @@ public class TextualView implements observer.Observer {
                 String res = "";
                 int minutes = 0;
                 if (p.getValue() instanceof DeliveryPoint) {
-                    minutes += ((DeliveryPoint) p.getValue()).getDeliveryDuration()/60;
+                    minutes += ((DeliveryPoint) p.getValue()).getDeliveryDuration() / 60;
                 } else if (p.getValue() instanceof PickUpPoint) {
                     minutes += ((PickUpPoint) p.getValue()).getPickUpDuration() / 60;
                 }
@@ -140,8 +140,7 @@ public class TextualView implements observer.Observer {
             }
         });
         requestIndexColumn.setCellFactory(new Callback<TableColumn<Step, Integer>,
-                TableCell<Step, Integer>>()
-        {
+                TableCell<Step, Integer>>() {
             @Override
             public TableCell<Step, Integer> call(
                     TableColumn<Step, Integer> param) {
@@ -150,12 +149,12 @@ public class TextualView implements observer.Observer {
                     protected void updateItem(Integer i, boolean empty) {
                         if (!empty) {
                             setText(Integer.toString(i));
-                            Step step = (Step)requestsTable.getItems().get(indexProperty().getValue());
-                            Random generator = new Random(step.getRequest().getDeliveryPoint().getId()+step.getRequest().getPickUpPoint().getId()+1);
+                            Step step = (Step) requestsTable.getItems().get(indexProperty().getValue());
+                            Random generator = new Random(step.getRequest().getDeliveryPoint().getId() + step.getRequest().getPickUpPoint().getId() + 1);
                             int rand = generator.nextInt(150);
                             int rand2 = generator.nextInt(150);
                             int rand3 = generator.nextInt(150);
-                            Color color = Color.rgb(rand + 100,(rand2 + 100),(rand3 + 100));
+                            Color color = Color.rgb(rand + 100, (rand2 + 100), (rand3 + 100));
                             setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
                         }
                     }
@@ -175,7 +174,7 @@ public class TextualView implements observer.Observer {
                     return new ReadOnlyObjectWrapper("Not computed yet");
                 } else {
                     int index = 0;
-                    for (Path path: map.getDeliveryTour().getListPaths()) {
+                    for (Path path : map.getDeliveryTour().getListPaths()) {
                         if (path.getArrival() == p.getValue()) {
                             break;
                         } else {
@@ -225,7 +224,7 @@ public class TextualView implements observer.Observer {
                     }
                     i++;
                 }
-                res = res.substring(0, res.length()-3);
+                res = res.substring(0, res.length() - 3);
                 return new ReadOnlyObjectWrapper(res);
             }
         });
@@ -239,7 +238,7 @@ public class TextualView implements observer.Observer {
                     cell.setTooltip(tooltip);
                 }
             });
-            return cell ;
+            return cell;
         });
         crossroadColumn.setSortable(false);
         crossroadColumn.setMinWidth(100);
@@ -261,7 +260,7 @@ public class TextualView implements observer.Observer {
     }
 
     /**
-     *
+     * Sort the request list in the request table.
      */
     public void sortRequestsTable() {
         int newTableIndex = 0;
@@ -271,15 +270,14 @@ public class TextualView implements observer.Observer {
             while (requestsTable.getItems().get(tableIndex) != step) {
                 tableIndex++;
             }
-            Step tableStep = (Step)requestsTable.getItems().remove(tableIndex);
+            Step tableStep = (Step) requestsTable.getItems().remove(tableIndex);
             requestsTable.getItems().add(newTableIndex, tableStep);
             newTableIndex++;
         }
     }
 
     /**
-     *
-     * @param req request
+     * @param req   request
      * @param local
      */
     public void selectRequest(Request req, Boolean local) {
@@ -289,7 +287,7 @@ public class TextualView implements observer.Observer {
         requestsTable.getSelectionModel().select(index);
         int index2 = requestsTable.getItems().indexOf(req.getDeliveryPoint());
         requestsTable.getSelectionModel().select(index2);
-        if(local) {
+        if (local) {
             controller.leftClick(req.getDeliveryPoint());
         }
     }
@@ -316,9 +314,10 @@ public class TextualView implements observer.Observer {
     }
 
     /**
+     * Check if duration is invalid.
      *
-     * @param str
-     * @return
+     * @param str duration
+     * @return true if duration is invalid
      */
     public boolean durationIsInvalid(String str) {
         try {
@@ -337,9 +336,9 @@ public class TextualView implements observer.Observer {
         TextArea.setText(message);
     }
 
-    public void setTourInfo(){
+    public void setTourInfo() {
         TourInfos.setVisible(true);
-        TourInfos.setText("Tour length: " + map.getDeliveryTour().getTourLength()+" meters\nTour duration (h:min) : " + map.getDeliveryTour().getDuration());
+        TourInfos.setText("Tour length: " + map.getDeliveryTour().getTourLength() + " meters\nTour duration (h:min) : " + map.getDeliveryTour().getDuration());
     }
 
     /**

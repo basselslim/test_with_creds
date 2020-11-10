@@ -7,7 +7,7 @@ import java.sql.Time;
  *
  * @author T-REXANOME
  */
-public class Depot extends Step{
+public class Depot extends Step {
 
     protected long id;
     protected String departureTime;
@@ -37,5 +37,7 @@ public class Depot extends Step{
         return id;
     }
 
-    public String getDepartureTime() { return departureTime; }
+    public String getDepartureTime() {
+        return departureTime;
+    }
 }

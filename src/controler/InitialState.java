@@ -45,7 +45,7 @@ public class InitialState implements State {
         unSelectPoints(controller);
         unSelectSteps(controller);
 
-        if(!controller.map.getListRequests().isEmpty()) {
+        if (!controller.map.getListRequests().isEmpty()) {
             controller.disableButtons(true);
             controller.addPickupState.entryAction(controller, request);
             controller.setCurrentState(controller.addPickupState);
@@ -59,10 +59,10 @@ public class InitialState implements State {
      */
     public void deleteRequest(Controller controller) {
         Request request = CurrentStepList.get(0).getRequest();
-        if( request != null) {
+        if (request != null) {
             controller.addRequest.setDisable(true);
             controller.setCurrentState(controller.deleteState);
-            controller.deleteState.entryAction(controller,request);
+            controller.deleteState.entryAction(controller, request);
 
         }
     }
@@ -71,7 +71,7 @@ public class InitialState implements State {
      * Left click.
      *
      * @param controller
-     * @param map
+     * @param map           map object
      * @param listOfCommand
      * @param i             intersection
      */
@@ -88,8 +88,12 @@ public class InitialState implements State {
     }
 
     /**
-     * @param idIntersection id of an interection
+     * Left click.
+     *
      * @param controller
+     * @param map           map object
+     * @param listOfCommand
+     * @param step          request point
      */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
@@ -100,7 +104,7 @@ public class InitialState implements State {
         //Select both Delivery and Pickup points if the point is a request
         controller.Gview.drawMouseSelection(request.getPickUpPoint());
         controller.Gview.drawMouseSelection(request.getDeliveryPoint());
-        controller.Tview.selectRequest(request,false);
+        controller.Tview.selectRequest(request, false);
         CurrentStepList.add(request.getPickUpPoint());
         CurrentStepList.add(request.getDeliveryPoint());
         controller.deleteRequest.setDisable(false);
@@ -134,7 +138,7 @@ public class InitialState implements State {
      *
      * @param event
      * @param controller
-     * @param map
+     * @param map        map object
      */
     @Override
     public void LoadMap(ActionEvent event, Controller controller, Map map) {
@@ -148,7 +152,7 @@ public class InitialState implements State {
         mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File mapFile = mapFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
-        if(mapFile != null) {
+        if (mapFile != null) {
             controller.listOfCommand.reset();
             XMLLoader xmlloader = new XMLLoader();
             xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
@@ -165,7 +169,7 @@ public class InitialState implements State {
      *
      * @param event
      * @param controller
-     * @param map
+     * @param map        map object
      */
     @Override
     public void LoadRequests(ActionEvent event, Controller controller, Map map) {
@@ -189,10 +193,10 @@ public class InitialState implements State {
      * Compute optimal tour.
      *
      * @param controller
-     * @param map
+     * @param map        map object
      */
     @Override
-    public void computeTour(Controller controller, Map map){
+    public void computeTour(Controller controller, Map map) {
         unSelectPoints(controller);
         isTourComputed = true;
         Algorithm algo = new Algorithm(map);
@@ -205,24 +209,29 @@ public class InitialState implements State {
 
     /**
      * Unselects all points
+     *
+     * @param controller
      */
-    private void unSelectPoints(Controller controller){
-        for (Long id:CurrentIdList) {
+    private void unSelectPoints(Controller controller) {
+        for (Long id : CurrentIdList) {
             controller.Gview.undrawMouseSelection(id);
         }
         CurrentIdList.clear();
     }
 
-    
-    private void unSelectSteps(Controller controller){
-        for (Step step:CurrentStepList) {
+    /**
+     * Unselects all steps.
+     *
+     * @param controller
+     */
+    private void unSelectSteps(Controller controller) {
+        for (Step step : CurrentStepList) {
             controller.Gview.undrawMouseSelection(step);
         }
         CurrentStepList.clear();
     }
 
     /**
-     *
      * @param controller
      */
     public void entryAction(Controller controller) {

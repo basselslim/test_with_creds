@@ -19,7 +19,7 @@ public class Tour {
     protected List<int[]> listTimes;
     protected Map map;
     protected String roadMapFilePath;
-    protected HashMap<Long,ArrayList<Intersection>> listRequestsIntersection;
+    protected HashMap<Long, ArrayList<Intersection>> listRequestsIntersection;
     protected int tourLength;
 
     /**
@@ -31,7 +31,7 @@ public class Tour {
     /**
      * Constructor.
      *
-     * @param map
+     * @param map map object
      */
     public Tour(Map map) {
         this.listPaths = new LinkedList<Path>();
@@ -43,14 +43,14 @@ public class Tour {
     /**
      * Constructor.
      *
-     * @param map
+     * @param map       map object
      * @param listPaths list of paths
      */
     public Tour(Map map, List<Path> listPaths) {
         this.listPaths = listPaths;
         this.listTimes = new LinkedList<int[]>();
         this.map = map;
-        this.listRequestsIntersection = new HashMap<Long,ArrayList<Intersection>>();
+        this.listRequestsIntersection = new HashMap<Long, ArrayList<Intersection>>();
         if (!listPaths.isEmpty()) {
             populateListTimes();
         }
@@ -59,9 +59,9 @@ public class Tour {
     /**
      * Add a request to the tour.
      *
-     * @param newRequest request to add
-     * @param precedingPickUpId   id of the preceding pick up point
-     * @param precedingDeliveryId id of the preceding delivery point
+     * @param newRequest        request to add
+     * @param precedingPickUp   preceding pick up point
+     * @param precedingDelivery preceding delivery point
      * @return error code
      **/
     public int addRequestToTour(Request newRequest, Step precedingPickUp, Step precedingDelivery) {
@@ -173,7 +173,7 @@ public class Tour {
             }
 
             if (path.getDeparture().getRequest() == request.getPickUpPoint().getRequest() && path.getIdDeparture() == request.getPickUpPoint().getId()) {
-                List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,path.getArrival());
+                List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure, path.getArrival());
                 Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeletePickUp);
                 listPaths.remove(pathIndexToDeletePickUp - 1);
@@ -188,7 +188,7 @@ public class Tour {
                 departure = path.getDeparture();
             }
             if (path.getDeparture().getRequest() == request.getDeliveryPoint().getRequest() && path.getIdDeparture() == request.getDeliveryPoint().getId()) {
-                List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,path.getArrival());
+                List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure, path.getArrival());
                 Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeleteDelivery);
                 listPaths.remove(pathIndexToDeleteDelivery - 1);
@@ -198,37 +198,6 @@ public class Tour {
             pathIndexToDeleteDelivery++;
         }
         populateListTimes();
-    }
-
-    /*
-     * Getters - Setters
-     */
-
-    /**
-     * Compute tour length.
-     *
-     * @return tour length
-     */
-    public int getTourLength() {
-        int tourLength =0;
-        for (Path p : listPaths) {
-            tourLength += p.getPathLength();
-        }
-        return tourLength;
-    }
-
-    public String getDuration() {
-        String duration = "";
-        duration = timeToString(getListTimes().get(getListTimes().size()-1)[1]-getListTimes().get(0)[0]);
-        return duration;
-    }
-
-    public List<Path> getListPaths() {
-        return listPaths;
-    }
-
-    public List<int[]> getListTimes() {
-        return listTimes;
     }
 
     /**
@@ -292,11 +261,11 @@ public class Tour {
                 deTime += ((DeliveryPoint) interestPoint).getDeliveryDuration();
             }
         }
-        if (nbPu>0) {
-            text+= "   - You have to pick up "+nbPu+" package(s) at this intersection. This may take "+ puTime +" seconds\n\n";
+        if (nbPu > 0) {
+            text += "   - You have to pick up " + nbPu + " package(s) at this intersection. This may take " + puTime + " seconds\n\n";
         }
-        if (nbDe>0) {
-            text+= "   - You have to deliver "+nbDe+" package(s) at this intersection. This may take "+ deTime +" seconds\n\n";
+        if (nbDe > 0) {
+            text += "   - You have to deliver " + nbDe + " package(s) at this intersection. This may take " + deTime + " seconds\n\n";
         }
         return text;
     }
@@ -315,34 +284,34 @@ public class Tour {
         String newStreetName = "";
         String actualStreetName = "";
         int lengthTotalOnStreet = 0;
-        int nbIntersections =  0;
+        int nbIntersections = 0;
 
         int i = 0;
-        totalText +="   - Departure from depot at " +this.timeToString(this.listTimes.get(0)[0])+"\n\n";
-        for(Path p: listPaths) {
-            String PathTitle = "Step n°" + (i+1) + "\n\n";
-            totalText+=PathTitle;
+        totalText += "   - Departure from depot at " + this.timeToString(this.listTimes.get(0)[0]) + "\n\n";
+        for (Path p : listPaths) {
+            String PathTitle = "Step n°" + (i + 1) + "\n\n";
+            totalText += PathTitle;
             int j = 0;
-            for(Segment s: p.getListSegments()) {
+            for (Segment s : p.getListSegments()) {
                 newStreetName = s.getStreetName();
-                if ((!(newStreetName.equals(actualStreetName)))&&(!(actualStreetName.equals("")))){
-                    String SegmentDescription = "   - Take "  + actualStreetName + " on " + lengthTotalOnStreet+ " m. You will cross " + nbIntersections + " intersection(s)\n\n";
-                    nbIntersections =0;
-                    lengthTotalOnStreet=0;
-                    totalText+=SegmentDescription;
+                if ((!(newStreetName.equals(actualStreetName))) && (!(actualStreetName.equals("")))) {
+                    String SegmentDescription = "   - Take " + actualStreetName + " on " + lengthTotalOnStreet + " m. You will cross " + nbIntersections + " intersection(s)\n\n";
+                    nbIntersections = 0;
+                    lengthTotalOnStreet = 0;
+                    totalText += SegmentDescription;
                 }
-                actualStreetName=newStreetName;
-                lengthTotalOnStreet += (int)s.getLength();
-                nbIntersections+=1;
+                actualStreetName = newStreetName;
+                lengthTotalOnStreet += (int) s.getLength();
+                nbIntersections += 1;
 
                 j++;
             }
-            totalText += "   - Arrive at "+ this.timeToString(this.listTimes.get(i)[1])+"\n\n";
-            totalText+=this.writeTextForInterestPoint(p.idArrival);
+            totalText += "   - Arrive at " + this.timeToString(this.listTimes.get(i)[1]) + "\n\n";
+            totalText += this.writeTextForInterestPoint(p.idArrival);
             i++;
         }
         totalText += "   - Arrival at depot, your tour has ended. Congratulations";
-        totalText+=this.writeTextForInterestPoint(listPaths.get(i-1).idArrival);
+        totalText += this.writeTextForInterestPoint(listPaths.get(i - 1).idArrival);
         return totalText;
     }
 
@@ -477,6 +446,37 @@ public class Tour {
             time -= 86400;
         }
         return time;
+    }
+
+    /*
+     * Getters - Setters
+     */
+
+    /**
+     * Compute tour length.
+     *
+     * @return tour length
+     */
+    public int getTourLength() {
+        int tourLength = 0;
+        for (Path p : listPaths) {
+            tourLength += p.getPathLength();
+        }
+        return tourLength;
+    }
+
+    public String getDuration() {
+        String duration = "";
+        duration = timeToString(getListTimes().get(getListTimes().size() - 1)[1] - getListTimes().get(0)[0]);
+        return duration;
+    }
+
+    public List<Path> getListPaths() {
+        return listPaths;
+    }
+
+    public List<int[]> getListTimes() {
+        return listTimes;
     }
 
     public void setListPaths(List<Path> listPaths) {

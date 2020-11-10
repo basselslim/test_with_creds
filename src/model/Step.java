@@ -1,12 +1,23 @@
 package model;
 
+/**
+ * @author T-REXANOME
+ */
 public class Step extends Intersection {
 
     protected Request request;
 
-    public Step () {
+    /**
+     * Default constructor.
+     */
+    public Step() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param current step
+     */
     public Step(Step current) {
         this.request = current.request;
         this.previous = null;
@@ -19,11 +30,26 @@ public class Step extends Intersection {
         this.listSegments = current.listSegments;
     }
 
-    public Step(long id, double latitude,double longitude) {
-        super (id, latitude, longitude);
+    /**
+     * Constructor.
+     *
+     * @param id        intersection id
+     * @param latitude  latitude of the point
+     * @param longitude longitude of the point
+     */
+    public Step(long id, double latitude, double longitude) {
+        super(id, latitude, longitude);
     }
 
-    public void setRequest(Request request) { this.request = request; }
+    /*
+     * Getters - Setters
+     */
 
-    public Request getRequest() { return request; }
+    public void setRequest(Request request) {
+        this.request = request;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
 }

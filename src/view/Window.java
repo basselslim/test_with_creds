@@ -30,7 +30,6 @@ public class Window extends Application {
 
     /**
      * @param MainFrame
-     * @throws Exception
      */
     @Override
     public void start(Stage MainFrame) throws Exception {
@@ -39,11 +38,10 @@ public class Window extends Application {
 
     /**
      * @param stage
-     * @throws IOException
      */
     private void initUI(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        var scene = new Scene(root, screenBounds.getMaxX()-150, screenBounds.getMaxY()-150, Color.WHITE);
+        var scene = new Scene(root, screenBounds.getMaxX() - 150, screenBounds.getMaxY() - 150, Color.WHITE);
 
         stage.setTitle("DeliveryTool");
         stage.setScene(scene);

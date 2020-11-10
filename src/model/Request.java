@@ -13,7 +13,7 @@ public class Request extends Observable {
     protected DeliveryPoint deliveryPoint;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Request() {
     }

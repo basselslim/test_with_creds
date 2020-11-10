@@ -23,9 +23,9 @@ public class ListOfCommand {
      * @param c the command to add
      * @return error code
      */
-    public int add(Command c){
-        int i = currentIndex+1;
-        while(i<list.size()){
+    public int add(Command c) {
+        int i = currentIndex + 1;
+        while (i < list.size()) {
             list.remove(i);
         }
         currentIndex++;
@@ -60,9 +60,9 @@ public class ListOfCommand {
     /**
      * Reinsert the last command removed by undo.
      */
-    public int redo(){
+    public int redo() {
         int errorCode = 0;
-        if (currentIndex < list.size()-1){
+        if (currentIndex < list.size() - 1) {
             currentIndex++;
             Command cde = list.get(currentIndex);
             errorCode = cde.doCommand();

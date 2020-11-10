@@ -22,6 +22,13 @@ public class Path {
     public Path() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param listSegments list of segments of the path
+     * @param a            departure step
+     * @param b            arrival step
+     */
     public Path(List<Segment> listSegments, Step a, Step b) {
         departure = a;
         arrival = b;
@@ -66,9 +73,13 @@ public class Path {
         this.pathLength = pathLength;
     }
 
-    public Step getDeparture() { return departure; }
+    public Step getDeparture() {
+        return departure;
+    }
 
-    public Step getArrival() { return arrival; }
+    public Step getArrival() {
+        return arrival;
+    }
 
     @Override
     public String toString() {

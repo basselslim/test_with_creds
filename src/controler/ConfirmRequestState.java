@@ -25,16 +25,14 @@ public class ConfirmRequestState implements State {
     }
 
     /**
-     * Constructor.
-     *
      * @param controller
-     * @param map
+     * @param map        map object
      */
     @Override
     public void confirmAction(Controller controller, Map map) {
-        if(request != null) {
-            
-            AddCommand addRequestCommand = new AddCommand(controller. map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
+        if (request != null) {
+
+            AddCommand addRequestCommand = new AddCommand(controller.map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
             int errorCode = controller.getListOfCommand().add(addRequestCommand);
 
             controller.initialState.entryAction(controller);
@@ -46,10 +44,10 @@ public class ConfirmRequestState implements State {
             controller.Gview.disableSelection();
 
 
-                controller.Tview.setMessage("Request added");
+            controller.Tview.setMessage("Request added");
             if (errorCode == 1) {
                 controller.Tview.setMessage("Error : Can't find a path to the new pick up point.");
-            }else if (errorCode == 2) {
+            } else if (errorCode == 2) {
                 controller.Tview.setMessage("Error : Can't find a path to the new delivery point.");
             }
         }
@@ -108,10 +106,9 @@ public class ConfirmRequestState implements State {
     }
 
     /**
-     *
      * @param controller
      */
-    private void drawSelection(Controller controller){
+    private void drawSelection(Controller controller) {
         controller.Gview.drawMouseSelection(DeliveryPrecedingPoint);
         controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
         controller.Gview.drawMouseSelection(PickupPrecedingPoint);
@@ -119,10 +116,9 @@ public class ConfirmRequestState implements State {
     }
 
     /**
-     *
      * @param controller
      */
-    private void unDrawSelection(Controller controller){
+    private void unDrawSelection(Controller controller) {
         controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
         controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
