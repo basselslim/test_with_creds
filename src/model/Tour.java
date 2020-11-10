@@ -406,7 +406,7 @@ public class Tour {
     }
 
     /**
-     *
+     *　Populate the listTime attribute of Tour
      */
     public void populateListTimes() {
         listTimes.clear();

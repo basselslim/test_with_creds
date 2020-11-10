@@ -260,7 +260,7 @@ public class TextualView implements observer.Observer {
     }
 
     /**
-     * Sort the request list in the request table.
+     * Sort the request list in the request table　chronological order.
      */
     public void sortRequestsTable() {
         int newTableIndex = 0;
@@ -277,8 +277,9 @@ public class TextualView implements observer.Observer {
     }
 
     /**
+     * Select the two steps of a request
      * @param req   request
-     * @param local
+     * @param local indicates whether the call was made in TextualView
      */
     public void selectRequest(Request req, Boolean local) {
         requestsTable.getSelectionModel().clearSelection();
@@ -342,7 +343,7 @@ public class TextualView implements observer.Observer {
     }
 
     /**
-     * Update.
+     * Update the view to match data.
      *
      * @param observed
      * @param arg      argument
