@@ -38,32 +38,12 @@ public class Segment {
         return length;
     }
 
-    public void setLength(double length) {
-        this.length = length;
-    }
-
     public String getStreetName() {
         return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
     }
 
     public long getDestination() {
         return destination;
     }
 
-    public void setDestination(long destination) {
-        this.destination = destination;
-    }
-
-    @Override
-    public String toString() {
-        return "Segment{" +
-                "length=" + length +
-                ", street name=" + streetName +
-                ", destination=" + destination +
-                '}';
-    }
 }

@@ -9,9 +9,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
-import model.Intersection;
+import model.*;
 import model.Map;
-import model.Path;
 import view.GraphicalView;
 import view.MouseGestures;
 import view.TextualView;
@@ -37,13 +36,13 @@ public class Controller {
     protected TextualView Tview;
 
     @FXML
-    private Pane overlay;
+    protected Pane overlay;
     @FXML
-    private Pane myPane;
+    protected Pane myPane;
     @FXML
-    private javafx.scene.control.TextArea TextArea;
+    protected javafx.scene.control.TextArea TextArea;
     @FXML
-    private Label TextTour;
+    protected Label TextTour;
     @FXML
     protected Button confirmAction;
     @FXML
@@ -58,6 +57,10 @@ public class Controller {
     protected Button addRequest;
     @FXML
     protected Button deleteRequest;
+    @FXML
+    protected Button undo;
+    @FXML
+    protected Button redo;
 
 
     protected final InitialState initialState = new InitialState();
@@ -95,6 +98,8 @@ public class Controller {
         LoadRequests.setDisable(bool);
         ComputeTour.setDisable(bool);
         ExportTour.setDisable(bool);
+        undo.setDisable(bool);
+        redo.setDisable(bool);
     }
 
     //Public Methods
@@ -130,7 +135,9 @@ public class Controller {
         exportFileChooser.getExtensionFilters().add(extFilter);
         File exportLocation = exportFileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
 
-        map.getTour().generateRoadMap(exportLocation.getPath());
+        if (exportLocation != null) {
+            map.getDeliveryTour().generateRoadMap(exportLocation.getPath());
+        }
     }
 
     /**
@@ -143,20 +150,19 @@ public class Controller {
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
+    public void leftClick(Step step){
+        currentState.leftClick(this, map, listOfCommand, step);
+    }
+
     /**
      * Load map.
      *
      * @param event
      */
     public void LoadMap(ActionEvent event) {
-        Gview = new GraphicalView(map, overlay, mg);
-        Tview = new TextualView(map, myPane, TextArea, TextTour, this);
-        map.addObserver(Gview);
-        map.addObserver(Tview);
+
         currentState.LoadMap(event, this, map);
-        LoadRequests.setDisable(false);
-        addRequest.setDisable(true);
-        deleteRequest.setDisable(true);
+
     }
 
     /**
@@ -175,12 +181,8 @@ public class Controller {
         Gview.unZoom();
     }
 
-    /**
-     *
-     * @param idIntersection
-     */
-    public void mouseOn(long idIntersection) {
-        currentState.mouseOn(idIntersection, this);
+    public void resetView(ActionEvent event) {
+        Gview.resetView();
     }
 
     /**

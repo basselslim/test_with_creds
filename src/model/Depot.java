@@ -1,11 +1,13 @@
 package model;
 
+import java.sql.Time;
+
 /**
  * Departure and arrival point of the deliveryman for an outing.
  *
  * @author T-REXANOME
  */
-public class Depot {
+public class Depot extends Step{
 
     protected long id;
     protected String departureTime;
@@ -36,12 +38,4 @@ public class Depot {
     }
 
     public String getDepartureTime() { return departureTime; }
-
-    @Override
-    public String toString() {
-        return "Depot{" +
-                "id=" + id +
-                ", departureTime=" + departureTime +
-                '}';
-    }
 }

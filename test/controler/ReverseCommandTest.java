@@ -2,6 +2,7 @@ package controler;
 
 import model.Map;
 import model.Request;
+import model.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,8 @@ class ReverseCommandTest {
     Command command;
     Map m;
     Request r;
-    Long idPickUp;
-    Long idDelivery;
+    Step idPickUp;
+    Step idDelivery;
 
     @BeforeEach
     void setUp() {

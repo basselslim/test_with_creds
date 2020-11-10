@@ -5,10 +5,9 @@ package model;
  *
  * @author T-REXANOME
  */
-public class DeliveryPoint extends Intersection {
+public class DeliveryPoint extends Step {
 
     public int deliveryDuration;
-    protected Request request;
 
     /**
      * Default constructor.
@@ -51,11 +50,8 @@ public class DeliveryPoint extends Intersection {
         return deliveryDuration;
     }
 
-    public Request getRequest() { return request; }
-
     public void setDeliveryDuration(int deliveryDuration) {
         this.deliveryDuration = deliveryDuration;
     }
 
-    public void setRequest(Request request) { this.request = request; }
 }

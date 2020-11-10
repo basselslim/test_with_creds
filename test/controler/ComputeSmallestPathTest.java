@@ -36,6 +36,7 @@ class ComputeSmallestPathTest {
         Intersection i7 = new Intersection(7l, 45.1, 4.5);
         Intersection i8 = new Intersection(8l, 45.5, 4.6);
         Intersection i9 = new Intersection(9l, 45.4, 4.6);
+        Intersection i10 = new Intersection(10l, 45.4, 4.7);
 
         i1.getListSegments().add(new Segment(10.0, "", 2l));
 
@@ -63,6 +64,7 @@ class ComputeSmallestPathTest {
 
         i9.getListSegments().add(new Segment(10.0, "", 6l));
         i9.getListSegments().add(new Segment(10.0, "", 8l));
+        i9.getListSegments().add(new Segment(10.0, "", 10l));
 
         map.getListIntersections().put(1l, i1);
         map.getListIntersections().put(2l, i2);
@@ -73,26 +75,37 @@ class ComputeSmallestPathTest {
         map.getListIntersections().put(7l, i7);
         map.getListIntersections().put(8l, i8);
         map.getListIntersections().put(9l, i9);
+        map.getListIntersections().put(10l, i10);
         map.setDepot(depot);
     }
 
     @Test
     void testComputeSmallestPath() {
         // Arrange
-        Intersection from = map.getListIntersections().get(1l);
-        Intersection to = map.getListIntersections().get(8l);
         ComputeSmallestPath CSP = new ComputeSmallestPath(map);
-        List<Segment> listSegment = new ArrayList();
+
+        /* possible path */
+        PickUpPoint from1 = new PickUpPoint(map.getListIntersections().get(1l), 0);
+        DeliveryPoint to1 = new DeliveryPoint(map.getListIntersections().get(8l), 0);
+
+        /* impossible path */
+        PickUpPoint from2 = new PickUpPoint(map.getListIntersections().get(10l), 0);
+        DeliveryPoint to2 = new DeliveryPoint(map.getListIntersections().get(1l), 0);
+
+        List<Segment> listSegment1 = new ArrayList();
+        List<Segment> listSegment2 = new ArrayList();
 
         // Act
 
-        listSegment = CSP.computeSmallestPath(from, to);
-
+        listSegment1 = CSP.computeSmallestPath(from1, to1);
+        listSegment2 = CSP.computeSmallestPath(from2, to2);
 
         // Assert
-        assert(listSegment.get(0).getDestination() == 2l &&
-                listSegment.get(1).getDestination() == 4l &&
-                listSegment.get(2).getDestination() == 6l &&
-                listSegment.get(3).getDestination() == 8l);
+        assert(listSegment1.get(0).getDestination() == 2l &&
+                listSegment1.get(1).getDestination() == 4l &&
+                listSegment1.get(2).getDestination() == 6l &&
+                listSegment1.get(3).getDestination() == 8l);
+
+        assert(listSegment2 == null);
     }
 }

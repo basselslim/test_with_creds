@@ -5,10 +5,10 @@ import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-import model.Intersection;
+import model.*;
 import model.Map;
-import model.Path;
-import model.Request;
+import view.GraphicalView;
+import view.TextualView;
 
 import java.io.File;
 import java.util.*;
@@ -19,6 +19,7 @@ import java.util.*;
 public class InitialState implements State {
 
     List<Long> CurrentIdList;
+    List<Step> CurrentStepList;
 
     Request request = new Request();
     Boolean isTourComputed = false;
@@ -28,6 +29,7 @@ public class InitialState implements State {
      */
     public InitialState() {
         CurrentIdList = new ArrayList<>();
+        CurrentStepList = new ArrayList<>();
     }
 
     /**
@@ -41,6 +43,7 @@ public class InitialState implements State {
         controller.deleteRequest.setDisable(true);
         controller.addRequest.setDisable(true);
         unSelectPoints(controller);
+        unSelectSteps(controller);
 
         if(!controller.map.getListRequests().isEmpty()) {
             controller.disableButtons(true);
@@ -55,7 +58,7 @@ public class InitialState implements State {
      * @param controller
      */
     public void deleteRequest(Controller controller) {
-        Request request = controller.map.getRequestByIntersectionId(CurrentIdList.get(0));
+        Request request = CurrentStepList.get(0).getRequest();
         if( request != null) {
             controller.addRequest.setDisable(true);
             controller.setCurrentState(controller.deleteState);
@@ -74,24 +77,13 @@ public class InitialState implements State {
      */
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Intersection i) {
-
         unSelectPoints(controller);
+        unSelectSteps(controller);
 
-        Request request = controller.map.getRequestByIntersectionId(i.getId());
-        if (request != null) {
-            //Select both Delivery and Pickup points if the point is a request
-            controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
-            controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
-            controller.Tview.selectRequest(map.getRequestByIntersectionId(i.getId()),false);
-            CurrentIdList.add(request.getPickUpPoint().getId());
-            CurrentIdList.add(request.getDeliveryPoint().getId());
-            controller.deleteRequest.setDisable(false);
-        }else{
-            //Select current point
-            controller.Gview.drawMouseSelection(i.getId());
-            CurrentIdList.add(i.getId());
-            controller.deleteRequest.setDisable(true);
-        }
+        //Select current point
+        controller.Gview.drawMouseSelection(i.getId());
+        CurrentIdList.add(i.getId());
+        controller.deleteRequest.setDisable(true);
 
     }
 
@@ -100,7 +92,19 @@ public class InitialState implements State {
      * @param controller
      */
     @Override
-    public void mouseOn(long idIntersection, Controller controller) {
+    public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
+        unSelectPoints(controller);
+        unSelectSteps(controller);
+
+        Request request = step.getRequest();
+        //Select both Delivery and Pickup points if the point is a request
+        controller.Gview.drawMouseSelection(request.getPickUpPoint());
+        controller.Gview.drawMouseSelection(request.getDeliveryPoint());
+        controller.Tview.selectRequest(request,false);
+        CurrentStepList.add(request.getPickUpPoint());
+        CurrentStepList.add(request.getDeliveryPoint());
+        controller.deleteRequest.setDisable(false);
+
     }
 
     /**
@@ -134,15 +138,26 @@ public class InitialState implements State {
      */
     @Override
     public void LoadMap(ActionEvent event, Controller controller, Map map) {
+        controller.Gview = new GraphicalView(map, controller.overlay, controller.mg);
+        controller.Tview = new TextualView(map, controller.myPane, controller.TextArea, controller.TextTour, controller);
+        map.addObserver(controller.Gview);
+        map.addObserver(controller.Tview);
+
         FileChooser mapFileChooser = new FileChooser();
         mapFileChooser.setTitle("Load Map");
         mapFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File mapFile = mapFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
-
-        controller.Tview.setMessage("Please load a request list");
+        if(mapFile != null) {
+            controller.listOfCommand.reset();
+            XMLLoader xmlloader = new XMLLoader();
+            xmlloader.parseMapXML(mapFile.getAbsolutePath(), map);
+            controller.Tview.setMessage("Please load a request list");
+            controller.LoadRequests.setDisable(false);
+            controller.addRequest.setDisable(true);
+            controller.ExportTour.setDisable(true);
+            controller.deleteRequest.setDisable(true);
+        }
     }
 
     /**
@@ -159,11 +174,15 @@ public class InitialState implements State {
         requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File requestsFile = requestsFileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
-        XMLLoader xmlloader = new XMLLoader();
-        xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
-        controller.addRequest.setDisable(true);
-        controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
-        controller.Gview.enableSelection();
+        if (requestsFile != null) {
+            controller.listOfCommand.reset();
+            XMLLoader xmlloader = new XMLLoader();
+            xmlloader.parseRequestXML(requestsFile.getAbsolutePath(), map);
+            controller.addRequest.setDisable(true);
+            controller.ExportTour.setDisable(true);
+            controller.Tview.setMessage("Compute Tour, add request or load new request or map.");
+            controller.Gview.enableSelection();
+        }
     }
 
     /**
@@ -181,7 +200,7 @@ public class InitialState implements State {
         algo.computeOptimalTour(mapSmallestPaths);
         controller.Tview.setMessage("Optimal tour computed !");
         controller.addRequest.setDisable(false);
-        controller.Tview.setTourInfo("Tour length : " + map.getTour().getTourLength());
+        controller.ExportTour.setDisable(false);
     }
 
     /**
@@ -194,6 +213,14 @@ public class InitialState implements State {
         CurrentIdList.clear();
     }
 
+    
+    private void unSelectSteps(Controller controller){
+        for (Step step:CurrentStepList) {
+            controller.Gview.undrawMouseSelection(step);
+        }
+        CurrentStepList.clear();
+    }
+
     /**
      *
      * @param controller
@@ -203,5 +230,6 @@ public class InitialState implements State {
             controller.addRequest.setDisable(false);
         controller.disableButtons(false);
         CurrentIdList.clear();
+        CurrentStepList.clear();
     }
 }

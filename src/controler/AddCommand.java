@@ -2,6 +2,7 @@ package controler;
 
 import model.Map;
 import model.Request;
+import model.Step;
 
 /**
  * Create the command which adds the request r to the plan m.
@@ -12,9 +13,8 @@ public class AddCommand implements Command {
 
     private Map map;
     private Request request;
-    private Long precedingPickUpId;
-    private Long precedingDeliveryId;
-
+    private Step precedingPickUp;
+    private Step precedingDelivery;
     /**
      * Constructor.
      *
@@ -23,11 +23,11 @@ public class AddCommand implements Command {
      * @param deliveryId id of the delivery point
      * @param pickUpId   id of the pick up point
      */
-    public AddCommand(Map m, Request r, Long pickUpId, Long deliveryId) {
+    public AddCommand(Map m, Request r, Step pickUp, Step delivery) {
         this.map = m;
         this.request = r;
-        this.precedingPickUpId = pickUpId;
-        this.precedingDeliveryId = deliveryId;
+        this.precedingPickUp=pickUp;
+        this.precedingDelivery=delivery;
     }
 
     /**
@@ -35,12 +35,13 @@ public class AddCommand implements Command {
      */
     @Override
     public int doCommand() {
-        int errorCode = 0;
-        if(precedingDeliveryId !=0 && precedingPickUpId != 0)
-            errorCode = map.addRequest(request,precedingPickUpId,precedingDeliveryId);
-        else
-            errorCode= map.addRequest(request);
-        return errorCode;
+        int error = 0;
+        if(precedingDelivery !=null && precedingPickUp != null) {
+            error = map.addRequest(request,precedingPickUp,precedingDelivery);
+        } else {
+            map.addRequest(request);
+        }
+        return error;
     }
 
     /**

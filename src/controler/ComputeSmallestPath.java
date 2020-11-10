@@ -3,6 +3,7 @@ package controler;
 import model.Intersection;
 import model.Map;
 import model.Segment;
+import model.Step;
 
 import java.util.*;
 
@@ -21,14 +22,9 @@ public class ComputeSmallestPath {
         this.map = map;
     }
 
-    /**
-     * Algorithm A* that find the smallest path between two intersections.
-     *
-     * @param from departure intersection
-     * @param to   arrival intersection
-     * @return smallest path
-     */
-    public List<Segment> computeSmallestPath(Intersection from, Intersection to) {
+    public List<Segment> computeSmallestPath(Step a, Step b) {
+        Intersection from = map.getListIntersections().get(a.getId());
+        Intersection to = map.getListIntersections().get(b.getId());
         List<Intersection> computedPath;
         Queue<Intersection> openSet = new PriorityQueue<>();
         Intersection start = new Intersection(from, null, 0, computeCost(from, to));

@@ -3,6 +3,8 @@ package controler;
 import model.Intersection;
 import model.Map;
 import model.Request;
+import model.Step;
+
 import javax.naming.ldap.Control;
 
 /**
@@ -13,8 +15,8 @@ import javax.naming.ldap.Control;
 public class ConfirmRequestState implements State {
 
     protected Request request;
-    protected Intersection PickupPrecedingPoint;
-    protected Intersection DeliveryPrecedingPoint;
+    protected Step PickupPrecedingPoint;
+    protected Step DeliveryPrecedingPoint;
 
     /**
      * Default Constructor.
@@ -31,13 +33,9 @@ public class ConfirmRequestState implements State {
     @Override
     public void confirmAction(Controller controller, Map map) {
         if(request != null) {
-            long precedingDeliveryId = DeliveryPrecedingPoint.getId();
-            long precedingPickupId = PickupPrecedingPoint.getId();
-            AddCommand addRequestCommand = new AddCommand(controller. map, request, precedingPickupId, precedingDeliveryId);
+            
+            AddCommand addRequestCommand = new AddCommand(controller. map, request, PickupPrecedingPoint, DeliveryPrecedingPoint);
             int errorCode = controller.getListOfCommand().add(addRequestCommand);
-            if(errorCode!=0) {
-                controller.initialState.undo(controller.getListOfCommand(), controller);
-            }
 
             controller.initialState.entryAction(controller);
             controller.setCurrentState(controller.initialState);
@@ -47,9 +45,9 @@ public class ConfirmRequestState implements State {
             controller.addRequest.setDisable(false);
             controller.Gview.disableSelection();
 
-            if (errorCode == 0) {
+
                 controller.Tview.setMessage("Request added");
-            } else if (errorCode == 1) {
+            if (errorCode == 1) {
                 controller.Tview.setMessage("Error : Can't find a path to the new pick up point.");
             }else if (errorCode == 2) {
                 controller.Tview.setMessage("Error : Can't find a path to the new delivery point.");
@@ -66,8 +64,8 @@ public class ConfirmRequestState implements State {
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.addDeliveryState.reverseAction(controller);
-        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
-        controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
+        controller.Gview.undrawMouseSelection(request.getDeliveryPoint());
         controller.setCurrentState(controller.addDeliveryState);
         controller.confirmAction.setVisible(false);
     }
@@ -90,9 +88,9 @@ public class ConfirmRequestState implements State {
     protected void entryAction(Request r, Controller controller) {
         controller.confirmAction.setVisible(true);
         request = new Request(r);
-        PickupPrecedingPoint = new Intersection(controller.addDeliveryState.PickupPrecedingPoint);
-        DeliveryPrecedingPoint = new Intersection(controller.addDeliveryState.DeliveryPrecedingPoint);
-        controller.Tview.setMessage("Confirm adding the request ?");
+        PickupPrecedingPoint = new Step(controller.addDeliveryState.PickupPrecedingPoint);
+        DeliveryPrecedingPoint = new Step(controller.addDeliveryState.DeliveryPrecedingPoint);
+        controller.confirmAction();
     }
 
     /**
@@ -114,9 +112,9 @@ public class ConfirmRequestState implements State {
      * @param controller
      */
     private void drawSelection(Controller controller){
-        controller.Gview.drawMouseSelection(DeliveryPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(DeliveryPrecedingPoint);
         controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
-        controller.Gview.drawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.drawMouseSelection(PickupPrecedingPoint);
         controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
     }
 
@@ -127,7 +125,7 @@ public class ConfirmRequestState implements State {
     private void unDrawSelection(Controller controller){
         controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
-        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint.getId());
-        controller.Gview.undrawMouseSelection(PickupPrecedingPoint.getId());
+        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
+        controller.Gview.undrawMouseSelection(PickupPrecedingPoint);
     }
 }

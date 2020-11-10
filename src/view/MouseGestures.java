@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import model.Request;
+import model.Step;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +22,10 @@ import java.util.List;
 public class MouseGestures {
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
-    HashMap<Long, Circle> circles;
+    HashMap<Long,List<Circle>> circles;
     List<Line> lines;
     List<Arrow> arrows;
-    HashMap<Long, Rectangle> rectangles;
+    HashMap<Long,List<Rectangle>> rectangles;
 
     Controller controller;
     GraphicalView Gview;
@@ -58,7 +60,7 @@ public class MouseGestures {
      * @param arrows list of arrows
      * @param rectangles map of rectangles
      */
-    public void makeMovable(Node node, HashMap<Long, Circle> circles, List<Line> lines, List<Arrow> arrows, HashMap<Long, Rectangle> rectangles) {
+    public void makeMovable(Node node, HashMap<Long,List<Circle>> circles, List<Line> lines, List<Arrow> arrows, HashMap<Long,List<Rectangle>> rectangles) {
         this.lines = lines;
         this.circles = circles;
         this.arrows = arrows;
@@ -73,15 +75,22 @@ public class MouseGestures {
     EventHandler<MouseEvent> nodeOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent t) {
+
             if (t.getSource() instanceof Circle) {
                 Circle circle = ((Circle) (t.getSource()));
-                circle.setViewOrder(-1.0);
-                controller.leftClick((long)circle.getUserData());
+
+                if(circle.getUserData() instanceof Step)
+                {
+                    controller.leftClick((Step)circle.getUserData());
+                } else {
+                    circle.setViewOrder(-1.0);
+                    controller.leftClick((long)circle.getUserData());
+                }
             }
 
             else if(t.getSource() instanceof Rectangle) {
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
-                controller.leftClick((long) rectangle.getUserData());
+                controller.leftClick((Step)rectangle.getUserData());
             }
         }
     };
@@ -98,14 +107,19 @@ public class MouseGestures {
 
                 Circle circle = ((Circle) (t.getSource()));
                 currentcolor = (Color) circle.getFill();
+
                 circle.setFill(Color.WHITE.deriveColor(1, 1, 1, 0.9));
-                controller.mouseOn((long) circle.getUserData());
+
+
+
             } else if (t.getSource() instanceof Rectangle) {
 
                 Rectangle rectangle = ((Rectangle) (t.getSource()));
                 currentcolor = (Color) rectangle.getFill();
+
                 rectangle.setFill(Color.WHITE.deriveColor(1, 1, 1, 0.9));
-                controller.mouseOn((long) rectangle.getUserData());
+
+
             }
         }
     };
@@ -144,9 +158,9 @@ public class MouseGestures {
 
             Node p = ((Node) (t.getSource()));
             HashMap.Entry entry = circles.entrySet().iterator().next();
-            long Id = (long) entry.getKey();
-            orgTranslateX = circles.get(Id).getTranslateX();
-            orgTranslateY = circles.get(Id).getTranslateY();
+            long Id = (long)entry.getKey();
+            orgTranslateX = circles.get(Id).get(0).getTranslateX();
+            orgTranslateY = circles.get(Id).get(0).getTranslateY();
         }
     };
 
@@ -164,15 +178,13 @@ public class MouseGestures {
             newTranslateX = orgTranslateX + offsetX;
             newTranslateY = orgTranslateY + offsetY;
 
-            //Boolean XBlocking = newTranslateX+controller.getMap().findMinLat() > 1200 ;
-            //Boolean YBlocking = newTranslateY+controller.getMap().findMinLong() > 800 ;
 
-            //if(XBlocking && YBlocking){
-
-            for (HashMap.Entry mapentry : circles.entrySet()) {
-                Circle circle = (Circle) mapentry.getValue();
-                circle.setTranslateX(newTranslateX);
-                circle.setTranslateY(newTranslateY);
+            for (HashMap.Entry<Long,List<Circle>> mapentry : circles.entrySet()) {
+                List<Circle> CircleList = mapentry.getValue();
+                for (Circle circle:CircleList) {
+                    circle.setTranslateX(newTranslateX);
+                    circle.setTranslateY(newTranslateY);
+                }
             }
 
             for (Line line : lines) {
@@ -185,14 +197,14 @@ public class MouseGestures {
                 arrow.setTranslateY(newTranslateY);
 
             }
-            for (HashMap.Entry mapentry : rectangles.entrySet()) {
-                Rectangle rectangle = (Rectangle) mapentry.getValue();
-                rectangle.setTranslateX(newTranslateX);
-                rectangle.setTranslateY(newTranslateY);
-
+            for (HashMap.Entry<Long,List<Rectangle>> mapentry : rectangles.entrySet()) {
+                List<Rectangle> RectangleList = mapentry.getValue();
+                for (Rectangle rectangle: RectangleList) {
+                    rectangle.setTranslateX(newTranslateX);
+                    rectangle.setTranslateY(newTranslateY);
+                }
             }
         }
-        //}
     };
 
     /**

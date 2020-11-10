@@ -34,28 +34,7 @@ public class Map extends observer.Observable {
         this.listIntersections = listIntersection;
         listRequests = new ArrayList<>();
         depot = new Depot();
-    }
-
-    /**
-     *
-     */
-    public void display() {
-        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
-            Intersection intersection = (Intersection) mapentry.getValue();
-            System.out.println(intersection);
-            for (Segment segment : intersection.getListSegments()) {
-                System.out.println(segment);
-            }
-        }
-
-        for (HashMap.Entry mapentry : listIntersections.entrySet()) {
-            System.out.println(mapentry.getValue());
-        }
-
-        for (int i = 0; i < listRequests.size(); i++) {
-            System.out.println(listRequests.get(i));
-        }
-        System.out.println(this.depot);
+        deliveryTour = new Tour(this);
     }
 
     /**
@@ -196,14 +175,13 @@ public class Map extends observer.Observable {
      * @param RequestPoint arrival intersection of a request
      * @return preceding intersection
      */
-    public Intersection findPrecedingRequestPoint(Intersection RequestPoint) {
-        Intersection precedingPoint = null;
+    public Step findPrecedingRequestPoint(Step RequestPoint){
+        Step precedingPoint = null;
 
         for (Path path : deliveryTour.getListPaths()) {
-            if (path.getIdArrival() == RequestPoint.getId())
-                precedingPoint = listIntersections.get(path.getIdDeparture());
-        }
-
+            if (path.getArrival().getRequest() == RequestPoint.getRequest() && path.getIdArrival() == RequestPoint.getId())
+                precedingPoint = path.getDeparture();
+            }
         return precedingPoint;
     }
 
@@ -217,11 +195,11 @@ public class Map extends observer.Observable {
      * @param precedingDeliveryId id of the preceding delivery point
      * @return error code
      */
-    public int addRequest(Request newRequest, Long precedingPickUpId, Long precedingDeliveryId) {
-        int errorCode = this.deliveryTour.addRequestToTour(newRequest, precedingPickUpId, precedingDeliveryId);
-        //if (errorCode == 0) {
-        this.listRequests.add(newRequest);
-        //}
+    public int addRequest(Request newRequest,Step precedingPickUpId,Step precedingDeliveryId) {
+        int errorCode = this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+        if (errorCode == 0) {
+            this.listRequests.add(newRequest);
+        }
         notifyObservers();
         return errorCode;
     }
@@ -271,16 +249,16 @@ public class Map extends observer.Observable {
 
     public void setDepot(Depot depot) {
         this.depot = depot;
-        notifyObservers();
     }
 
     //TOUR
-    public Tour getTour() {
+    public Tour getDeliveryTour() {
         return deliveryTour;
     }
 
     public void setDeliveryTour(Tour newTour) {
         this.deliveryTour = newTour;
+        this.deliveryTour.populateListTimes();
         notifyObservers();
     }
 

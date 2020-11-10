@@ -3,6 +3,8 @@ package controler;
 import javafx.event.ActionEvent;
 import model.Intersection;
 import model.Map;
+import model.Request;
+import model.Step;
 
 /**
  * State.
@@ -12,6 +14,8 @@ import model.Map;
 public interface State {
 
     public default void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Intersection i){};
+
+    public default void leftClick(Controller controler, Map map, ListOfCommand listOfCommand, Step step){};
 
     public default void addDuration(int duration, Controller controller){};
 

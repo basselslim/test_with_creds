@@ -13,6 +13,8 @@ public class Path {
     protected List<Segment> listSegments;
     protected long idDeparture;
     protected long idArrival;
+    protected Step departure;
+    protected Step arrival;
 
     /**
      * Default constructor.
@@ -20,20 +22,19 @@ public class Path {
     public Path() {
     }
 
-    /**
-     * Constructor.
-     *
-     * @param listSegments list of segments of the path
-     * @param departure    id of the departure intersection
-     * @param arrival      id of the arrival intersection
-     */
-    public Path(List<Segment> listSegments, long departure, long arrival) {
-        this.listSegments = listSegments;
-        this.idDeparture = departure;
-        this.idArrival = arrival;
+    public Path(List<Segment> listSegments, Step a, Step b) {
+        departure = a;
+        arrival = b;
+        this.idDeparture = a.getId();
+        this.idArrival = b.getId();
         this.pathLength = 0;
-        for (Segment s : listSegments) {
-            this.pathLength += s.getLength();
+        if (listSegments != null) {
+            this.listSegments = listSegments;
+            for (Segment s : listSegments) {
+                this.pathLength += s.getLength();
+            }
+        } else {
+            this.listSegments = new LinkedList<Segment>();
         }
     }
 
@@ -61,12 +62,22 @@ public class Path {
         return idArrival;
     }
 
+    public void setPathLength(int pathLength) {
+        this.pathLength = pathLength;
+    }
+
+    public Step getDeparture() { return departure; }
+
+    public Step getArrival() { return arrival; }
+
     @Override
     public String toString() {
         return "Path{" +
                 "pathLength=" + pathLength +
                 ", idDeparture=" + idDeparture +
                 ", idArrival=" + idArrival +
+                ", Arrival=" + arrival +
+                ", Departure=" + departure +
                 '}';
     }
 }

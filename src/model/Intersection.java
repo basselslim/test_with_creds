@@ -24,6 +24,7 @@ public class Intersection extends observer.Observable implements Comparable<Inte
      * Default constructor.
      */
     public Intersection() {
+        this.listSegments = new ArrayList<Segment>();
     }
 
     /**
@@ -172,17 +173,5 @@ public class Intersection extends observer.Observable implements Comparable<Inte
         } else {
             return 0;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Intersection{" +
-                "id=" + id +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", listSegments=" + listSegments +
-                ", routeScore=" + routeScore +
-                ", estimatedScore=" + estimatedScore +
-                '}';
     }
 }
