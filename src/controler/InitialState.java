@@ -142,6 +142,7 @@ public class InitialState implements State {
      */
     @Override
     public void LoadMap(ActionEvent event, Controller controller, Map map) {
+        map.resetMap();
         controller.Gview = new GraphicalView(map, controller.overlay, controller.mg);
         controller.Tview = new TextualView(map, controller.myPane, controller.TextArea, controller.TextTour, controller);
         map.addObserver(controller.Gview);
@@ -173,6 +174,7 @@ public class InitialState implements State {
      */
     @Override
     public void LoadRequests(ActionEvent event, Controller controller, Map map) {
+        map.resetRequests();
         FileChooser requestsFileChooser = new FileChooser();
         requestsFileChooser.setTitle("Load Requests");
         requestsFileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));

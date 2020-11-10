@@ -100,7 +100,6 @@ public class GraphicalView implements observer.Observer {
 
         //draw best tour
         if (!m_map.getDeliveryTour().getListPaths().isEmpty() && m_map.getDeliveryTour() != null) {
-            System.out.println("ENTREE");
             for (Path path : m_map.getDeliveryTour().getListPaths()) {
                 Intersection depart = m_map.getListIntersections().get(path.getIdDeparture());
                 if (depart != null) {
@@ -378,7 +377,6 @@ public class GraphicalView implements observer.Observer {
             order++;
         if (rectangles.get(id) != null)
             order += rectangles.get(id).size();
-        System.out.println(order);
         circle.relocate(pointX - size + order * StepSiding, pointY - size + order * StepSiding);
         circles.get(id).add(circle);
     }

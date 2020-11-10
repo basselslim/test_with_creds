@@ -269,4 +269,17 @@ public class Map extends observer.Observable {
                 ", listIntersections=" + listIntersections +
                 '}';
     }
+
+    public void resetMap() {
+        listIntersections = new HashMap<Long, Intersection>();
+        listRequests = new ArrayList<>();
+        depot = new Depot();
+        deliveryTour = new Tour(this);
+    }
+
+    public void resetRequests() {
+        listRequests = new ArrayList<>();
+        depot = new Depot();
+        deliveryTour = new Tour(this);
+    }
 }
