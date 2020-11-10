@@ -11,6 +11,7 @@ public class DeliveryPoint extends Step {
      *
      */
     public int deliveryDuration;
+    protected Request request;
 
     /**
      * Default constructor
@@ -38,8 +39,11 @@ public class DeliveryPoint extends Step {
         return deliveryDuration;
     }
 
+    public Request getRequest() { return request; }
+
     public void setDeliveryDuration(int deliveryDuration) {
         this.deliveryDuration = deliveryDuration;
     }
 
+    public void setRequest(Request request) { this.request = request; }
 }

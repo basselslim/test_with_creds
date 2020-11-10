@@ -203,7 +203,6 @@ public class Map extends observer.Observable {
 
     public void setDeliveryTour(Tour newTour) {
         this.deliveryTour = newTour;
-        this.deliveryTour.populateListTimes();
         notifyObservers();
     }
 

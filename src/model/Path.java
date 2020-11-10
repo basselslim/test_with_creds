@@ -70,14 +70,4 @@ public class Path {
     public Step getArrival() { return arrival; }
 
 
-    @Override
-    public String toString() {
-        return "Path{" +
-                "pathLength=" + pathLength +
-                ", idDeparture=" + idDeparture +
-                ", idArrival=" + idArrival +
-                ", Arrival=" + arrival +
-                ", Departure=" + departure +
-                '}';
-    }
 }
