@@ -53,6 +53,8 @@ public class Tour {
 
         //Find the place to insert the pickUp
         for (Path path : listPaths) {
+            System.out.println(path.getDeparture().getRequest());
+            System.out.println(path.getArrival().getRequest());
             if (precedingPickUp.getRequest().equals(path.getDeparture().getRequest()) && path.getIdDeparture() == precedingPickUp.getId()) {
                 //Compute the shortest path between the Step preceding the pickup and the Request pickupPoint
 
@@ -68,6 +70,9 @@ public class Tour {
                 //Create the path and insert them into the tour List
                 Path pathDeparturetoNewPickUp = new Path(roadDeparturetoNewPickUp, path.getDeparture(), newRequest.getPickUpPoint());
                 Path pathNewPickUptoArrival = new Path(roadNewPickUptoArrival, newRequest.getPickUpPoint(), path.getArrival());
+
+                System.out.println(pathDeparturetoNewPickUp);
+                System.out.println(pathNewPickUptoArrival);
 
                 listPaths.remove(pathIndexToInsertPickUp);
                 listPaths.add(pathIndexToInsertPickUp, pathDeparturetoNewPickUp);
@@ -91,9 +96,12 @@ public class Tour {
                     return 2; // can't find a path from the new delivery point
                 }*/
 
+
                 // Create the paths and insert them into the tour List
                 Path pathDeparturetoNewDelivery = new Path(roadDeparturetoNewDelivery, path.getDeparture(), newRequest.getDeliveryPoint());
                 Path pathNewDeliverytoArrival = new Path(roadNewDeliverytoArrival, newRequest.getDeliveryPoint(), path.getArrival());
+                System.out.println(pathDeparturetoNewDelivery);
+                System.out.println(pathNewDeliverytoArrival);
 
                 listPaths.remove(pathIndexToInsertDelivery);
                 listPaths.add(pathIndexToInsertDelivery, pathDeparturetoNewDelivery);
@@ -118,11 +126,11 @@ public class Tour {
 
         for (Path path : listPaths) {
 
-            if (request.equals(path.getArrival().getRequest()) && path.getIdArrival() == request.getPickUpPoint().getId()) {
+            if (path.getArrival().getRequest() == request.getPickUpPoint().getRequest() && path.getIdArrival() == request.getPickUpPoint().getId()) {
                 departure = path.getDeparture();
             }
 
-            if ( request.equals(path.getDeparture().getRequest()) && path.getIdDeparture() == request.getPickUpPoint().getId()) {
+            if (path.getDeparture().getRequest() == request.getPickUpPoint().getRequest() && path.getIdDeparture() == request.getPickUpPoint().getId()) {
                 List<Segment> roadWithoutPickUpPoint = calculator.computeSmallestPath(departure,path.getArrival());
                 Path pathWithoutPickUpPoint = new Path(roadWithoutPickUpPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeletePickUp);
@@ -134,10 +142,10 @@ public class Tour {
         }
 
         for (Path path : listPaths) {
-            if (request.equals(path.getArrival().getRequest()) && path.getIdArrival() == request.getDeliveryPoint().getId()) {
+            if (path.getArrival().getRequest() == request.getDeliveryPoint().getRequest() && path.getIdArrival() == request.getDeliveryPoint().getId()) {
                 departure = path.getDeparture();
             }
-            if (request.equals(path.getDeparture().getRequest()) && path.getIdDeparture() == request.getDeliveryPoint().getId()) {
+            if (path.getDeparture().getRequest() == request.getDeliveryPoint().getRequest() && path.getIdDeparture() == request.getDeliveryPoint().getId()) {
                 List<Segment> roadWithoutDeliveryPoint = calculator.computeSmallestPath(departure,path.getArrival());
                 Path pathWithoutDeliveryPoint = new Path(roadWithoutDeliveryPoint, departure, path.getArrival());
                 listPaths.remove(pathIndexToDeleteDelivery);

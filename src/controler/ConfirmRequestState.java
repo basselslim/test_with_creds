@@ -51,7 +51,7 @@ public class ConfirmRequestState implements State {
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.addDeliveryState.reverseAction(controller);
         controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
-        controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
+        controller.Gview.undrawMouseSelection(request.getDeliveryPoint());
         controller.setCurrentState(controller.addDeliveryState);
         controller.confirmAction.setVisible(false);
     }
@@ -87,7 +87,6 @@ public class ConfirmRequestState implements State {
     }
 
     private void unDrawSelection(Controller controller){
-        controller.Gview.undrawMouseSelection(controller.addDeliveryState.request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());
         controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
         controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);

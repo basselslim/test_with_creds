@@ -14,6 +14,7 @@ public class AddPickupState implements State {
     public AddPickupState() {
     }
 
+
     @Override
     public void leftClick(Controller controller, Map map, ListOfCommand listOfCommand, Step step) {
         if (precedingPoint == null) {
@@ -50,6 +51,7 @@ public class AddPickupState implements State {
     @Override
     public void addDuration(int duration, Controller controller) {
         request.getPickUpPoint().setPickUpDuration(duration);
+        //controller.Gview.disableSelection();
 
         controller.addDeliveryState.entryAction(controller, request, precedingPoint);
         controller.setCurrentState(controller.addDeliveryState);
@@ -58,11 +60,6 @@ public class AddPickupState implements State {
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
         controller.initialState.entryAction(controller);
-        if(precedingPoint!=null) {
-            controller.Gview.undrawMouseSelection(precedingPoint);
-        }
-        if(request.getPickUpPoint() !=null)
-            controller.Gview.undrawMouseSelection(request.getPickUpPoint());
         controller.Tview.setMessage("Compute Tour, export Roadmap, load a new map or new requests");
         controller.setCurrentState(controller.initialState);
 
@@ -87,6 +84,7 @@ public class AddPickupState implements State {
 
     protected void reverseAction(Controller controller) {
         precedingPoint = null;
+
         controller.Tview.setMessage("Select the preceding point to the pickup point");
     }
 }

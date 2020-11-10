@@ -215,7 +215,6 @@ public class Map extends observer.Observable {
 
     public void setDepot(Depot depot) {
         this.depot = depot;
-        notifyObservers();
     }
 
     //TOUR

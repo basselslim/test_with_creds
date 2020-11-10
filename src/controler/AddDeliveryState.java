@@ -12,7 +12,6 @@ public class AddDeliveryState implements State {
     protected Step PickupPrecedingPoint;
     protected Step DeliveryPrecedingPoint;
 
-
     /**
      * Default constructor
      */
@@ -30,7 +29,7 @@ public class AddDeliveryState implements State {
                 controller.Tview.setMessage("Select the delivery point");
             }
         } else {
-            DeliveryPoint delivery = new DeliveryPoint(step,0);
+            DeliveryPoint delivery = new DeliveryPoint(step, 0);
             request.setDeliveryPoint(delivery);
 
             controller.Gview.drawMouseSelection(step);
@@ -63,8 +62,8 @@ public class AddDeliveryState implements State {
 
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
-        unDrawSelections(controller);
         controller.addPickupState.reverseAction(controller);
+        unDrawSelections(controller);
         controller.setCurrentState(controller.addPickupState);
     }
 
@@ -96,17 +95,12 @@ public class AddDeliveryState implements State {
     private void unDrawSelections(Controller controller){
         if(DeliveryPrecedingPoint !=null)
             controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
+        else if(controller.confirmRequestState.DeliveryPrecedingPoint !=null)
+            controller.Gview.undrawMouseSelection(controller.confirmRequestState.DeliveryPrecedingPoint);
         if(request.getDeliveryPoint()!=null)
             controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
-
-        if(controller.confirmRequestState.DeliveryPrecedingPoint !=null)
-            controller.Gview.undrawMouseSelection(controller.confirmRequestState.DeliveryPrecedingPoint);
-
         controller.Gview.undrawMouseSelection(controller.addPickupState.request.getPickUpPoint().getId());
-        if(PickupPrecedingPoint !=null)
-            controller.Gview.undrawMouseSelection(PickupPrecedingPoint);
-
-
+        controller.Gview.undrawMouseSelection(PickupPrecedingPoint);
     }
 
 }
