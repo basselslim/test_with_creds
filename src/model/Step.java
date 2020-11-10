@@ -8,7 +8,7 @@ public class Step extends Intersection {
     }
 
     public Step(Step current) {
-        this.request = current.request;
+        this.request = new Request(current.getRequest());
         this.previous = null;
         this.routeScore = Double.POSITIVE_INFINITY;
         this.estimatedScore = Double.POSITIVE_INFINITY;
