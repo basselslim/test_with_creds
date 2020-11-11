@@ -20,7 +20,8 @@ class TravellingSalesmanProblemTest {
     Map map;
     HashMap<Long, HashMap<Long,Path>> adjacencyMatrixOfShortestPath;
     TravellingSalesmanProblem TSP;
-
+    DeliveryPoint b;
+    PickUpPoint c;
     @BeforeAll
     static void travellingSalesmanProblemTest () {
         System.out.println("Test Of TravellingSalesManProblem Class");
@@ -30,13 +31,14 @@ class TravellingSalesmanProblemTest {
     void dataInitialisation() {
         map = new Map();
         adjacencyMatrixOfShortestPath = new HashMap<Long, HashMap<Long,Path>>();
+        HashMap<Long,Step> stepList = new HashMap<Long,Step>();
         System.out.println("Data Initialisation");
 
-        Depot depot = new Depot(1l,"");
-        Intersection a = new Intersection(1l,0,0);
-        Intersection b = new Intersection(4l,0,0);
-        Intersection c = new Intersection(7l,0,0);
-        Intersection d = new Intersection(9l,0,0);
+        Depot depot = new Depot(1l,"8:0:0");
+        Step a = new Step(1l,0,0);
+        b = new DeliveryPoint(4l,0,0,2);
+        c = new PickUpPoint(7l,0,0,2);
+        Step d = new Step(9l,0,0);
 
         a.getListSegments().add(new Segment(10.0,"",4l));
         a.getListSegments().add(new Segment(25.0,"",7l));
@@ -54,20 +56,29 @@ class TravellingSalesmanProblemTest {
         d.getListSegments().add(new Segment(200.0,"",4l));
         d.getListSegments().add(new Segment(150.0,"",7l));
 
+        Request r = new Request(c,b);
+        map.addRequest(r);
+
         map.getListIntersections().put(1l,a);
         map.getListIntersections().put(4l,b);
         map.getListIntersections().put(7l,c);
         map.getListIntersections().put(9l,d);
         map.setDepot(depot);
 
-        for(java.util.Map.Entry<Long,Intersection> mapentry : map.getListIntersections().entrySet()){
+        stepList.put(1l,a);
+        stepList.put(4l,b);
+        stepList.put(7l,c);
+        stepList.put(9l,d);
+
+
+        for(java.util.Map.Entry<Long,Step> mapEntry : stepList.entrySet()){
             HashMap<Long,Path> adjacencyList = new HashMap<Long,Path>();
-            for (Segment s : mapentry.getValue().getListSegments()) {
+            for (Segment s :mapEntry.getValue().getListSegments()) {
                 List<Segment> listSegments = new LinkedList<Segment>();
                 listSegments.add(s);
-                //adjacencyList.put(s.getDestination(),new Path(listSegments,mapentry.getValue(),map.getListIntersections().get(s.getDestination())));
+                adjacencyList.put(s.getDestination(),new Path(listSegments,mapEntry.getValue(),stepList.get(s.getDestination())));
             }
-            adjacencyMatrixOfShortestPath.put(mapentry.getKey(),adjacencyList);
+            adjacencyMatrixOfShortestPath.put(mapEntry.getValue().getId(),adjacencyList);
         }
         TSP = new TravellingSalesmanProblem(map,adjacencyMatrixOfShortestPath,10000);
     }
@@ -88,7 +99,6 @@ class TravellingSalesmanProblemTest {
         Tour randomTour = new Tour(map,tour);
         TSP.copyToFinal(randomTour);
         assert(TSP.final_tour.getTourLength() == finalpathLengthExpected);
-
     }
 
     @Test
@@ -109,7 +119,19 @@ class TravellingSalesmanProblemTest {
     void testTSP() {
         System.out.println("TSPTest");
         TSP.TSP();
-        System.out.println(TSP.final_res);
-        System.out.println(TSP.final_tour.getListPaths());
+        int pickupIndex = 0;
+        int deliveryIndex = 0;
+        int index = 0;
+        for (Path p :TSP.final_tour.getListPaths()) {
+            if (p.getIdDeparture() == c.getId()) {
+                pickupIndex = index;
+            }
+            if (p.getIdDeparture() == b.getId()) {
+                deliveryIndex = index;
+            }
+            index++;
+        }
+        assert(TSP.final_res == 290);
+        assert(pickupIndex < deliveryIndex);
     }
 }

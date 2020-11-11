@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * Algorithm that solve Traveling Salesman Problem.
- *
+ * Source https://www.geeksforgeeks.org/travelling-salesman-problem-implementation-using-backtracking/
  * @author T-REXANOME
  */
 public class TravellingSalesmanProblem {
@@ -150,7 +150,7 @@ public class TravellingSalesmanProblem {
     /**
      * Function that takes as arguments:
      *
-     * @param curr_bound  lower bound of the root node
+     * @param curr_bound  lower bound of the current node to the end
      * @param curr_weight stores the weight of the path so far
      * @param level       current level while moving in the search space tree
      * @param curr_tour   where the solution is being stored which would later be copied to final_tour
