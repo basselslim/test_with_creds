@@ -270,13 +270,19 @@ public class Map extends observer.Observable {
                 '}';
     }
 
+    /**
+     * Reset a map.
+     */
+
     public void resetMap() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
         depot = new Depot();
         deliveryTour = new Tour(this);
     }
-
+    /**
+     * Reset the requests of the map.
+     */
     public void resetRequests() {
         listRequests = new ArrayList<>();
         depot = new Depot();
