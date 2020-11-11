@@ -107,7 +107,7 @@ public class Controller {
     /**
      * Load requests.
      *
-     * @param event
+     * @param event event
      */
     public void LoadRequests(ActionEvent event) {
         currentState.LoadRequests(event, this, map);
@@ -116,7 +116,7 @@ public class Controller {
     /**
      * Compute tour.
      *
-     * @param event
+     * @param event event
      */
     public void computeTour(ActionEvent event) {
         Tview.setMessage("Computing optimal tour...");
@@ -126,7 +126,7 @@ public class Controller {
     /**
      * Export road map.
      *
-     * @param event
+     * @param event event
      */
     public void ExportRoadMap(ActionEvent event) {
         FileChooser exportFileChooser = new FileChooser();
@@ -162,7 +162,7 @@ public class Controller {
     /**
      * Load map.
      *
-     * @param event
+     * @param event event
      */
     public void LoadMap(ActionEvent event) {
 
@@ -173,7 +173,7 @@ public class Controller {
     /**
      * Zoom into the map.
      *
-     * @param event
+     * @param event event
      */
     public void Zoom(ActionEvent event) {
         Gview.zoom();
@@ -182,7 +182,7 @@ public class Controller {
     /**
      * Zoom out.
      *
-     * @param event
+     * @param event event
      */
     public void UnZoom(ActionEvent event) {
         Gview.unZoom();
@@ -204,7 +204,7 @@ public class Controller {
     /**
      * Enter in the add request state.
      *
-     * @param event
+     * @param event event
      */
     public void addRequest(ActionEvent event) {
         currentState.addRequest(this);
@@ -213,7 +213,7 @@ public class Controller {
     /**
      * Enter in the delete request state.
      *
-     * @param event
+     * @param event event
      */
     public void deleteRequest(ActionEvent event) {
         currentState.deleteRequest(this);
@@ -229,7 +229,7 @@ public class Controller {
     /**
      * Temporary remove the last added command (this command may be reinserted again with redo).
      *
-     * @param event
+     * @param event event
      */
     public void undo(ActionEvent event) {
         currentState.undo(listOfCommand, this);
@@ -238,7 +238,7 @@ public class Controller {
     /**
      * Reinsert the last command removed by undo.
      *
-     * @param event
+     * @param event event
      */
     public void redo(ActionEvent event) {
         currentState.redo(listOfCommand, this);

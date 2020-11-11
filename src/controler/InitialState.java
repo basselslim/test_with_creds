@@ -72,7 +72,7 @@ public class InitialState implements State {
      *
      * @param controller    controller
      * @param map           map object
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param i             intersection
      */
     @Override
@@ -92,7 +92,7 @@ public class InitialState implements State {
      *
      * @param controller    controller
      * @param map           map object
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param step          request point
      */
     @Override
@@ -114,7 +114,7 @@ public class InitialState implements State {
     /**
      * Temporary remove the last added command (this command may be reinserted again with redo).
      *
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param controller    controller
      */
     @Override
@@ -125,7 +125,7 @@ public class InitialState implements State {
     /**
      * Reinsert the last command removed by undo.
      *
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param controller    controller
      */
     @Override
@@ -136,7 +136,7 @@ public class InitialState implements State {
     /**
      * Load the map.
      *
-     * @param event
+     * @param event      event
      * @param controller controller
      * @param map        map object
      */
@@ -168,7 +168,7 @@ public class InitialState implements State {
     /**
      * Load requests.
      *
-     * @param event
+     * @param event      event
      * @param controller controller
      * @param map        map object
      */

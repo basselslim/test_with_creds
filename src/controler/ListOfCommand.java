@@ -59,6 +59,8 @@ public class ListOfCommand {
 
     /**
      * Reinsert the last command removed by undo.
+     *
+     * @return error code
      */
     public int redo() {
         int errorCode = 0;

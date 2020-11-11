@@ -22,7 +22,7 @@ public class AddPickupState implements State {
      *
      * @param controller    controller
      * @param map           map object
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param step          request point
      */
     @Override
@@ -50,7 +50,7 @@ public class AddPickupState implements State {
      *
      * @param controller    controller
      * @param map           map object
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param i             intersection
      */
     @Override

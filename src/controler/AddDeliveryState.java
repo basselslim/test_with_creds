@@ -23,7 +23,7 @@ public class AddDeliveryState implements State {
      *
      * @param controller    controller
      * @param map           map object
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param step          request point
      */
     @Override
@@ -50,7 +50,7 @@ public class AddDeliveryState implements State {
      *
      * @param controller    controller
      * @param map           map object
-     * @param listOfCommand
+     * @param listOfCommand list of commands
      * @param i             intersection
      */
     @Override

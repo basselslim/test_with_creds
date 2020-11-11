@@ -25,7 +25,7 @@ public class DeleteState implements State {
      *
      * @param controler      controller
      * @param map            map object
-     * @param listOfCommands
+     * @param listOfCommands list of commands
      * @param i              intersection
      */
     @Override
