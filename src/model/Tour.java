@@ -233,7 +233,7 @@ public class Tour {
     }
 
     /**
-     * Generate description of a pick up or delivery point for the road map
+     * Generate description of a pick up or delivery point for the road map.
      *
      * @param id id of an intersection
      * @return text

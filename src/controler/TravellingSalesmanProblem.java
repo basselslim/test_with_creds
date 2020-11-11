@@ -7,6 +7,7 @@ import java.util.*;
 /**
  * Algorithm that solve Traveling Salesman Problem.
  * Source https://www.geeksforgeeks.org/travelling-salesman-problem-implementation-using-backtracking/
+ *
  * @author T-REXANOME
  */
 public class TravellingSalesmanProblem {
@@ -31,7 +32,7 @@ public class TravellingSalesmanProblem {
     /**
      * Constructor.
      *
-     * @param newMap
+     * @param newMap           map object
      * @param mapSmallestPaths map of all smallest paths between intersections of the requests
      * @param t                time limit for the algorithm
      */

@@ -56,7 +56,7 @@ public class MouseGestures {
     }
 
     /**
-     * Enable for movable nodes
+     * Enable for movable nodes.
      *
      * @param node       node
      * @param circles    map of circles
@@ -75,7 +75,6 @@ public class MouseGestures {
 
     /**
      * Action event on mouse click on node.
-     *
      */
     EventHandler<MouseEvent> nodeOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         @Override

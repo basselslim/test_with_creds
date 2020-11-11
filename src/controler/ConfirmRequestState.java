@@ -27,7 +27,7 @@ public class ConfirmRequestState implements State {
     /**
      * Add the request adding command to listOfcommand object.
      *
-     * @param controller
+     * @param controller controller
      * @param map        map object
      */
     @Override
@@ -56,10 +56,10 @@ public class ConfirmRequestState implements State {
     }
 
     /**
-     * Set entry attributes to the state
+     * Set entry attributes to the state.
      *
      * @param r          request
-     * @param controller
+     * @param controller controller
      */
     protected void entryAction(Request r, Controller controller) {
         controller.confirmAction.setVisible(true);
@@ -71,9 +71,9 @@ public class ConfirmRequestState implements State {
 
 
     /**
-     * Undraw all selection circles on selected points
+     * Undraw all selection circles on selected points.
      *
-     * @param controller
+     * @param controller controller
      */
     private void unDrawSelection(Controller controller) {
         controller.Gview.undrawMouseSelection(request.getPickUpPoint().getId());

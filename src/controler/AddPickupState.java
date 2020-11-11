@@ -20,7 +20,7 @@ public class AddPickupState implements State {
     /**
      * Add the clicked Step as a preceding point to the new pickup point, or as the pickup point itself
      *
-     * @param controller
+     * @param controller    controller
      * @param map           map object
      * @param listOfCommand
      * @param step          request point
@@ -48,7 +48,7 @@ public class AddPickupState implements State {
     /**
      * Add the selected intersection as a new Pickup Point to a new request
      *
-     * @param controller
+     * @param controller    controller
      * @param map           map object
      * @param listOfCommand
      * @param i             intersection
@@ -71,7 +71,7 @@ public class AddPickupState implements State {
      * Add a pickup time to the pickup point
      *
      * @param duration   duration to add
-     * @param controller
+     * @param controller controller
      */
     @Override
     public void addDuration(int duration, Controller controller) {
@@ -84,9 +84,9 @@ public class AddPickupState implements State {
 
 
     /**
-     * Set the entry attributs to the state
+     * Set the entry attributes to the state.
      *
-     * @param controller
+     * @param controller controller
      * @param r          request
      */
     protected void entryAction(Controller controller, Request r) {

@@ -54,7 +54,7 @@ public class TextualView implements observer.Observer {
      * @param pane
      * @param textArea
      * @param tourInfos
-     * @param controller
+     * @param controller controller
      */
     public TextualView(Map map, Pane pane, TextArea textArea, Label tourInfos, Controller controller) {
         this.controller = controller;
@@ -277,7 +277,8 @@ public class TextualView implements observer.Observer {
     }
 
     /**
-     * Select the two steps of a request
+     * Select the two steps of a request.
+     *
      * @param req   request
      * @param local indicates whether the call was made in TextualView
      */

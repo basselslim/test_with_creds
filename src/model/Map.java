@@ -123,7 +123,7 @@ public class Map extends observer.Observable {
 
     /**
      * @param id id of a pick up or delivery point
-     * @return
+     * @return intersection
      */
     public Intersection getTourStopById(long id) {
         Intersection res = null;
@@ -175,13 +175,13 @@ public class Map extends observer.Observable {
      * @param RequestPoint arrival intersection of a request
      * @return preceding intersection
      */
-    public Step findPrecedingRequestPoint(Step RequestPoint){
+    public Step findPrecedingRequestPoint(Step RequestPoint) {
         Step precedingPoint = null;
 
         for (Path path : deliveryTour.getListPaths()) {
             if (path.getArrival().getRequest() == RequestPoint.getRequest() && path.getIdArrival() == RequestPoint.getId())
                 precedingPoint = path.getDeparture();
-            }
+        }
         return precedingPoint;
     }
 
@@ -195,8 +195,8 @@ public class Map extends observer.Observable {
      * @param precedingDeliveryId id of the preceding delivery point
      * @return error code
      */
-    public int addRequest(Request newRequest,Step precedingPickUpId,Step precedingDeliveryId) {
-        int errorCode = this.deliveryTour.addRequestToTour(newRequest,precedingPickUpId,precedingDeliveryId);
+    public int addRequest(Request newRequest, Step precedingPickUpId, Step precedingDeliveryId) {
+        int errorCode = this.deliveryTour.addRequestToTour(newRequest, precedingPickUpId, precedingDeliveryId);
         if (errorCode == 0) {
             this.listRequests.add(newRequest);
         }
@@ -270,6 +270,9 @@ public class Map extends observer.Observable {
                 '}';
     }
 
+    /**
+     * Reset map.
+     */
     public void resetMap() {
         listIntersections = new HashMap<Long, Intersection>();
         listRequests = new ArrayList<>();
@@ -277,6 +280,9 @@ public class Map extends observer.Observable {
         deliveryTour = new Tour(this);
     }
 
+    /**
+     * Reset Requests.
+     */
     public void resetRequests() {
         listRequests = new ArrayList<>();
         depot = new Depot();

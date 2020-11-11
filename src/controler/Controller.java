@@ -151,7 +151,7 @@ public class Controller {
     }
 
     /**
-     * Select a request by one of its steps
+     * Select a request by one of its steps.
      *
      * @param step step to select
      */
@@ -202,7 +202,7 @@ public class Controller {
     }
 
     /**
-     * Enter in the add request state
+     * Enter in the add request state.
      *
      * @param event
      */
@@ -211,7 +211,7 @@ public class Controller {
     }
 
     /**
-     * Enter in the delete request state
+     * Enter in the delete request state.
      *
      * @param event
      */

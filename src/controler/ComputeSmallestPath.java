@@ -16,7 +16,7 @@ public class ComputeSmallestPath {
     /**
      * Constructor.
      *
-     * @param map
+     * @param map map object
      */
     public ComputeSmallestPath(Map map) {
         this.map = map;

@@ -18,7 +18,7 @@ public class Algorithm {
     /**
      * Constructor.
      *
-     * @param map
+     * @param map map object
      */
     public Algorithm(Map map) {
         this.map = map;

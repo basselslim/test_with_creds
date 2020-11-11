@@ -19,9 +19,9 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Add the clicked Step as a preceding point to the new delivery point, or as the delivery point itself
+     * Add the clicked Step as a preceding point to the new delivery point, or as the delivery point itself.
      *
-     * @param controller
+     * @param controller    controller
      * @param map           map object
      * @param listOfCommand
      * @param step          request point
@@ -46,9 +46,9 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Add the selected intersection as a new Delivery Point to a new request
+     * Add the selected intersection as a new Delivery Point to a new request.
      *
-     * @param controller
+     * @param controller    controller
      * @param map           map object
      * @param listOfCommand
      * @param i             intersection
@@ -68,10 +68,10 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Add a delivery time to the delivery point
+     * Add a delivery time to the delivery point.
      *
      * @param duration   duration to add
-     * @param controller
+     * @param controller controller
      */
     @Override
     public void addDuration(int duration, Controller controller) {
@@ -82,8 +82,9 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Set the entry attributs to the state
-     * @param controller
+     * Set the entry attributes to the state.
+     *
+     * @param controller           controller
      * @param r                    request
      * @param pickuppredecingPoint preceding pick up point
      */
@@ -94,6 +95,6 @@ public class AddDeliveryState implements State {
         controller.Gview.enableSelection();
         controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
-   
+
 
 }

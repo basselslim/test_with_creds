@@ -35,7 +35,7 @@ public class InitialState implements State {
     /**
      * Add a request.
      *
-     * @param controller
+     * @param controller controller
      */
     @Override
     public void addRequest(Controller controller) {
@@ -55,7 +55,7 @@ public class InitialState implements State {
     /**
      * Delete a request.
      *
-     * @param controller
+     * @param controller controller
      */
     public void deleteRequest(Controller controller) {
         Request request = CurrentStepList.get(0).getRequest();
@@ -70,7 +70,7 @@ public class InitialState implements State {
     /**
      * Left click.
      *
-     * @param controller
+     * @param controller    controller
      * @param map           map object
      * @param listOfCommand
      * @param i             intersection
@@ -90,7 +90,7 @@ public class InitialState implements State {
     /**
      * Left click.
      *
-     * @param controller
+     * @param controller    controller
      * @param map           map object
      * @param listOfCommand
      * @param step          request point
@@ -115,7 +115,7 @@ public class InitialState implements State {
      * Temporary remove the last added command (this command may be reinserted again with redo).
      *
      * @param listOfCommand
-     * @param controller
+     * @param controller    controller
      */
     @Override
     public void undo(ListOfCommand listOfCommand, Controller controller) {
@@ -126,7 +126,7 @@ public class InitialState implements State {
      * Reinsert the last command removed by undo.
      *
      * @param listOfCommand
-     * @param controller
+     * @param controller    controller
      */
     @Override
     public void redo(ListOfCommand listOfCommand, Controller controller) {
@@ -137,7 +137,7 @@ public class InitialState implements State {
      * Load the map.
      *
      * @param event
-     * @param controller
+     * @param controller controller
      * @param map        map object
      */
     @Override
@@ -169,7 +169,7 @@ public class InitialState implements State {
      * Load requests.
      *
      * @param event
-     * @param controller
+     * @param controller controller
      * @param map        map object
      */
     @Override
@@ -194,7 +194,7 @@ public class InitialState implements State {
     /**
      * Compute optimal tour.
      *
-     * @param controller
+     * @param controller controller
      * @param map        map object
      */
     @Override
@@ -210,9 +210,9 @@ public class InitialState implements State {
     }
 
     /**
-     * Unselects all points
+     * Unselects all points.
      *
-     * @param controller
+     * @param controller controller
      */
     private void unSelectPoints(Controller controller) {
         for (Long id : CurrentIdList) {
@@ -224,7 +224,7 @@ public class InitialState implements State {
     /**
      * Unselects all steps.
      *
-     * @param controller
+     * @param controller controller
      */
     private void unSelectSteps(Controller controller) {
         for (Step step : CurrentStepList) {
@@ -234,7 +234,7 @@ public class InitialState implements State {
     }
 
     /**
-     * @param controller
+     * @param controller controller
      */
     public void entryAction(Controller controller) {
         if (isTourComputed)

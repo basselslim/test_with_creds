@@ -23,7 +23,7 @@ public class DeleteState implements State {
     /**
      * Left click.
      *
-     * @param controler
+     * @param controler      controller
      * @param map            map object
      * @param listOfCommands
      * @param i              intersection
@@ -36,7 +36,7 @@ public class DeleteState implements State {
     /**
      * Add delete command to listOfCommands.
      *
-     * @param controller
+     * @param controller controller
      * @param map        map object
      */
     @Override
@@ -54,10 +54,10 @@ public class DeleteState implements State {
     }
 
     /**
-     * Set entry attributes to the delete state
+     * Set entry attributes to the delete state.
      *
-     * @param controller
-     * @param request
+     * @param controller controller
+     * @param request    request
      */
     public void entryAction(Controller controller, Request request) {
         controller.deleteRequest.setDisable(true);
