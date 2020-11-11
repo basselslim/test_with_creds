@@ -51,7 +51,7 @@ class XMLLoaderTest {
     @Test
     void mapParsedWell(){
         //Arrange
-        String pathNameXMLFile = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testMap.xml";
+        String pathNameXMLFile = "testMap.xml";
         Map map = new Map();
         XMLLoader xmlLoader = new XMLLoader();
         long id = 1;
@@ -77,8 +77,8 @@ class XMLLoaderTest {
     @Test
     void requestParsedWell(){
         //Arrange
-        String pathNameXMLFileRequests = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testRequest.xml";
-        String pathNameXMLFileMap = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testMap.xml";
+        String pathNameXMLFileRequests = "testRequest.xml";
+        String pathNameXMLFileMap = "testMap.xml";
         Map map = new Map();
         XMLLoader xmlLoader = new XMLLoader();
         long pickUpAdress = 2;
@@ -111,8 +111,8 @@ class XMLLoaderTest {
     void wrongFormatXML(){
 
         //Arrange
-        String pathNameXMLFileRequests = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testRequestBad.xml";
-        String pathNameXMLFileMap = "/Users/basselslim/Documents/4IF/Semestre_1/AGILE/PLD/fichiersXML2020/testMapBad.xml";
+        String pathNameXMLFileRequests = "testRequestBad.xml";
+        String pathNameXMLFileMap = "testMapBad.xml";
         Map map = new Map();
         XMLLoader xmlLoader = new XMLLoader();
 
@@ -121,7 +121,7 @@ class XMLLoaderTest {
         int b = xmlLoader.parseRequestXML(pathNameXMLFileRequests, map);
 
         //Assert
-        //assertNull(a);
-        //assertNull(b);
+        assertNull(a);
+        assertNull(b);
     }
 }
