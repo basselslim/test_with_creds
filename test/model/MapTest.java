@@ -231,16 +231,6 @@ class MapTest {
         //Assert
         assertEquals(d,m.getDepot());
     }
-    @Test
-    void getTour() {
-        //Arrange
-        Map m = new Map();
-        Tour t = new Tour(m);
-        //Act
-        m.setDeliveryTour(t);
-        //Assert
-        assertEquals(t,m.getDeliveryTour());
-    }
 
 
 
