@@ -34,6 +34,8 @@ public class DeleteState implements State {
     }
 
     /**
+     * Add delete command to listOfCommands.
+     *
      * @param controller
      * @param map        map object
      */
@@ -52,6 +54,8 @@ public class DeleteState implements State {
     }
 
     /**
+     * Set entry attributes to the delete state
+     *
      * @param controller
      * @param request
      */

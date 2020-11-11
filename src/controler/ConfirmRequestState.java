@@ -25,6 +25,8 @@ public class ConfirmRequestState implements State {
     }
 
     /**
+     * Add the request adding command to listOfcommand object.
+     *
      * @param controller
      * @param map        map object
      */
@@ -54,32 +56,8 @@ public class ConfirmRequestState implements State {
     }
 
     /**
-     * Temporary remove the last added command (this command may be reinserted again with redo).
+     * Set entry attributes to the state
      *
-     * @param listOfCommand
-     * @param controller
-     */
-    @Override
-    public void undo(ListOfCommand listOfCommand, Controller controller) {
-        controller.addDeliveryState.reverseAction(controller);
-        controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
-        controller.Gview.undrawMouseSelection(request.getDeliveryPoint());
-        controller.setCurrentState(controller.addDeliveryState);
-        controller.confirmAction.setVisible(false);
-    }
-
-    /**
-     * Reinsert the last command removed by undo.
-     *
-     * @param listOfCommand
-     * @param controller
-     */
-    @Override
-    public void redo(ListOfCommand listOfCommand, Controller controller) {
-
-    }
-
-    /**
      * @param r          request
      * @param controller
      */
@@ -91,31 +69,10 @@ public class ConfirmRequestState implements State {
         controller.confirmAction();
     }
 
+
     /**
-     * Reverse action.
+     * Undraw all selection circles on selected points
      *
-     * @param controller
-     */
-    protected void reverseAction(Controller controller) {
-        controller.addRequest.setDisable(true);
-        controller.deleteRequest.setDisable(true);
-        controller.confirmAction.setVisible(true);
-        controller.Gview.disableSelection();
-        drawSelection(controller);
-        controller.Tview.setMessage("Confirm adding the request ?");
-    }
-
-    /**
-     * @param controller
-     */
-    private void drawSelection(Controller controller) {
-        controller.Gview.drawMouseSelection(DeliveryPrecedingPoint);
-        controller.Gview.drawMouseSelection(request.getDeliveryPoint().getId());
-        controller.Gview.drawMouseSelection(PickupPrecedingPoint);
-        controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
-    }
-
-    /**
      * @param controller
      */
     private void unDrawSelection(Controller controller) {

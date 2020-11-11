@@ -45,6 +45,8 @@ public class MouseGestures {
     }
 
     /**
+     * Enable for clickable nodes.
+     *
      * @param node node
      */
     public void makeClickable(Node node) {
@@ -54,6 +56,8 @@ public class MouseGestures {
     }
 
     /**
+     * Enable for movable nodes
+     *
      * @param node       node
      * @param circles    map of circles
      * @param lines      list of lines
@@ -70,6 +74,7 @@ public class MouseGestures {
     }
 
     /**
+     * Action event on mouse click on node.
      *
      */
     EventHandler<MouseEvent> nodeOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
@@ -93,7 +98,7 @@ public class MouseGestures {
     };
 
     /**
-     *
+     * Action event on mouse entering a node.
      */
     EventHandler<MouseEvent> nodeOnMouseEnteredEventHandler = new EventHandler<MouseEvent>() {
 
@@ -121,7 +126,7 @@ public class MouseGestures {
     };
 
     /**
-     *
+     * Action event on mouse exiting a node.
      */
     EventHandler<MouseEvent> nodeOnMouseExitedEventHandler = new EventHandler<MouseEvent>() {
 
@@ -144,7 +149,7 @@ public class MouseGestures {
     };
 
     /**
-     *
+     * Action event on mouse pressing on a node.
      */
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
         @Override
@@ -161,7 +166,7 @@ public class MouseGestures {
     };
 
     /**
-     *
+     * Action event on mouse dragging a node.
      */
     EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 

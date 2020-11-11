@@ -114,7 +114,7 @@ public class Controller {
     }
 
     /**
-     * Compute optimal tour.
+     * Compute tour.
      *
      * @param event
      */
@@ -141,15 +141,20 @@ public class Controller {
     }
 
     /**
-     * Left click.
+     * Select an Intersection by Id.
      *
-     * @param idIntersection id of the intersection
+     * @param idIntersection id of the intersection to select
      */
     public void leftClick(long idIntersection) {
         Intersection intersection = map.getListIntersections().get(idIntersection);
         currentState.leftClick(this, map, listOfCommand, intersection);
     }
 
+    /**
+     * Select a request by one of its steps
+     *
+     * @param step step to select
+     */
     public void leftClick(Step step) {
         currentState.leftClick(this, map, listOfCommand, step);
     }
@@ -175,7 +180,7 @@ public class Controller {
     }
 
     /**
-     * Unzoom.
+     * Zoom out.
      *
      * @param event
      */
@@ -197,7 +202,7 @@ public class Controller {
     }
 
     /**
-     * Add a request.
+     * Enter in the add request state
      *
      * @param event
      */
@@ -206,7 +211,7 @@ public class Controller {
     }
 
     /**
-     * Delete a request.
+     * Enter in the delete request state
      *
      * @param event
      */

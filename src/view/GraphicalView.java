@@ -45,7 +45,7 @@ public class GraphicalView implements observer.Observer {
      * Constructor.
      *
      * @param map     map object
-     * @param overlay
+     * @param         overlay
      * @param mg      mouse gestures
      */
     public GraphicalView(Map map, Pane overlay, MouseGestures mg) {
@@ -69,7 +69,7 @@ public class GraphicalView implements observer.Observer {
     public static HashMap<Long, List<Rectangle>> rectangles = new HashMap<Long, List<Rectangle>>();
 
     /**
-     * Draw the map.
+     * Create and add all nodes to overlay to draw the map on screen
      */
     public void drawMap() {
         if (!setScreenSize) {
@@ -125,7 +125,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Refresh map.
+     * Clear and redraw the map.
      */
     public void refreshMap() {
         m_overlay.getChildren().clear();
@@ -137,7 +137,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Enable for node selection
      */
     public void enableSelection() {
         isMapClickable = true;
@@ -148,7 +148,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     *
+     * Disable node selection
      */
     public void disableSelection() {
         isMapClickable = false;
@@ -156,7 +156,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Zoom into the map.
+     * Zoom into the map from one zoomstep.
      */
     public void zoom() {
 
@@ -172,7 +172,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Unzoom.
+     * Zoom out from one zoomstep.
      */
     public void unZoom() {
         double width = latToPix(m_map.getMinLat()) - latToPix(m_map.getMaxLat());
@@ -188,7 +188,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Reset the view.
+     * Reset the view to fit the overlay's size.
      */
     public void resetView() {
         zoomVal = 1.0;
@@ -201,6 +201,8 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Draw the selection circle of an intersection
+     *
      * @param NodeId
      */
     public void drawMouseSelection(long NodeId) {
@@ -213,6 +215,24 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Unraw the selection circle of an intersection
+     *
+     * @param NodeId
+     */
+    public void undrawMouseSelection(long NodeId) {
+        Circle circle = circles.get(NodeId).get(0);
+
+        if (circle != null) {
+            //circle.setFill(Color.BLACK);
+            circle.setStrokeWidth(circle.getStrokeWidth() / 2.0);
+            circle.setStroke(Color.DIMGRAY);
+        }
+
+    }
+
+    /**
+     * Draw the selection circle of a step
+     *
      * @param step request point
      */
     public void drawMouseSelection(Step step) {
@@ -243,6 +263,8 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Unraw the selection circle of a step
+     *
      * @param step request point
      */
     public void undrawMouseSelection(Step step) {
@@ -272,21 +294,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * @param NodeId
-     */
-    public void undrawMouseSelection(long NodeId) {
-        Circle circle = circles.get(NodeId).get(0);
-
-        if (circle != null) {
-            //circle.setFill(Color.BLACK);
-            circle.setStrokeWidth(circle.getStrokeWidth() / 2.0);
-            circle.setStroke(Color.DIMGRAY);
-        }
-
-    }
-
-    /**
-     * Draw lines from an origin intersection.
+     * Draw all lines from a origin intersection
      *
      * @param origin      origin intersection
      * @param segmentList list of segments
@@ -309,7 +317,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Draw an arrow.
+     * Draw an arrow from a starting intersection to an ending intersection
      *
      * @param origin      origin intersection
      * @param destination destination intersection
@@ -328,7 +336,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Draw a point.
+     * Draw a point at the intersection coordinates
      *
      * @param intersection point intersection
      * @param color        color of the point
@@ -353,7 +361,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Draw a request point.
+     * Draw a Delivery point at the step coordinates
      *
      * @param step  request point
      * @param color color of the point
@@ -382,7 +390,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Draw a rectangle.
+     * Draw a Pickup point at the step coordinates
      *
      * @param step  request point
      * @param color color of the rectangle
@@ -416,6 +424,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Add all nodes to overlay for map display
      *
      */
     private void addNodesToOverlay() {
@@ -457,6 +466,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Update all graphical coefficients
      *
      */
     private void updateCoeff() {
@@ -480,6 +490,8 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * update translation of all nodes.
+     *
      * @param XValue
      * @param YValue
      */
@@ -535,7 +547,7 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
-     * Generate a random color for a request.
+     * Generate a random color for a request depending on its two steps Ids.
      *
      * @param req request
      * @return
@@ -550,6 +562,8 @@ public class GraphicalView implements observer.Observer {
     }
 
     /**
+     * Refresh map when called
+     *
      * @param observed
      * @param arg      argument
      */

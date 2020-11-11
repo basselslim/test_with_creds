@@ -18,7 +18,7 @@ public class AddPickupState implements State {
     }
 
     /**
-     * Left click.
+     * Add the clicked Step as a preceding point to the new pickup point, or as the pickup point itself
      *
      * @param controller
      * @param map           map object
@@ -46,7 +46,7 @@ public class AddPickupState implements State {
     }
 
     /**
-     * Left click.
+     * Add the selected intersection as a new Pickup Point to a new request
      *
      * @param controller
      * @param map           map object
@@ -68,7 +68,7 @@ public class AddPickupState implements State {
     }
 
     /**
-     * Add duration.
+     * Add a pickup time to the pickup point
      *
      * @param duration   duration to add
      * @param controller
@@ -82,36 +82,10 @@ public class AddPickupState implements State {
         controller.setCurrentState(controller.addDeliveryState);
     }
 
+
     /**
-     * Temporary remove the last added command (this command may be reinserted again with redo).
+     * Set the entry attributs to the state
      *
-     * @param listOfCommand
-     * @param controller
-     */
-    @Override
-    public void undo(ListOfCommand listOfCommand, Controller controller) {
-        controller.initialState.entryAction(controller);
-        controller.Tview.setMessage("Compute Tour, export Roadmap, load a new map or new requests");
-        controller.setCurrentState(controller.initialState);
-
-    }
-
-    /**
-     * Reinsert the last command removed by undo.
-     *
-     * @param listOfCommand
-     * @param controller
-     */
-    @Override
-    public void redo(ListOfCommand listOfCommand, Controller controller) {
-        Request nextReq = controller.addDeliveryState.request;
-        if (controller.addDeliveryState.PickupPrecedingPoint != null && nextReq.getPickUpPoint() != null && nextReq.getPickUpPoint().getPickUpDuration() != 0) {
-            controller.addDeliveryState.reverseAction(controller);
-            controller.setCurrentState(controller.addDeliveryState);
-        }
-    }
-
-    /**
      * @param controller
      * @param r          request
      */
@@ -120,14 +94,5 @@ public class AddPickupState implements State {
         precedingPoint = null;
         controller.Tview.setMessage("Select the preceding point to the pickup point");
 
-    }
-
-    /**
-     * @param controller
-     */
-    protected void reverseAction(Controller controller) {
-        precedingPoint = null;
-
-        controller.Tview.setMessage("Select the preceding point to the pickup point");
     }
 }

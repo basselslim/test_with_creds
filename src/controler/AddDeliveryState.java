@@ -19,7 +19,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Left click.
+     * Add the clicked Step as a preceding point to the new delivery point, or as the delivery point itself
      *
      * @param controller
      * @param map           map object
@@ -46,7 +46,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Left click.
+     * Add the selected intersection as a new Delivery Point to a new request
      *
      * @param controller
      * @param map           map object
@@ -68,7 +68,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Add a duration.
+     * Add a delivery time to the delivery point
      *
      * @param duration   duration to add
      * @param controller
@@ -82,36 +82,7 @@ public class AddDeliveryState implements State {
     }
 
     /**
-     * Temporary remove the last added command (this command may be reinserted again with redo).
-     *
-     * @param listOfCommand
-     * @param controller
-     */
-    @Override
-    public void undo(ListOfCommand listOfCommand, Controller controller) {
-        controller.addPickupState.reverseAction(controller);
-        unDrawSelections(controller);
-        controller.setCurrentState(controller.addPickupState);
-    }
-
-    /**
-     * Reinsert the last command removed by undo.
-     *
-     * @param listOfCommand
-     * @param controller
-     */
-    @Override
-    public void redo(ListOfCommand listOfCommand, Controller controller) {
-        Request nextReq = controller.confirmRequestState.request;
-        unDrawSelections(controller);
-        if (controller.confirmRequestState.DeliveryPrecedingPoint != null && nextReq.getDeliveryPoint() != null && nextReq.getDeliveryPoint().getDeliveryDuration() != 0) {
-            controller.confirmRequestState.reverseAction(controller);
-            controller.setCurrentState(controller.confirmRequestState);
-        }
-    }
-
-    /**
-     *
+     * Set the entry attributs to the state
      * @param controller
      * @param r                    request
      * @param pickuppredecingPoint preceding pick up point
@@ -123,31 +94,6 @@ public class AddDeliveryState implements State {
         controller.Gview.enableSelection();
         controller.Tview.setMessage("Select the preceding point to the delivery point");
     }
-
-    /**
-     *
-     * @param controller
-     */
-    protected void reverseAction(Controller controller) {
-        DeliveryPrecedingPoint = null;
-        controller.Gview.drawMouseSelection(PickupPrecedingPoint);
-        controller.Gview.drawMouseSelection(request.getPickUpPoint().getId());
-        controller.Tview.setMessage("Select the preceding point to the delivery point");
-    }
-
-    /**
-     *
-     * @param controller
-     */
-    private void unDrawSelections(Controller controller) {
-        if (DeliveryPrecedingPoint != null)
-            controller.Gview.undrawMouseSelection(DeliveryPrecedingPoint);
-        else if (controller.confirmRequestState.DeliveryPrecedingPoint != null)
-            controller.Gview.undrawMouseSelection(controller.confirmRequestState.DeliveryPrecedingPoint);
-        if (request.getDeliveryPoint() != null)
-            controller.Gview.undrawMouseSelection(request.getDeliveryPoint().getId());
-        controller.Gview.undrawMouseSelection(controller.addPickupState.request.getPickUpPoint().getId());
-        controller.Gview.undrawMouseSelection(PickupPrecedingPoint);
-    }
+   
 
 }
