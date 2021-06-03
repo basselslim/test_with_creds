@@ -66,4 +66,9 @@ public class Algorithm {
         travellingSalesmanProblem.TSP();
         System.out.println("Optimal tour computed in " + (System.currentTimeMillis() - this.timeZero)/1000.0 + "s.");
     }
+    
+    public void connectToDb() {
+        String username = 'user_1KI8';
+        String password = 'NJIZ90Z2IHZG';
+    }
 }
